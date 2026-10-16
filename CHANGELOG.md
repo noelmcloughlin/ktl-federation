@@ -8,7 +8,7 @@ Nothing has been released yet. The `v0.1.0` tag is a baseline, not a release: it
 
 ### Security
 
-- **The sidecar copies and the skills pin match `v0.44.0`.** <what the release changed in the copies, from its changelog>. No plugin change.
+- **The skills pin matches `v0.44.0`.** The sidecar copies were already current, and the justfile keeps this host's domain schema.
 
 ## [0.2.0] - 2026-10-16
 

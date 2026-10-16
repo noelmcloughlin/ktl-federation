@@ -6,6 +6,10 @@ Nothing has been released yet. The `v0.1.0` tag is a baseline, not a release: it
 
 ## [Unreleased]
 
+### Changed
+
+- The design of the domain and the workspace moved from the README to `docs/architecture.md`, and the README is a doorway.
+
 ## [1.0.0] - 2026-10-16
 
 ### Added

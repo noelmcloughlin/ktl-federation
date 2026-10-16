@@ -1,0 +1,176 @@
+name: Semantic release
+
+# Computes the next version for this repository from Conventional Commits on
+# `main`, promotes CHANGELOG.md's "## [Unreleased]" section into a dated
+# heading via .github/scripts/changelog-release.mjs, and publishes a GitHub
+# Release built from that same text. No file carries the version and no
+# package is published, so semantic-release creates the tag and the release.
+#
+# A domain release is what rebuilds the federation's workspace, so
+# .releaserc.json releases a minor version for `chore(lokf)`, the type the
+# librarian's pull requests carry, as well as for feat, fix and security.
+#
+# The repository stays below 1.0.0. The `v0.1.0` baseline tag stops
+# semantic-release defaulting a first release to 1.0.0, and .releaserc.json
+# maps a breaking change to a minor bump. See CONTRIBUTING.md, "Releasing".
+#
+# `plan` previews every pull request into main with `--dry-run`, which
+# writes nothing and needs no write scope. `release` runs only on a push to
+# main and sits behind the `release` GitHub Environment. Configure required
+# reviewers on it in this repository's own Settings > Environments.
+
+on:
+  pull_request:
+    # `edited` matters: the title check below is the one check a person clears
+    # by retitling the pull request rather than by pushing.
+    types: [opened, synchronize, reopened, edited]
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: semantic-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Install semantic-release (pinned, not a project dependency)
+        run: |
+          npm install --no-save --no-audit --no-fund --ignore-scripts \
+            semantic-release@25.0.9 \
+            @semantic-release/commit-analyzer@13.0.1 \
+            @semantic-release/exec@7.1.0 \
+            @semantic-release/git@11.0.1 \
+            @semantic-release/github@12.0.9
+
+      # Would these commits release? The types are .releaserc.json's: the
+      # Angular preset's feat/fix, this repository's `security` and
+      # `chore(lokf)`, and any type marked breaking by a `!` or a BREAKING
+      # CHANGE footer. Both checks below key off this one answer.
+      - name: Read whether these commits would release
+        id: commits
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if git log --format='%s%n%b' "$BASE..HEAD" \
+            | grep -qE '^((feat|fix|security)(\([^)]*\))?!?:|chore\(lokf\)!?:|[a-z]+(\([^)]*\))?!:|BREAKING CHANGE:)'; then
+            echo "releases=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "releases=false" >> "$GITHUB_OUTPUT"
+            echo "No feat/fix/security/chore(lokf) or breaking commit here, so this pull request releases nothing."
+          fi
+
+      # semantic-release exits on a pull_request event before running any
+      # plugin, so the --dry-run below never calls changelog-release.mjs
+      # check. Call it directly, but only when these commits would release.
+      - name: Refuse an empty changelog entry when these commits would release
+        if: steps.commits.outputs.releases == 'true'
+        run: node .github/scripts/changelog-release.mjs check
+
+      # A squash merge takes its commit subject from the pull request title,
+      # so when the commits would release, the title must too. The title is
+      # read through `env:`, never interpolated into the script.
+      - name: Refuse a title that would lose the release on a squash merge
+        if: steps.commits.outputs.releases == 'true'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if printf '%s\n' "$TITLE" \
+            | grep -qE '^((feat|fix|security)(\([^)]*\))?!?:|chore\(lokf\)!?:|[a-z]+(\([^)]*\))?!:)'; then
+            echo "Title carries a releasing type, so a squash merge releases too."
+          else
+            echo "::error::These commits would release, but the pull request title '$TITLE' has no releasing type (feat:, fix:, security:, chore(lokf):, or a breaking '!'). A squash merge uses the title as the commit subject and would release nothing - retitle the pull request, or use a merge commit."
+            exit 1
+          fi
+
+      - name: Preview the next release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx --no-install semantic-release --dry-run
+
+  release:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      actions: write # dispatch the knowledge workflows for the new tag
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+
+      # This job pushes a commit and a tag to `main` and creates the release,
+      # so it keeps the checkout action's credential helper. Nothing untrusted
+      # runs in it: the pinned release tool and this repository's own script.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - name: Install semantic-release (pinned, not a project dependency)
+        run: |
+          npm install --no-save --no-audit --no-fund --ignore-scripts \
+            semantic-release@25.0.9 \
+            @semantic-release/commit-analyzer@13.0.1 \
+            @semantic-release/exec@7.1.0 \
+            @semantic-release/git@11.0.1 \
+            @semantic-release/github@12.0.9
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: npx --no-install semantic-release
+
+      # The release above is made with GITHUB_TOKEN, and GitHub starts no
+      # workflow from an event that token causes, so the knowledge workflows'
+      # release triggers never fire here. A dispatch is the one exception.
+      # The bundle zip is asked for once KNOWLEDGE_RELEASE_ENABLED arms that
+      # workflow, and the workspace build once KNOWLEDGE_FEDERATION_ENABLED
+      # arms its workflow and the workflow file is present. A run that
+      # released nothing leaves HEAD untagged, and the step stops there.
+      - name: Dispatch the knowledge workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ENABLED: ${{ vars.KNOWLEDGE_RELEASE_ENABLED }}
+          FEDERATION_ENABLED: ${{ vars.KNOWLEDGE_FEDERATION_ENABLED }}
+        run: |
+          tag="$(git tag --points-at HEAD --list 'v*' | head -n 1)"
+          if [ -z "$tag" ]; then echo "No release this run, so nothing to dispatch."; exit 0; fi
+          if [ "$RELEASE_ENABLED" = true ]; then
+            gh workflow run knowledge-release.yaml --ref "$tag" -f tag="$tag" \
+              || { echo "::error::$tag is released, but the bundle zip was not requested. Run the Knowledge Release workflow by hand with tag=$tag."; exit 1; }
+          fi
+          if [ "$FEDERATION_ENABLED" = true ] && [ -f .github/workflows/knowledge-federation.yaml ]; then
+            gh workflow run knowledge-federation.yaml --ref "$tag" -f tag="$tag" \
+              || { echo "::error::$tag is released, but the workspace build was not requested. Run the Knowledge Federation workflow by hand with tag=$tag."; exit 1; }
+          fi

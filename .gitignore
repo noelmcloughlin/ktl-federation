@@ -1,0 +1,18 @@
+# Agent skills are installed at run time, never committed.
+.agents/
+.claude/
+skills-lock.json
+
+# Python caches and environments.
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# The workspace the federation build writes; it is published as a release asset and to Pages.
+/snapshot/
+/snapshot.new/
+
+# Local editor settings.
+.idea/
+.vscode/

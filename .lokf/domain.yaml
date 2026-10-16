@@ -1,0 +1,44 @@
+id: https://w3id.org/ktl/schema/domain
+name: domain
+imports:
+  - linkml:types
+  - lokf
+default_range: string
+default_prefix: domain
+prefixes:
+  domain: https://w3id.org/ktl/schema/domain/
+  linkml: https://w3id.org/linkml/
+  lokf: https://w3id.org/lokf/
+  dcat: http://www.w3.org/ns/dcat#
+  spdx: http://spdx.org/rdf/terms#
+classes:
+  Domain:
+    is_a: Dataset
+    class_uri: dcat:Catalog
+    slots: [unowned_targets]
+  MemberBundle:
+    is_a: Dataset
+    slots: [base_iri, release]
+    slot_usage:
+      base_iri: {required: true}
+      distribution: {range: ReleaseDistribution, required: true}
+  ReleaseDistribution:
+    is_a: Distribution
+    slots: [checksum]
+    slot_usage:
+      checksum: {required: true}
+slots:
+  release:
+    range: uri
+    slot_uri: dcat:landingPage
+  checksum:
+    range: string
+    slot_uri: spdx:checksumValue
+    pattern: "^sha256:[0-9a-f]{64}$"
+  unowned_targets:
+    range: UnownedTargetPolicy
+enums:
+  UnownedTargetPolicy:
+    permissible_values:
+      fail: {description: an unowned cross-bundle target fails the build}
+      report: {description: an unowned cross-bundle target is listed and the build goes on}

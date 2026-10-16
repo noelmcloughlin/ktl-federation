@@ -1,0 +1,33 @@
+exclude = [
+  # LOKF's published JSON-LD context; upstream's identifier, not this
+  # repository's, currently 404s. Drop once the w3id.org redirect is registered.
+  '^https://w3id\.org/lokf/context\.jsonld$',
+  # This bundle's own `base_iri` namespace. A LOKF concept `id` is an
+  # identifier that merely looks like a URL, and the w3id.org rule for
+  # `ktl/federation/` is pending; drop once it is live.
+  '^https://w3id\.org/ktl/federation/',
+  # A member's namespace that does not yet resolve to its concepts, which
+  # LOKF permits: an identifier, not a hyperlink.
+  '^https://w3id\.org/lmodel/gist/knowledge/',
+  # Development-only addresses.
+  '^http://localhost',
+  '^http://127\.0\.0\.1',
+  # conventionalcommits.org answers CI runners with 503 while serving 200
+  # elsewhere; not a dead link.
+  '^https://www\.conventionalcommits\.org/',
+]
+
+# github.com answers a burst of requests for file pages (`/blob/`) with 503,
+# while raw.githubusercontent.com serves the same files. A missing file still
+# answers 404 there, so the check stays real.
+remap = [
+  '^https://github\.com/([^/]+)/([^/]+)/blob/(.+)$ https://raw.githubusercontent.com/$1/$2/$3',
+]
+
+exclude_path = [
+  # knowledge_bundle is a link to .lokf/knowledge (the doorway, ktl-sidecar
+  # Step 2): the same files, which would be walked twice.
+  "(^|/)knowledge_bundle/",
+  # What the website's build writes; website/'s own link check covers them.
+  "(^|/)website/(dist|public|src/content|src/generated|node_modules)/",
+]

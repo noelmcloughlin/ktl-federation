@@ -1,0 +1,36 @@
+{
+  // Only source content is linted: not environments, dependency trees, the
+  // skills installed at run time, the doorway link (the same files already
+  // linted at their real path), or what the website's build writes.
+  "ignores": [
+    "**/.venv/**",
+    "**/node_modules/**",
+    "**/.agents/**",
+    "**/.claude/**",
+    "knowledge_bundle/**",
+    "website/dist/**",
+    "website/public/**",
+    "website/src/content/**",
+    "website/src/generated/**"
+  ],
+  "config": {
+    // LOKF concept prose is deliberately unwrapped.
+    "MD013": false,
+    // Every concept file's frontmatter carries a `title:` that markdownlint
+    // treats as an implicit H1, so the body's `# Overview` reads as a second
+    // top-level heading. That split is the format's convention.
+    "MD025": false,
+    // Two adjacent `>` callouts are two blockquotes on purpose.
+    "MD028": false,
+    // Angle-bracket tokens in docs are not HTML.
+    "MD033": false,
+    // The templates under .github/ are fragments GitHub renders into a form.
+    "MD041": false,
+    // A changelog repeats the same category headings under each release.
+    "MD024": {
+      "siblings_only": true
+    },
+    // GFM tables pair a padded header with a bare separator row.
+    "MD060": false
+  }
+}

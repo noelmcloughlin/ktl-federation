@@ -18,7 +18,9 @@ isPartOf:
 generated:
   by: process:knowledge-federate
   at: "2026-10-16T10:00:29Z"
-status: draft
+verified:
+  - by: human:noelmcloughlin
+    at: "2026-10-16T13:37:53Z"
 ---
 
 # Overview

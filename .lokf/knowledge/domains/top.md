@@ -11,7 +11,10 @@ relatedTo:
 generated:
   by: process:knowledge-federate
   at: "2026-10-16T10:00:29Z"
-status: draft
+verified:
+  - by: human:noelmcloughlin
+    at: "2026-10-16T13:35:23Z"
+stale_after: 2026-11-16
 ---
 
 # Overview

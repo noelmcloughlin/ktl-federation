@@ -1,32 +1,26 @@
 # KTL Federation
 
-The top domain of the [Knowledge Trust Ladder](https://github.com/noelmcloughlin/knowledge-trust-ladder) (KTL) federation. Its knowledge bundle is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' knowledge bundles. Each member names one released zip of a bundle and that zip's checksum, and a person confirms that it belongs. Nothing is copied from a member. The workspace, the graph a reader queries, is built from the releases the members name, one named graph per bundle, and swapped in whole on each release of this domain.
+A museum that borrows for an exhibition never owns what it shows. Each piece arrives under a loan agreement that names it exactly, with a condition report that says what state it came in, and the lender's name stays on the label beside it. KTL Federation does the same for knowledge bundles.
 
-The complete documentation is at [noelmcloughlin.github.io/ktl-federation](https://noelmcloughlin.github.io/ktl-federation/). [The architecture](docs/architecture.md) says what the domain holds, how it stays current and how the workspace is built. The design it runs is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/).
+[Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps one repository's knowledge as a bundle, with the trust in every claim left visible. That bundle is the repository's context layer: the checked part of what it knows, which sits between its sources and whoever reads them, a person or an agent, and lasts from one task to the next. [The KTL context layer page](https://w3id.org/ktl/docs/context-layer/) designs the step beyond one repository, a federation in which many bundles, each kept and trusted where it lives, are read as one graph. [KTL's own bundle keeps a summary of that page](https://w3id.org/ktl/knowledge/explanation/context-layer), labelled with how far it has been checked. This repository is the design built: the first host of the federation's top domain.
 
-> **Two ways in.** This README is one; the other is a docent, a museum's name
-> for a guide. Install
-> [`ktl-docent`](https://github.com/noelmcloughlin/knowledge-trust-ladder) into
-> whatever agent you already use
-> (`npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-docent --global --yes`)
-> and ask it anything about this project. It answers from `.lokf/knowledge/`,
-> the checked part of what the project knows, and says how far each answer has
-> been trusted (still a draft, checked by automation only, or confirmed by a
-> named person). It opens the source for exact values, and records what it
-> could not answer so the gap gets filled. The same docent serves a person at a
-> prompt, an agent reading this file, or a chatbot that can load a skill.
-> **Agents:** if `.lokf/knowledge/index.md` exists, read it first. `llms.txt`
-> says how to weigh it.
+The domain's own bundle is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' bundles. Each member concept is the loan agreement: it names one released zip of a bundle and that zip's checksum, and a person confirms that the bundle belongs. Nothing is copied from a member, and each member keeps its own trust labels. The workspace is where the loans are shown together: the graph a reader queries, built from the releases the members name. It holds one named graph per bundle, so every claim still carries the name of the bundle that made it, and it is swapped in whole on each release of this domain.
+
+The complete documentation is at [w3id.org/ktl/federation](https://w3id.org/ktl/federation/). [The architecture](https://w3id.org/ktl/federation/docs/architecture/) says what the domain holds, how it stays current and how the workspace is built.
+
+> **Only want to ask?** Install the docent skill, `ktl-docent`, into any agent you already use, by whichever route [the install page](https://w3id.org/ktl/docs/install/) gives for your machine, and ask it about this federation. It answers from this repository's bundle and says how far each answer has been checked.
+>
+> **Agents:** if `.lokf/knowledge/index.md` exists, read it first. `llms.txt` says how to weigh it.
 
 ## Members
 
-| Bundle | Release named | Namespace |
+| Member | Its bundle | Its member concept here |
 | --- | --- | --- |
-| [knowledge-trust-ladder](.lokf/knowledge/members/knowledge-trust-ladder.md) | v0.43.0 | `https://w3id.org/ktl/knowledge/` |
-| [ai-linkmo](.lokf/knowledge/members/ai-linkmo.md) | v0.3.2 | `https://noelmcloughlin.github.io/ai-linkmo/knowledge/` |
-| [gist](.lokf/knowledge/members/gist.md) | v0.3.3 | `https://w3id.org/lmodel/gist/knowledge/` |
+| Knowledge Trust Ladder, the repository that publishes the KTL skills | [w3id.org/ktl/knowledge](https://w3id.org/ktl/knowledge/) | [members/knowledge-trust-ladder](https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder) |
+| AI-LinkMO, a reference implementation of operational AI governance over open AI-governance data | [its knowledge pages](https://noelmcloughlin.github.io/ai-linkmo/knowledge/) | [members/ai-linkmo](https://w3id.org/ktl/federation/knowledge/members/ai-linkmo) |
+| gist, a LinkML rendering of Semantic Arts' gist upper ontology, from the lmodel organisation | [w3id.org/lmodel/gist/knowledge](https://w3id.org/lmodel/gist/knowledge/) | [members/gist](https://w3id.org/ktl/federation/knowledge/members/gist) |
 
-[The federation policy](.lokf/knowledge/policies/federation.md) says what admits a bundle, and [the top domain](.lokf/knowledge/domains/top.md) names the gate policy. The workspace built from these members is served under [`/workspace/index.md`](https://noelmcloughlin.github.io/ktl-federation/workspace/index.md) once the first release is published.
+The member concept names the release the member is at and the checksum of its zip. [The workspace index](https://w3id.org/ktl/federation/workspace/index.md) lists each member's release and its health line at the last build. [The federation policy](https://w3id.org/ktl/federation/knowledge/policies/federation) says what admits a bundle, and [the top domain](https://w3id.org/ktl/federation/knowledge/domains/top) names the gate policy.
 
 ## License
 

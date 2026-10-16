@@ -2,11 +2,11 @@
 
 A museum that borrows for an exhibition never owns what it shows: each loan is named exactly, its condition recorded, and the lender's name kept on the label. KTL Federation does the same for knowledge bundles.
 
-[Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps a repository's checked knowledge as a bundle, its context layer, with the trust in every claim left visible. [The KTL context layer page](https://w3id.org/ktl/docs/context-layer/) designs the step beyond one repository: many bundles, each kept and trusted where it lives, read as one graph. This repository is that design built, the first host of the federation's top domain. [KTL's bundle summarises the page](https://w3id.org/ktl/knowledge/explanation/context-layer), with its trust label.
+[Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps a repository's checked knowledge as a bundle. The repositorie's context layer, with trust in every claim left visible. [The design](https://w3id.org/ktl/docs/context-layer/) goes beyond one repository: many bundles, each kept and trusted where it lives, read as one graph. This repository is a federation's top domain. [KTL summarizes the design](https://w3id.org/ktl/knowledge/explanation/context-layer), with its trust label.
 
-Its bundle is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' bundles. Each member concept is the loan agreement: it names one released zip and its checksum, and a person confirms that the bundle belongs. Nothing is copied. The workspace, the graph a reader queries, is built from those releases with one named graph per bundle, so every claim keeps the name of the bundle that made it.
+It is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' bundles. Each member concept is the loan agreement: naming one released zip and checksum, and a person confirms that the bundle belongs. The workspace and graph a reader queries, is built from member releases with one named graph per bundle, every claim visible.
 
-The complete documentation is at [w3id.org/ktl/federation](https://w3id.org/ktl/federation/). [The architecture](https://w3id.org/ktl/federation/docs/architecture/) says what the domain holds, how it stays current and how the workspace is built.
+The documentation is at [w3id.org/ktl/federation](https://w3id.org/ktl/federation/), and the [architecture](https://w3id.org/ktl/federation/docs/architecture/) says what the domain holds, how it stays current and how the workspace is built.
 
 > **Only want to ask?** Install `ktl-docent` into any agent you use, by a route from [the install page](https://w3id.org/ktl/docs/install/), and ask it about this federation. It answers from the bundle and says how far each answer has been checked.
 >

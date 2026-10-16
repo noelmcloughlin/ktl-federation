@@ -2,9 +2,9 @@
 
 A museum that borrows for an exhibition never owns what it shows: each loan is named exactly, its condition recorded, and the lender's name kept on the label. KTL Federation does the same for knowledge bundles.
 
-[Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps a repository's checked knowledge as a bundle. The repositorie's context layer, with trust in every claim left visible. [The design](https://w3id.org/ktl/docs/context-layer/) goes beyond one repository: many bundles, each kept and trusted where it lives, read as one graph. This repository is a federation's top domain. [KTL summarizes the design](https://w3id.org/ktl/knowledge/explanation/context-layer), with its trust label.
+[Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps a repository's checked knowledge as a bundle. The repositorie's context layer, with trust in every claim left visible. [The design](https://w3id.org/ktl/docs/context-layer/) goes beyond one repository: many bundles, each kept and trusted where it lives, read as one graph. This repository is a federation's top domain.
 
-It is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' bundles. Each member concept is the loan agreement: naming one released zip and checksum, and a person confirms that the bundle belongs. The workspace and graph a reader queries, is built from member releases with one named graph per bundle, every claim visible.
+The [top domain](https://w3id.org/ktl/knowledge/explanation/context-layer) is a thin [LOKF](https://lokf.nolan-nichols.com) bundle whose concepts are other repositories' bundles. Each member concept is the loan agreement: naming one released zip and checksum, and a person confirms that the bundle belongs. The workspace and graph a reader queries, is built from member releases with one named graph per bundle, every claim visible.
 
 The documentation is at [w3id.org/ktl/federation](https://w3id.org/ktl/federation/), and the [architecture](https://w3id.org/ktl/federation/docs/architecture/) says what the domain holds, how it stays current and how the workspace is built.
 

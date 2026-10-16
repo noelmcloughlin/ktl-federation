@@ -686,7 +686,8 @@ def write_index(new: pathlib.Path, domain_title: str, domain_iri: str, snapshot_
     for r in records:
         if r["slug"] == "domain":
             continue
-        lines.append(f"| [{r['title']}](bundles/{r['slug']}/.lokf/knowledge/index.md) | {r['version']} | `{r['base_iri']}` | {r['license'] or ''} | {r['health']} |")
+        licence = f"<{r['license']}>" if r.get("license") else ""
+        lines.append(f"| [{r['title']}](bundles/{r['slug']}/.lokf/knowledge/index.md) | {r['version']} | `{r['base_iri']}` | {licence} | {r['health']} |")
     dom = next((r for r in records if r["slug"] == "domain"), None)
     if dom:
         lines += ["", f"The domain bundle itself: [{dom['title']}](bundles/domain/.lokf/knowledge/index.md) at `{dom['base_iri']}`, {dom['triples']} triples; its health line: {dom['health']}."]

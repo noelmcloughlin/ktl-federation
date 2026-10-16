@@ -26,7 +26,7 @@ The complete documentation is at [noelmcloughlin.github.io/ktl-federation](https
 | [ai-linkmo](.lokf/knowledge/members/ai-linkmo.md) | v0.3.2 | `https://noelmcloughlin.github.io/ai-linkmo/knowledge/` |
 | [gist](.lokf/knowledge/members/gist.md) | v0.3.3 | `https://w3id.org/lmodel/gist/knowledge/` |
 
-[The federation policy](.lokf/knowledge/policies/federation.md) says what admits a bundle, and [the top domain](.lokf/knowledge/domains/top.md) names the gate policy. The workspace built from these members is served under [`/workspace/`](https://noelmcloughlin.github.io/ktl-federation/workspace/) once the first release is published.
+[The federation policy](.lokf/knowledge/policies/federation.md) says what admits a bundle, and [the top domain](.lokf/knowledge/domains/top.md) names the gate policy. The workspace built from these members is served under [`/workspace/index.md`](https://noelmcloughlin.github.io/ktl-federation/workspace/index.md) once the first release is published.
 
 ## License
 

@@ -8,7 +8,7 @@ The design is [the KTL context layer page](https://noelmcloughlin.github.io/know
 
 ## The domain
 
-The bundle under `.lokf/knowledge/` is a domain: a thin LOKF bundle whose concepts are other repositories' bundles. Its `base_iri` is `https://w3id.org/ktl/federation/`, beside KTL's own namespace and never above it, since the registry routes an IRI to its owner by the longest matching namespace.
+The bundle under `.lokf/knowledge/` is a domain: a thin LOKF bundle whose concepts are other repositories' bundles. Its `base_iri` is `https://w3id.org/ktl/federation/knowledge/`, beside KTL's own namespace and never above it, since the registry routes an IRI to its owner by the longest matching namespace. `https://w3id.org/ktl/federation/` itself is the site, with the workspace under it.
 
 - `domains/top.md` is the top domain. It names the gate policy: a typed relation whose target lies in no member's namespace fails the build.
 - `members/` holds one `MemberBundle` concept per member. Each names the member's namespace, one release, the release zip as its distribution, and that zip's SHA-256 digest. A member names the newest release that carries a bundle zip, not the newest release.

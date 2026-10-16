@@ -1,6 +1,6 @@
 ---
 type: MemberBundle
-id: https://w3id.org/ktl/federation/members/ai-linkmo
+id: https://w3id.org/ktl/federation/knowledge/members/ai-linkmo
 genre: reference
 title: AI-LinkMO knowledge bundle
 description: The bundle of the ai-linkmo repository, a reference implementation of operational AI governance over open AI-governance data, as released at v0.3.2 on 2026-10-14.
@@ -14,7 +14,7 @@ distribution:
   media_type: application/zip
   checksum: sha256:a6a0e32ff76051782abe69e03bd9472a11e23b0a68d942fec7a4af8514066e61
 isPartOf:
-- https://w3id.org/ktl/federation/domains/top
+- https://w3id.org/ktl/federation/knowledge/domains/top
 generated:
   by: process:knowledge-federate
   at: "2026-10-16T10:00:29Z"

@@ -1,13 +1,13 @@
 ---
 type: Domain
-id: https://w3id.org/ktl/federation/domains/top
+id: https://w3id.org/ktl/federation/knowledge/domains/top
 genre: reference
 title: The top domain
 description: The domain that bounds the KTL federation's workspace. It admits knowledge bundles by release, and its gate policy fails the build on a link no member owns.
 resource: https://github.com/noelmcloughlin/ktl-federation
 unowned_targets: fail
 relatedTo:
-- https://w3id.org/ktl/federation/policies/federation
+- https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: process:knowledge-federate
   at: "2026-10-16T10:00:29Z"

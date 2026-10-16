@@ -9,6 +9,7 @@ Nothing has been released yet. The `v0.1.0` tag is a baseline, not a release: it
 ### Changed
 
 - The design of the domain and the workspace moved from the README to `docs/architecture.md`, and the README is a doorway.
+- The bundle's namespace is now `https://w3id.org/ktl/federation/knowledge/`, as the other KTL bundles' are, and `https://w3id.org/ktl/federation/` is the site.
 
 ## [1.0.0] - 2026-10-16
 

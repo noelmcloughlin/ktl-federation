@@ -1,14 +1,14 @@
 ---
 lokf_version: "0.2"
 okf_version: "0.2"
-base_iri: https://w3id.org/ktl/federation/
+base_iri: https://w3id.org/ktl/federation/knowledge/
 context: https://w3id.org/lokf/context.jsonld
 title: KTL Federation Knowledge Bundle
 description: "The top domain of the Knowledge Trust Ladder federation: the knowledge bundles it federates, each named by its released zip and confirmed by a person, and the workspace built from them."
 license: https://creativecommons.org/licenses/by/4.0/
 publisher:
   type: Person
-  id: https://w3id.org/ktl/federation/person/noel-mcloughlin
+  id: https://w3id.org/ktl/federation/knowledge/person/noel-mcloughlin
   name: Noel McLoughlin
 ---
 

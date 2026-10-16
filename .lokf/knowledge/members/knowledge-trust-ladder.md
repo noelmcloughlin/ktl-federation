@@ -1,6 +1,6 @@
 ---
 type: MemberBundle
-id: https://w3id.org/ktl/federation/members/knowledge-trust-ladder
+id: https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder
 genre: reference
 title: Knowledge Trust Ladder knowledge bundle
 description: The bundle of the knowledge-trust-ladder repository, which publishes the KTL skills, as released at v0.43.0 on 2026-10-15.
@@ -14,7 +14,7 @@ distribution:
   media_type: application/zip
   checksum: sha256:a0a80fc411c23597968699716278d04918b795530f1fe55825709453eb6b8083
 isPartOf:
-- https://w3id.org/ktl/federation/domains/top
+- https://w3id.org/ktl/federation/knowledge/domains/top
 generated:
   by: process:knowledge-federate
   at: "2026-10-16T10:00:29Z"

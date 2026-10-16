@@ -1,6 +1,6 @@
 ---
 type: Policy
-id: https://w3id.org/ktl/federation/policies/federation
+id: https://w3id.org/ktl/federation/knowledge/policies/federation
 genre: reference
 title: Federation policy
 description: What admits a knowledge bundle to this domain, which release a member names, and what the workspace build does with a cross-bundle target no member owns.

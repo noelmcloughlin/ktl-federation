@@ -1,3 +1,22 @@
+# The domain schema: what a thin bundle that federates other bundles needs
+# beyond LOKF core. ktl-sidecar lays it down as .lokf/domain.yaml, beside a
+# pinned copy of lokf.yaml, on a host whose bundle is a domain, and the
+# justfile's `schema := "domain.yaml"` line hands it to the validator. Its
+# namespace is Knowledge Trust Ladder's, so every domain host shares one
+# meaning for Domain and MemberBundle; a host that needs more writes a
+# schema of its own that imports this one. Why each class is shaped as it
+# is: knowledge-trust-ladder's docs/context-layer.md, and the librarian's
+# references/domain-schema.md for the recipe it follows.
+#
+# Domain: a Dataset that is a dcat:Catalog of bundles. `unowned_targets`
+#   is the gate policy the federation build reads: `fail` stops the build
+#   on a typed relation whose target no member owns; `report` lists it.
+# MemberBundle: a Dataset naming one released bundle: its `base_iri`
+#   (LOKF's own slot, which the registry routes by), the release `version`
+#   it pins, the `release` page, and its distribution.
+# ReleaseDistribution: LOKF's Distribution plus the `checksum` of the zip,
+#   where DCAT puts a digest, so a member may later publish a second
+#   distribution with a checksum of its own.
 id: https://w3id.org/ktl/schema/domain
 name: domain
 imports:

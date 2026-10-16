@@ -42,7 +42,16 @@ The design is [the KTL context layer page](https://noelmcloughlin.github.io/know
 
 A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: it lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's own pen. Until it is confirmed, the member reads as edited since a person last confirmed it, which is how the health line says which members have moved.
 
-The workspace build, laid down by the KTL sidecar's federation templates, runs on each release of this domain: it resolves the members into a lock, verifies every zip, registers and exports each bundle with the `lokf` toolkit, loads one named graph per bundle, gates cross-bundle links, and swaps the result in whole. That build is the next step; this repository holds the domain it will read.
+The workspace build, `.lokf/scripts/knowledge-federate.py` from the KTL sidecar's federation templates, runs on each release of this domain through `knowledge-federation.yaml`: it resolves the members into a lock, fetches and verifies every zip (checksum and build attestation), registers and exports each bundle with the `lokf` toolkit, loads one named graph per bundle, gates the typed relations that cross bundles against the registry, and swaps the result in whole. The release carries the workspace as `workspace-<tag>.zip`, and the site serves it under `/workspace/`: the index first, then the lock, the registry, `graph.nq`, each bundle's exports, and stored queries that compute every trust label at the moment they run.
+
+Locally:
+
+```bash
+cd .lokf && just lokf-install
+uv run --project .lokf .lokf/scripts/knowledge-federate.py build --tag v0.1.0 --release-base https://github.com/noelmcloughlin/ktl-federation/releases/tag
+uv run --project .lokf .lokf/scripts/knowledge-federate.py query snapshot/queries/labels.rq
+uv run --project .lokf .lokf/scripts/knowledge-federate.py serve
+```
 
 ## License
 

@@ -8,11 +8,11 @@ Use GitHub's [private vulnerability reporting](https://github.com/noelmcloughlin
 
 ## Supported versions
 
-Only the latest release receives fixes; a security fix ships as a patch release and is noted in [CHANGELOG.md](CHANGELOG.md).
+Only the latest release receives fixes; a security fix is released as a patch release and is noted in [CHANGELOG.md](CHANGELOG.md).
 
 ## What this repository ships
 
-A knowledge bundle of Markdown files, a LinkML schema, and the workspace built from other repositories' released bundles. The workspace build downloads only the zips the member concepts name, checks each against the checksum a person confirmed, verifies its build attestation where the forge recorded one, and refuses a zip that holds a symlink or a path outside its root. A member's release is read, never run.
+A knowledge bundle of Markdown files, a LinkML schema, and the workspace built from other repositories' released bundles. The workspace build downloads only the zips the member concepts name, checks each against the checksum a person confirmed, verifies its build attestation where the forge recorded one. It refuses a zip that holds a symlink or a path outside its root. A member's release is read, never run.
 
 ## What executes here
 
@@ -21,6 +21,7 @@ A knowledge bundle of Markdown files, a LinkML schema, and the workspace built f
 | `knowledge-registrar.yaml` on any pull request that touches `.lokf/`: the validator, the conventions and the provenance gate | Read-only jobs with `persist-credentials: false`; `uv sync --locked` installs only what `.lokf/uv.lock` pins. A `human:` confirmation must be backed by that person's signature or approval. [Human attribution](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/docs/threat-model.md#human-attribution-human-is-a-claim-not-a-credential). |
 | `knowledge-librarian.yaml` and `.lokf/scripts/`, copies of the `ktl-sidecar` template | Here the agent is a script that reads members' releases; it runs in a job that never meets a write token, and the `publish` job confines the patch to the bundle and refuses a `human:` claim. A person merges the pull request. Inert until `KNOWLEDGE_LIBRARIAN_ENABLED` is `true`. |
 | `knowledge-release.yaml`, which attaches the bundle to a release | Inert until dispatched or `KNOWLEDGE_RELEASE_ENABLED` is `true`; only its `attach` job, which runs no third-party packages, can write. |
+| `knowledge-federation.yaml` and `.lokf/scripts/knowledge-federate.py`, which build the workspace and deploy the site | No agent runs, and nothing is committed or pushed. The `check` and `build` jobs fetch and verify the member zips under a read token. Only `publish` holds write scopes: it checks each zip against its checksum again, attests it, uploads it to the release and deploys Pages. Inert until `KNOWLEDGE_FEDERATION_ENABLED` is `true`, except for a run a person starts. |
 | `knowledge-website.yaml`, which builds the site | Builds on every pull request under a read token; deploys nothing, since the federation build is this repository's one Pages deployer. |
 | `semantic-release.yml`, which pushes a changelog commit and tag to `main` | Runs only on a push to `main`, in the `release` Environment, installing its pinned tools with `--ignore-scripts`. [Repository hardening](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/docs/threat-model.md#repository-hardening). |
 | `README.md`, `llms.txt` and the bundle, read by agents | Content, never instructions. A member concept names a release; it carries no text from the member. |

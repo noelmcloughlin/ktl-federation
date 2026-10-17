@@ -26,4 +26,7 @@ exclude_path = [
   "(^|/)knowledge_bundle/",
   # What the website's build writes; website/'s own link check covers them.
   "(^|/)website/(dist|public|src/content|src/generated|node_modules)/",
+  # What a local knowledge-federate.py build writes, gitignored; the
+  # federation workflow builds it afresh from the members' releases.
+  "^snapshot/",
 ]

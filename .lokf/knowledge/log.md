@@ -1,5 +1,14 @@
 # Change Log
 
+## 2026-10-17
+
+* **Changed**: AI-LinkMO knowledge bundle moved from v0.3.2 to v0.4.7; the release carries `knowledge-v0.4.7-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: AI-LinkMO knowledge bundle: noelmcloughlin/ai-linkmo released v0.4.7 after the confirmed v0.3.2; does this member move to it?
+* **Changed**: gist knowledge bundle moved from v0.3.3 to v0.3.7; the release carries `knowledge-v0.3.7-gist-linkml.zip`.
+* **Open question**: gist knowledge bundle: lmodel/gist released v0.3.7 after v0.3.3; does this member move to it?
+* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.43.0 to v0.45.1; the release carries `knowledge-v0.45.1-knowledge-trust-ladder.zip`.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.45.1 after v0.43.0; does this member move to it?
+
 ## 2026-10-16
 
 * **Prose**: reworded 3 concept bodies in plain English. No fact, link, number or frontmatter changed.

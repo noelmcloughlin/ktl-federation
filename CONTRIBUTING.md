@@ -27,8 +27,11 @@ cd ktl-federation/.lokf && just lokf-install && just lokf-check-refs
 The agent skills that maintain the bundle come from [knowledge-trust-ladder](https://github.com/noelmcloughlin/knowledge-trust-ladder), **installed, never committed**:
 
 ```bash
+gh skill install noelmcloughlin/knowledge-trust-ladder ktl-curator --scope user --agent <yours>
 npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-curator --yes
 ```
+
+Either line works; `npx` can fail behind a company proxy or an internal npm registry, and the [install page](https://w3id.org/ktl/docs/install/) has every route.
 
 ## Before opening a pull request
 
@@ -36,9 +39,26 @@ npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-curator --yes
 - **A confirmation is a person's own act.** Record it with ktl-curator, in a signed commit; the registrar's `provenance` job backs each `human:` event with that person's signature or approval. No agent writes one.
 - **Nothing is copied from a member.** The domain names releases; the workspace is built from them.
 - **Run the gate's two checks**: `cd .lokf && just lokf-check-refs` and `bash scripts/knowledge-conventions.sh knowledge`.
-- **Sidecar files are copies.** When the skills release moves, copy `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows from that release's templates in one pull request, and `.lokf/lokf.yaml` with them.
+- **Sidecar files are copies.** Each week `knowledge-sync.yaml` checks the newest skills release and, when this host is behind, opens one pull request that copies its templates over `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows. Change them in Knowledge Trust Ladder, never here. The sync leaves `.lokf/lokf.yaml` alone: when the `lokf` toolkit's version moves, copy it again from the installed package in the same pull request.
 - **Lint as CI does**: markdownlint against `.markdownlint-cli2.jsonc`, lychee against `lychee.toml`, actionlint and ShellCheck over the workflows and scripts.
 - **If your change alters behaviour**, add an entry under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
+
+## Confirming a member change (maintainers)
+
+The librarian opens a pull request when a member releases a newer bundle, and `members --add` drafts a new member the same way. Neither counts until a person confirms it:
+
+1. Check out the pull request: `gh pr checkout <number>`.
+2. Start your agent in this repository and run `/ktl-curator`. Ask it to record your answers on this branch, not in a new pull request. For each member it shows the release, the checksum and the attestation before what the concept claims, and you answer each one: confirm, send back or later. Without an agent, open `knowledge_bundle` as an Obsidian vault and confirm each member with the KTL Curator plugin.
+3. Add a line under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) naming each member and its new version. The librarian writes only inside the bundle, and the release refuses an empty entry.
+4. Commit, signed, and push to the same branch. GitHub runs no checks on a pull request the librarian's token opened, so your push is what starts the registrar's gate and the federation `check` job.
+5. When both pass, squash-merge and keep the `chore(lokf)` title. The merge releases the domain and rebuilds the workspace.
+
+To propose a new member, run these on a branch, then open a pull request and confirm it as above:
+
+```bash
+uv run --project .lokf .lokf/scripts/knowledge-federate.py members --add <owner>/<repo>
+bash .lokf/scripts/knowledge-apply.sh
+```
 
 ## Code of conduct
 

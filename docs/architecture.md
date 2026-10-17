@@ -4,7 +4,7 @@ This page says what the KTL Federation repository holds, how its domain stays cu
 
 ## Where the design comes from
 
-The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/), which places Knowledge Trust Ladder in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository is that design run for real, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing; the domain, its schema and the confirmation of membership are what this repository adds.
+The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/). It places Knowledge Trust Ladder in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository runs that design, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing. This repository adds the domain, its schema and the confirmation of membership.
 
 ## The domain
 
@@ -16,7 +16,7 @@ The bundle under `.lokf/knowledge/` is a domain: a thin LOKF bundle whose concep
 
 A person's confirmation of a member attests two things only: that the member belongs, and that the domain's cross-bundle claims hold. It is the curator's ordinary confirm, recorded as a `verified` event in that person's name and backed by a signed commit, which the registrar's `provenance` job checks. The first wave carries no cross-bundle claim.
 
-`.lokf/domain.yaml` is the domain schema. It declares `Domain`, `MemberBundle` and `ReleaseDistribution` over LOKF core, so `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes; a host that needs more extends it with a schema that imports this one.
+`.lokf/domain.yaml` is the domain schema. It declares `Domain`, `MemberBundle` and `ReleaseDistribution` over LOKF core, so `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one.
 
 ## What is here
 
@@ -31,15 +31,15 @@ A person's confirmation of a member attests two things only: that the member bel
 
 ## How it stays current
 
-A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's own pen. Until that change is confirmed, the member reads as edited since a person last confirmed it, which is how the health line says which members have moved.
+A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's pen. Until a person confirms that change, the member reads as edited since a person last confirmed it. That is how the health line shows which members have moved.
 
-A bundle whose sources are release URLs is always quiet to the scheduled librarian, so the federation workflow dispatches the librarian once a week instead.
+The scheduled librarian always reads a bundle whose sources are release URLs as quiet, with nothing to do. So the federation workflow dispatches the librarian once a week instead.
 
 A merged member change is a release of this domain: the release rules treat `chore(lokf)` as a minor version. Each release carries the bundle as a zip with its checksum, and rebuilds the workspace.
 
 ## The workspace
 
-`.lokf/scripts/knowledge-federate.py build`, from the KTL sidecar's federation templates, runs on each release of this domain through `knowledge-federation.yaml`. In order, it:
+`knowledge-federation.yaml` runs `.lokf/scripts/knowledge-federate.py build` on each release of this domain. The script comes from the KTL sidecar's federation templates. In order, it:
 
 1. resolves the members into a lock of releases and digests, following a member that is itself a domain;
 2. fetches every zip and verifies its checksum and build attestation, refusing a zip with a symbolic link or a path outside its root;
@@ -48,7 +48,7 @@ A merged member change is a release of this domain: the release rules treat `cho
 5. gates every typed relation whose target lies outside the asserting bundle against the registry, under the top domain's policy;
 6. swaps the result in whole, so a failed build leaves the previous workspace in place.
 
-The release carries the workspace as `workspace-<tag>.zip`, and the site serves it under `/workspace/`: the index first, then the lock, the registry, `graph.nq`, each bundle's exports, the gate report, and stored queries that compute every trust label at the moment they run. No label is stored.
+The release carries the workspace as `workspace-<tag>.zip`. The site serves it under `/workspace/`: the index first, then the lock, the registry, `graph.nq`, each bundle's exports, the gate report, and stored queries that compute every trust label at the moment they run. No label is stored.
 
 Run it locally:
 
@@ -61,4 +61,4 @@ uv run --project .lokf .lokf/scripts/knowledge-federate.py serve
 
 ## What remains a design
 
-The context layer page also describes an MCP server over the workspace, a hosted SPARQL endpoint, and a union graph page showing cross-bundle edges. None of these is built. The static workspace and the local `serve` subcommand are the read interface today.
+The context layer page also describes a Model Context Protocol (MCP) server over the workspace, a hosted SPARQL endpoint, and a union graph page showing cross-bundle edges. None of these is built. The static workspace and the local `serve` subcommand are the read interface today.

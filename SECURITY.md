@@ -8,11 +8,11 @@ Use GitHub's [private vulnerability reporting](https://github.com/noelmcloughlin
 
 ## Supported versions
 
-Only the latest release receives fixes; a security fix ships as a patch release and is noted in [CHANGELOG.md](CHANGELOG.md).
+Only the latest release receives fixes; a security fix is released as a patch release and is noted in [CHANGELOG.md](CHANGELOG.md).
 
 ## What this repository ships
 
-A knowledge bundle of Markdown files, a LinkML schema, and the workspace built from other repositories' released bundles. The workspace build downloads only the zips the member concepts name, checks each against the checksum a person confirmed, verifies its build attestation where the forge recorded one, and refuses a zip that holds a symlink or a path outside its root. A member's release is read, never run.
+A knowledge bundle of Markdown files, a LinkML schema, and the workspace built from other repositories' released bundles. The workspace build downloads only the zips the member concepts name, checks each against the checksum a person confirmed, verifies its build attestation where the forge recorded one. It refuses a zip that holds a symlink or a path outside its root. A member's release is read, never run.
 
 ## What executes here
 

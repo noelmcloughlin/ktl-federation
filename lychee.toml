@@ -2,10 +2,6 @@ exclude = [
   # LOKF's published JSON-LD context; upstream's identifier, not this
   # repository's, currently 404s. Drop once the w3id.org redirect is registered.
   '^https://w3id\.org/lokf/context\.jsonld$',
-  # This bundle's own `base_iri` namespace. A LOKF concept `id` is an
-  # identifier that merely looks like a URL, and the w3id.org rule for
-  # `ktl/federation/` is pending; drop once it is live.
-  '^https://w3id\.org/ktl/federation/',
   # A member's namespace that does not yet resolve to its concepts, which
   # LOKF permits: an identifier, not a hyperlink.
   '^https://w3id\.org/lmodel/gist/knowledge/',

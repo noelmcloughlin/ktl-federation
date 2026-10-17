@@ -2,6 +2,7 @@
 
 ## 2026-10-17
 
+* **Changed**: the domain concept moved from `domains/top` to `domains/ktl-federation`. A domain concept is named for the domain, never for its position: which domain is the top is computed for each build, and this one is tier 2 the moment another domain names it. The confirmation of 2026-10-16 was given to `domains/top` and does not move with it, so the domain waits for a confirmation of its own. The three members' `isPartOf` names the new id. `members/ai-linkmo.md` was edited since a person confirmed it, and the label says so until the curator looks again.
 * **Changed**: the domain concept is named for the domain, not for its position. Its title is "The KTL federation domain", and its text says that the top is relative: every domain bounds a workspace of its own, and this one may be a member of another. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Changed**: AI-LinkMO knowledge bundle moved from v0.3.2 to v0.4.7; the release carries `knowledge-v0.4.7-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: AI-LinkMO knowledge bundle: noelmcloughlin/ai-linkmo released v0.4.7 after the confirmed v0.3.2; does this member move to it?

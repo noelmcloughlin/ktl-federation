@@ -1,6 +1,6 @@
 ---
 type: Domain
-id: https://w3id.org/ktl/federation/knowledge/domains/top
+id: https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 genre: reference
 title: The KTL federation domain
 description: The domain of the KTL federation, the top of the workspace its releases build; it may be a member of another domain in turn. It admits knowledge bundles by release, and its gate policy fails the build on a link no member owns.
@@ -10,11 +10,7 @@ relatedTo:
   - https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-17T22:54:06Z"
-verified:
-  - by: human:noelmcloughlin
-    at: "2026-10-16T13:35:23Z"
-stale_after: 2026-11-16
+  at: "2026-10-17T23:08:59Z"
 ---
 
 # Overview

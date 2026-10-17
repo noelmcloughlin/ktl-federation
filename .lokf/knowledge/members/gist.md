@@ -14,10 +14,10 @@ distribution:
     media_type: application/zip
     checksum: sha256:df7e2e1d93017dbfc1bccffa3ab798cf4d0299aba44af2a2e45670f65ef952d0
 isPartOf:
-  - https://w3id.org/ktl/federation/knowledge/domains/top
+  - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
-  by: process:knowledge-federate
-  at: "2026-10-17T16:03:40Z"
+  by: process:ktl-librarian
+  at: "2026-10-17T23:08:59Z"
 status: draft
 ---
 

@@ -2,6 +2,7 @@
 
 ## 2026-10-17
 
+* **Changed**: the domain concept is named for the domain, not for its position. Its title is "The KTL federation domain", and its text says that the top is relative: every domain bounds a workspace of its own, and this one may be a member of another. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Changed**: AI-LinkMO knowledge bundle moved from v0.3.2 to v0.4.7; the release carries `knowledge-v0.4.7-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: AI-LinkMO knowledge bundle: noelmcloughlin/ai-linkmo released v0.4.7 after the confirmed v0.3.2; does this member move to it?
 * **Changed**: gist knowledge bundle moved from v0.3.3 to v0.3.7; the release carries `knowledge-v0.3.7-gist-linkml.zip`.

@@ -31,7 +31,7 @@ A person's confirmation of a member attests two things only: that the member bel
 
 ## How it stays current
 
-A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's pen. Until a person confirms that change, the member reads as edited since a person last confirmed it. That is how the health line shows which members have moved. [Confirming a member change](../CONTRIBUTING.md#confirming-a-member-change-maintainers) gives the steps.
+A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's pen. Until a person confirms that change, the member reads as edited since a person last confirmed it. That is how the health line shows which members have moved. [Confirming a member change](curation.md) gives the steps.
 
 The scheduled librarian always reads a bundle whose sources are release URLs as quiet, with nothing to do. So the federation workflow dispatches the librarian once a week instead.
 

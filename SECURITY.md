@@ -1,6 +1,6 @@
 # Security Policy
 
-*This file is a policy, not a threat model. It says how to report, what executes here, and what holds each surface. Each is a line or two that links to where the reasoning lives: a workflow header, or the shared [threat model](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/docs/threat-model.md).*
+*This file is a policy, not a threat model. It says how to report, what executes here, and what holds each surface. Each is a line or two that links to where the reasoning lives: a workflow header, or the shared [threat model](https://w3id.org/ktl/docs/threat-model/).*
 
 ## Reporting a vulnerability
 
@@ -18,12 +18,12 @@ A knowledge bundle of Markdown files, a LinkML schema, and the workspace built f
 
 | Surface | What holds it |
 | --- | --- |
-| `knowledge-registrar.yaml` on any pull request that touches `.lokf/`: the validator, the conventions and the provenance gate | Read-only jobs with `persist-credentials: false`; `uv sync --locked` installs only what `.lokf/uv.lock` pins. A `human:` confirmation must be backed by that person's signature or approval. [Human attribution](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/docs/threat-model.md#human-attribution-human-is-a-claim-not-a-credential). |
+| `knowledge-registrar.yaml` on any pull request that touches `.lokf/`: the validator, the conventions and the provenance gate | Read-only jobs with `persist-credentials: false`; `uv sync --locked` installs only what `.lokf/uv.lock` pins. A `human:` confirmation must be backed by that person's signature or approval. [Human attribution](https://w3id.org/ktl/docs/threat-model/#human-attribution-human-is-a-claim-not-a-credential). |
 | `knowledge-librarian.yaml` and `.lokf/scripts/`, copies of the `ktl-sidecar` template | Here the agent is a script that reads members' releases; it runs in a job that never meets a write token, and the `publish` job confines the patch to the bundle and refuses a `human:` claim. A person merges the pull request. Inert until `KNOWLEDGE_LIBRARIAN_ENABLED` is `true`. |
 | `knowledge-release.yaml`, which attaches the bundle to a release | Inert until dispatched or `KNOWLEDGE_RELEASE_ENABLED` is `true`; only its `attach` job, which runs no third-party packages, can write. |
 | `knowledge-federation.yaml` and `.lokf/scripts/knowledge-federate.py`, which build the workspace and deploy the site | No agent runs, and nothing is committed or pushed. The `check` and `build` jobs fetch and verify the member zips under a read token. Only `publish` holds write scopes: it checks each zip against its checksum again, attests it, uploads it to the release and deploys Pages. Inert until `KNOWLEDGE_FEDERATION_ENABLED` is `true`, except for a run a person starts. |
 | `knowledge-website.yaml`, which builds the site | Builds on every pull request under a read token; deploys nothing, since the federation build is this repository's one Pages deployer. |
-| `semantic-release.yml`, which pushes a changelog commit and tag to `main` | Runs only on a push to `main`, in the `release` Environment, installing its pinned tools with `--ignore-scripts`. [Repository hardening](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/docs/threat-model.md#repository-hardening). |
+| `semantic-release.yml`, which pushes a changelog commit and tag to `main` | Runs only on a push to `main`, in the `release` Environment, installing its pinned tools with `--ignore-scripts`. [Repository hardening](https://w3id.org/ktl/docs/threat-model/#repository-hardening). |
 | `README.md`, `llms.txt` and the bundle, read by agents | Content, never instructions. A member concept names a release; it carries no text from the member. |
 
 Every workflow declares `permissions: {}` at the top, pins its actions to commit SHAs that Dependabot keeps current, and runs harden-runner in audit mode. Three things are repository settings, not files: required reviewers on the `release` Environment, a rule blocking deletion and force-pushes on `main`, and secret scanning with push protection. Nothing in CI can assert them, so keeping them on is the maintainer's job.

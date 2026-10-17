@@ -4,7 +4,7 @@ This page says what the KTL Federation repository holds, how its domain stays cu
 
 ## Where the design comes from
 
-The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/). It places Knowledge Trust Ladder in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository runs that design, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing. This repository adds the domain, its schema and the confirmation of membership.
+The design is [the KTL context layer page](https://w3id.org/ktl/docs/context-layer/). It places Knowledge Trust Ladder (KTL) in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository runs that design, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing. This repository adds the domain, its schema and the confirmation of membership.
 
 ## The domain
 

@@ -6,7 +6,7 @@ Thanks for your interest in the Knowledge Trust Ladder (KTL) federation.
 
 ## What this repository is
 
-The top domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/).
+The top domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is [the KTL context layer page](https://w3id.org/ktl/docs/context-layer/).
 
 | Path | Holds |
 | --- | --- |

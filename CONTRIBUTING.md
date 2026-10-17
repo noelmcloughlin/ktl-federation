@@ -6,7 +6,7 @@ Thanks for your interest in the Knowledge Trust Ladder (KTL) federation.
 
 ## What this repository is
 
-The top domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/).
+The top domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is [the KTL context layer page](https://w3id.org/ktl/docs/context-layer/).
 
 | Path | Holds |
 | --- | --- |
@@ -30,14 +30,16 @@ The agent skills that maintain the bundle come from [knowledge-trust-ladder](htt
 npx skills add noelmcloughlin/knowledge-trust-ladder --skill ktl-curator --yes
 ```
 
+Where a company proxy or an internal npm registry blocks `npx`, the GitHub CLI installs it instead: `gh skill install noelmcloughlin/knowledge-trust-ladder ktl-curator --scope user --agent <yours>`. The [install page](https://w3id.org/ktl/docs/install/) has every route.
+
 ## Before opening a pull request
 
 - **A member names one release**, the newest that carries a `knowledge-*.zip`; its `checksum` is the digest in that release's `.sha256`. [The federation policy](.lokf/knowledge/policies/federation.md) says what admits a bundle.
-- **A confirmation is a person's own act.** Record it with ktl-curator, in a signed commit; the registrar's `provenance` job backs each `human:` event with that person's signature or approval. No agent writes one.
+- **A confirmation is a person's own act.** Record it with ktl-curator, in a signed commit; the registrar's `provenance` job backs each `human:` event with that person's signature or approval, and off GitHub `knowledge-provenance.sh` checks the signature against `.lokf/curators/`. No agent writes one. [Confirming a member change](docs/curation.md) gives the steps on any forge.
 - **Nothing is copied from a member.** The domain names releases; the workspace is built from them.
 - **Run the gate's two checks**: `cd .lokf && just lokf-check-refs` and `bash scripts/knowledge-conventions.sh knowledge`.
-- **Sidecar files are copies.** When the skills release moves, copy `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows from that release's templates in one pull request, and `.lokf/lokf.yaml` with them.
-- **Lint as CI does**: markdownlint against `.markdownlint-cli2.jsonc`, lychee against `lychee.toml`, actionlint and ShellCheck over the workflows and scripts.
+- **Sidecar files are copies.** Each week `knowledge-sync.yaml` checks the newest skills release and, when this host is behind, opens one pull request that copies its templates over `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows. Change them in Knowledge Trust Ladder, never here. The sync leaves `.lokf/lokf.yaml` alone: when the `lokf` toolkit's version moves, copy it again from the installed package in the same pull request.
+- **Lint as CI does**: [`lint-and-docs.yaml`](.github/workflows/lint-and-docs.yaml) runs markdownlint against `.markdownlint-cli2.jsonc`, lychee against `lychee.toml` and codespell over every `*.md`, and actionlint and ShellCheck over the workflows and scripts.
 - **If your change alters behaviour**, add an entry under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
 
 ## Code of conduct

@@ -6,7 +6,7 @@ It applies to this repository, <https://github.com/noelmcloughlin/ktl-federation
 
 ## Core Principle: You Own Your Contributions
 
-**Everything you contribute is yours-regardless of what tools helped create it.**
+**Everything you contribute is yours, regardless of what tools helped create it.**
 
 When you submit code, documentation, issues, or comments with AI assistance, you are the author. You are responsible for:
 
@@ -19,13 +19,13 @@ Do not submit anything you cannot fully stand behind.
 
 ## A note specific to this project
 
-This repository is *about* AI governance: it encodes published frameworks, cross-walks them, and answers questions over the result. That makes one failure mode worse here than elsewhere. An AI-generated claim about what a framework requires, submitted without checking the framework itself, is not a style problem - it is a wrong answer in a tool people may consult to reason about controls and obligations.
+This repository admits other repositories' knowledge bundles into one workspace that people and agents query. Each member concept names one release of a bundle, its zip and that zip's checksum, and a person's confirmation is what admits it. That makes one failure mode worse here than elsewhere. An AI-generated claim about a member, such as its version, checksum or namespace, submitted without checking the release itself, is not a style problem. It can put a release nobody checked into the workspace.
 
-So, for any change touching `byo/`, `graph/`, or `.lokf/knowledge/`: cite the clause, table, or section of the source framework your change reflects, and say so in the pull request. "The model said so" is not a source. The encodings here are this project's interpretation of published frameworks and are labeled as such in [NOTICE](NOTICE) - keep them honest.
+So, for any change touching `.lokf/knowledge/`, name the release it rests on, by its tag and its page, and check the checksum against that release's `.sha256`. "The model said so" is not a source. The members script's hand-off lines say what it verified; they are evidence for the person who confirms, not a confirmation.
 
 ## AI-Assisted Code Reviews
 
-AI review tools (Claude, Copilot, CodeRabbit, etc.) provide **automated quality checks, not human reviews**.
+AI review tools, such as Claude, Copilot and CodeRabbit, provide **automated quality checks, not human reviews**.
 
 - AI comments are suggestions, not requirements
 - PR owners may close AI comments without response
@@ -50,7 +50,7 @@ However, discussions exist to **surface, negotiate, and consolidate human judgem
 - Shared Slack channels
 - Project mailing lists or email threads
 
-All discussion contributions must reflect a **human position** that the author is prepared to explain, revise, and defend. Posting AI-generated commentary as an independent "voice" undermines trust, accountability, and the purpose of deliberation.
+All discussion contributions must reflect a **human position** that the author is prepared to explain, revise, and defend. Posting AI-generated commentary as an independent “voice” undermines trust, accountability, and the purpose of deliberation.
 
 In short:
 
@@ -59,12 +59,12 @@ In short:
 
 ## Repository-Owned Agent Automation
 
-Some of what runs here isn't "a person using an AI tool" - it's a scheduled agent (this repo's `knowledge-librarian.yaml` workflow, running the `ktl-librarian` skill) that reads the repository and proposes changes on its own initiative, with no one drafting alongside it in real time. The core principle above still applies; here is what it means in that case:
+Some of what runs here is not "a person using an AI tool". The scheduled librarian reads the members' releases and proposes changes on its own initiative, with no one drafting alongside it in real time. Here it is a script, `knowledge-federate.py members`, not a model. It runs where an agent would, under the same wrapper and the same checks, and the `AGENT_CLI` variable could name an agent instead. The core principle above still applies. Here is what it means in that case:
 
-- **Identity.** Such an agent commits as either a clearly labeled bot identity (here, `knowledge-librarian[bot]`) or the maintainer who invoked it interactively - never both. A bot identity already discloses what produced the change, so it carries no further trailer; a commit made under a maintainer's identity carries no AI co-authorship trailer either, for the same reason the "Not required" section below discourages one generally.
-- **Review, always.** Every change such an agent proposes lands as a pull request, never a direct push to the default branch, and requires a human maintainer's approval before merge. This is the "AI-Assisted Code Reviews" rule above, extended to AI-*authored* changes: an agent's own review of its own work, or one agent approving another's, does not satisfy it.
-- **Least privilege, enforced.** The agent runs in a read-only job with no git credentials on disk and hands its proposed change to a separate privileged job that runs no agent code. The "edit only `.lokf/knowledge/`" contract is checked after the agent runs, not merely requested of it - twice, once by the wrapper script and again by the privileged job re-deriving the check from the patch on a clean checkout.
-- **Verdicts must be real.** A skill that records a person's judgment (for instance, `ktl-curator` writing a `verified: human:<id>` event) may write only what that person actually said about that specific item, in that session - never inferred, batched, or supplied by the agent itself. That constraint is what keeps a label like "confirmed by a person" meaningful rather than something an agent could award itself.
+- **Identity.** Such an agent commits as either a clearly labeled bot identity (here, `knowledge-librarian[bot]`) or the maintainer who invoked it interactively, never both. A bot identity already discloses what produced the change, so it carries no further trailer. A commit made under a maintainer's identity carries no AI co-authorship trailer either, for the same reason the "Not required" section below discourages one generally.
+- **Review, always.** Every change such an agent proposes arrives as a pull request, never a direct push to the default branch, and requires a human maintainer's approval before merge. This is the "AI-Assisted Code Reviews" rule above, extended to AI-*authored* changes: an agent's own review of its own work, or one agent approving another's, does not satisfy it.
+- **Least privilege, enforced.** The scheduled librarian runs in a read-only job with no git credentials on disk and hands its proposed change to a separate privileged job that runs no agent code (see [SECURITY.md](SECURITY.md)). The "edit only `.lokf/knowledge/`" contract is checked after the agent runs, not merely requested of it.
+- **Verdicts must be real.** A skill that records a person's judgment (for instance, `ktl-curator` writing a `verified: human:<id>` event) may write only what that person actually said about that specific item, in that session, never inferred, batched, or supplied by the agent itself. That constraint is what keeps a label like "confirmed by a person" meaningful rather than something an agent could award itself.
 
 None of this relaxes anything above: an agent's output is nobody's contribution until a human has reviewed and approved it into the repository.
 
@@ -72,8 +72,8 @@ None of this relaxes anything above: an agent's output is nobody's contribution 
 
 **Required disclosure:**
 
-- When proposing bug fixes or changes to code you don't fully understand, attribute the idea to AI so reviewers can assess appropriately.
-- When a change to an encoded framework (`byo/`, `graph/`) was drafted by AI, as described above - along with the source clause it rests on.
+- Attribute the idea to AI when proposing bug fixes or changes to code you do not fully understand, so reviewers can assess appropriately.
+- Say when AI drafted a change to a member concept, and name the release it rests on, as described above.
 
 **Appreciated transparency:**
 
@@ -91,9 +91,9 @@ None of this relaxes anything above: an agent's output is nobody's contribution 
 | Writing code with Copilot/Claude | No disclosure needed; you own the result |
 | Submitting AI-suggested fix you fully understand | No disclosure needed |
 | Submitting AI-suggested fix in unfamiliar code | Disclose AI origin for reviewer context |
-| Changing an encoded framework under `byo/` or `graph/` | Cite the source clause, whoever drafted it |
+| Changing a member concept under `.lokf/knowledge/members/` | Name the release and check its checksum, whoever drafted it |
 | Drafting issue or PR description with AI | No disclosure needed; ensure it's accurate |
-| Brainstorming in discussions | Be clear about AI-generated vs. expert ideas |
+| Brainstorming in discussions | Say which ideas are AI-generated and which are your own |
 | Receiving AI review comments | Address or close at your discretion |
 
 ## Trust and Accountability

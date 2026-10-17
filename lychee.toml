@@ -2,10 +2,6 @@ exclude = [
   # LOKF's published JSON-LD context; upstream's identifier, not this
   # repository's, currently 404s. Drop once the w3id.org redirect is registered.
   '^https://w3id\.org/lokf/context\.jsonld$',
-  # This bundle's own `base_iri` namespace. A LOKF concept `id` is an
-  # identifier that merely looks like a URL, and the w3id.org rule for
-  # `ktl/federation/` is pending; drop once it is live.
-  '^https://w3id\.org/ktl/federation/',
   # A member's namespace that does not yet resolve to its concepts, which
   # LOKF permits: an identifier, not a hyperlink.
   '^https://w3id\.org/lmodel/gist/knowledge/',
@@ -30,4 +26,7 @@ exclude_path = [
   "(^|/)knowledge_bundle/",
   # What the website's build writes; website/'s own link check covers them.
   "(^|/)website/(dist|public|src/content|src/generated|node_modules)/",
+  # What a local knowledge-federate.py build writes, gitignored; the
+  # federation workflow builds it afresh from the members' releases.
+  "^snapshot/",
 ]

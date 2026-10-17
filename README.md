@@ -14,7 +14,7 @@ The [top domain](https://w3id.org/ktl/federation/knowledge/domains/top) is a thi
 
 | Member | Its bundle | Its member concept here |
 | --- | --- | --- |
-| Knowledge Trust Ladder, which publishes the KTL skills | [w3id.org/ktl/knowledge](https://w3id.org/ktl/knowledge/) | [members/knowledge-trust-ladder](https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder) |
+| KTL, which publishes the skills | [w3id.org/ktl/knowledge](https://w3id.org/ktl/knowledge/) | [members/knowledge-trust-ladder](https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder) |
 | AI-LinkMO, a reference implementation of operational AI governance | [its knowledge pages](https://noelmcloughlin.github.io/ai-linkmo/knowledge/) | [members/ai-linkmo](https://w3id.org/ktl/federation/knowledge/members/ai-linkmo) |
 | gist, a LinkML rendering of Semantic Arts' gist upper ontology, from lmodel | [w3id.org/lmodel/gist/knowledge](https://w3id.org/lmodel/gist/knowledge/) | [members/gist](https://w3id.org/ktl/federation/knowledge/members/gist) |
 

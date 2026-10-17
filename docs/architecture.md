@@ -4,7 +4,7 @@ This page says what the KTL Federation repository holds, how its domain stays cu
 
 ## Where the design comes from
 
-The design is [the KTL context layer page](https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/). It places Knowledge Trust Ladder in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository runs that design, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing. This repository adds the domain, its schema and the confirmation of membership.
+The design is [the KTL context layer page](https://w3id.org/ktl/docs/context-layer/). It places Knowledge Trust Ladder (KTL) in the industry's talk of a context layer, says why one bundle is already one repository's layer, and sets out how many bundles federate into one. This repository runs that design, with KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist as the first members. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing. This repository adds the domain, its schema and the confirmation of membership.
 
 ## The domain
 
@@ -31,7 +31,7 @@ A person's confirmation of a member attests two things only: that the member bel
 
 ## How it stays current
 
-A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's pen. Until a person confirms that change, the member reads as edited since a person last confirmed it. That is how the health line shows which members have moved.
+A member's new release changes nothing here until a person confirms a member concept that names it. The librarian for this bundle is a script, not a model: `knowledge-federate.py members`, run by the sidecar's librarian wrapper in place of an agent. It lists each member's releases, picks the newest that carries a bundle zip, verifies its checksum and attestation, and proposes the change as a pull request through the sidecar's pen. Until a person confirms that change, the member reads as edited since a person last confirmed it. That is how the health line shows which members have moved. [Confirming a member change](curation.md) gives the steps.
 
 The scheduled librarian always reads a bundle whose sources are release URLs as quiet, with nothing to do. So the federation workflow dispatches the librarian once a week instead.
 
@@ -57,8 +57,11 @@ cd .lokf && just lokf-install && cd ..
 uv run --project .lokf .lokf/scripts/knowledge-federate.py build --tag v0.1.0 --release-base https://github.com/noelmcloughlin/ktl-federation/releases/tag
 uv run --project .lokf .lokf/scripts/knowledge-federate.py query snapshot/queries/labels.rq
 uv run --project .lokf .lokf/scripts/knowledge-federate.py serve
+uv run --project .lokf .lokf/scripts/knowledge-federate.py mcp
 ```
+
+`serve` is the toolkit's SPARQL endpoint and graph page over the workspace. `mcp` is a Model Context Protocol (MCP) server over it, with the workspace index as its instructions, so an agent reads the index first. Register it with your agent as a stdio server: that command, run from this repository. Each one takes `--snapshot <folder>`, so it reads an unpacked `workspace-<tag>.zip` too.
 
 ## What remains a design
 
-The context layer page also describes a Model Context Protocol (MCP) server over the workspace, a hosted SPARQL endpoint, and a union graph page showing cross-bundle edges. None of these is built. The static workspace and the local `serve` subcommand are the read interface today.
+The context layer page also describes a hosted SPARQL endpoint and a union graph page showing cross-bundle edges. Neither is built. The read interface today is the static workspace, and the local `serve` and `mcp` commands above.

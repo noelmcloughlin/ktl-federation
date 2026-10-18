@@ -24,7 +24,7 @@ ktl-curator records each answer under your forge login. [Its page in KTL's bundl
    uv run --project .lokf .lokf/scripts/knowledge-federate.py build --verify-only
    ```
 
-   The first line checks that every record is well formed. The second checks that a key on file signed each confirmation. The third fetches each member's zip and checks it against the checksum its concept names.
+   The first line checks that every record is well formed. The second checks that a key on file signed each confirmation. The third fetches each member's zip and checks it against the checksum its concept names. It then runs the gate as the next release build would: a link into a namespace no member owns, or into a member no person has confirmed yet, fails here, before the merge. Its output names each member that build would leave out or build at an earlier release.
 
 6. Merge so that the commit on `main` keeps the `chore(lokf)` subject. With a squash merge, keep the pull request's title. On this host the merge releases the domain, and the release rebuilds the workspace.
 

@@ -2,6 +2,7 @@
 
 ## 2026-10-18
 
+* **Curation**: human:noelmcloughlin confirmed 1 concept: the Knowledge Trust Ladder member at v0.50.1, after checking the release's checksum, attestation and namespace, keeping the review date 2027-04-18, and cleared its question about the move. Nothing was sent back or retired.
 * **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.49.0 to v0.50.1; the release carries `knowledge-v0.50.1-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.50.1 after the confirmed v0.49.0; does this member move to it?
 * **Curation**: human:noelmcloughlin corrected 1 concept now: the domain at `domains/ktl-federation` says its members may be of type `MemberBundle` or `MemberDomain`, as `docs/architecture.md` says, and was confirmed against that page's later edits, keeping the review date 2027-04-18. Nothing was sent back or retired.

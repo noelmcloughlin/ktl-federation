@@ -37,4 +37,6 @@ uv run --project .lokf .lokf/scripts/knowledge-federate.py members --add <owner>
 bash .lokf/scripts/knowledge-apply.sh
 ```
 
+When that release is itself a domain, the script drafts a `MemberDomain`. Confirming it attests that the domain belongs and who answers for it, not what its members say.
+
 The script leaves a member released anywhere else as it is, so a person writes and moves that member concept by hand, from the worked example on the curator's [domain bundle page](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/skills/ktl-curator/references/domain-bundle.md). The build fetches its zip from any `https` address and checks it against the `checksum`. It verifies a build attestation only for a GitHub release.

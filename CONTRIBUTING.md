@@ -6,12 +6,12 @@ Thanks for your interest in the Knowledge Trust Ladder (KTL) federation.
 
 ## What this repository is
 
-The top domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is [the KTL context layer page](https://w3id.org/ktl/docs/context-layer/).
+The domain of the KTL federation: a thin [LOKF](https://lokf.nolan-nichols.com) knowledge bundle whose concepts are the knowledge bundles the federation admits, each named by one released zip and its checksum, and the workspace built from those releases. The design is KTL's [context layer](https://w3id.org/ktl/docs/context-layer/) and [federation](https://w3id.org/ktl/docs/federation/) pages.
 
 | Path | Holds |
 | --- | --- |
 | `.lokf/knowledge/` | The domain bundle: `domains/`, `members/`, `policies/`. |
-| `.lokf/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `ReleaseDistribution` over LOKF core. |
+| `.lokf/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
 | `.lokf/scripts/`, `.github/workflows/` | Copies of the KTL sidecar's templates. Edit them upstream, never here. |
 | `website/` | The site, from the ktl-website templates; `site.config.mjs` is this repository's own. |
 

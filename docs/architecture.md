@@ -8,6 +8,15 @@ KTL sets out the design on two pages. [The curated context layer](https://w3id.o
 
 This repository is the first domain host. Its first members are KTL's bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist.
 
+The figure reads from the bottom up. Each member releases its bundle from its own repository. This domain names one release of each, and its builds turn those releases into the workspace, the domain's context layer, which readers query.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../.assets/ktl-federation-context-layer-dark.svg">
+    <img src="../.assets/ktl-federation-context-layer.svg" alt="Drawn bottom to top: three member bundles, Knowledge Trust Ladder, AI-LinkMO and gist, each on its own trust ladder and released to GitHub Releases as a zip with its checksum and attestation; the domain, this repository's bundle, whose members/ concepts name one release each, whose domains/ktl-federation is where the build starts, and whose policies/federation is the admission rule; the workspace, one named graph per member, built on each release of the domain; and, at the top, the readers." width="720" />
+  </picture>
+</p>
+
 ## The domain
 
 A domain is a named set of bundles with one accountable owner, kept as a thin LOKF bundle in a repository of its own. The bundle under `.lokf/knowledge/` is the domain of the KTL federation. Every domain bounds a workspace of its own. This domain's builds start here, so it is the top domain of the workspace they build. Another domain may still name it as a member.

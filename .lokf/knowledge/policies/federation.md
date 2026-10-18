@@ -4,18 +4,11 @@ id: https://w3id.org/ktl/federation/knowledge/policies/federation
 genre: reference
 title: Federation policy
 description: What admits a knowledge bundle to this domain, which release a member names, and what the workspace build does with a cross-bundle target no member owns.
-resource: https://w3id.org/ktl/docs/federation
+resource: https://noelmcloughlin.github.io/knowledge-trust-ladder/docs/context-layer/
 generated:
   by: process:ktl-librarian
-  at: "2026-10-18T11:10:08Z"
+  at: "2026-10-16T23:43:19Z"
 status: draft
-sources:
-  - resource: https://w3id.org/ktl/docs/federation
-  - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
-  - resource: https://w3id.org/ktl/docs/context-layer
-verified:
-  - by: process:ktl-librarian
-    at: "2026-10-18T11:10:08Z"
 ---
 
 # Overview

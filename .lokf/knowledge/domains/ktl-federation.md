@@ -10,8 +10,17 @@ relatedTo:
   - https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-18T01:10:53Z"
-status: draft
+  at: "2026-10-18T11:10:08Z"
+sources:
+  - resource: docs/architecture.md
+  - resource: .lokf/domain.yaml
+  - resource: https://w3id.org/ktl/docs/federation
+verified:
+  - by: process:ktl-librarian
+    at: "2026-10-18T11:10:08Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-18T11:43:05Z"
+stale_after: 2027-04-18
 ---
 
 # Overview
@@ -21,3 +30,5 @@ A domain is a named set of knowledge bundles with one accountable owner. This on
 The owner's confirmation of a member attests two things: that the member belongs under the admission rule in [the federation policy](../policies/federation.md), and that any claim this domain makes across bundles holds. This release makes no cross-bundle claim.
 
 `unowned_targets` is the build's gate policy. With `fail`, a typed relation in any member whose target lies in no member's namespace stops the build and keeps the previous workspace. With `report`, the build lists it and goes on.
+
+It sets no `max_depth`, so the build follows member domains three tiers deep, and this domain's own members are tier 1.

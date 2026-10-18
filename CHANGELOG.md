@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Added
+
+- **KTL Curator 1.6.4 and KTL Registrar 1.7.5 join the domain as members.** Each zip's checksum and attestation were verified, and a person's confirmation admits each one.
+
 ## [0.4.0] - 2026-10-18
 
 ### Changed

@@ -2,6 +2,7 @@
 
 ## 2026-10-18
 
+* **Curation**: human:noelmcloughlin confirmed 3 concepts: the federation policy again, after its edit added the value test and the diamond rule, and the two new members, KTL Curator at 1.6.4 and KTL Registrar at 1.7.5, each checked against the four admission conditions and given the review date 2027-04-18. Their two admission questions are cleared. Nothing was sent back or retired.
 * **Prose**: reworded 2 concept bodies in plain English. No fact, link, number or frontmatter changed.
 * **Changed**: the federation policy states the value test and the diamond rule, as KTL's federation page and the domain bundle playbook give them, and its description names both. No admission condition changed. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Added**: KTL Curator knowledge bundle, noelmcloughlin/obsidian-ktl-curator at 1.6.4; a person confirms the member to admit it.

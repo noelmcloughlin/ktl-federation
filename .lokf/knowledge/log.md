@@ -2,6 +2,7 @@
 
 ## 2026-10-18
 
+* **Curation**: human:noelmcloughlin confirmed 1 concept: the federation policy, after its diamond rule was brought in line with KTL's federation page, keeping the review date 2027-04-18, and cleared the note they left on the old sentence. Nothing was sent back or retired.
 * **Changed**: the federation policy's diamond rule says the build stays stopped until the two owners agree on one release and both pin it, as KTL's federation page now says. This answers the note a person left on the old sentence. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Curation**: human:noelmcloughlin sent back 1 concept: the federation policy, whose diamond rule still says the two owners "then agree" where KTL's federation page now says the build stays stopped until they agree and both pin one release. Nothing was confirmed or retired.
 * **Curation**: human:noelmcloughlin confirmed 1 concept: the Knowledge Trust Ladder member at v0.50.1, after checking the release's checksum, attestation and namespace, keeping the review date 2027-04-18, and cleared its question about the move. Nothing was sent back or retired.

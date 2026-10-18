@@ -1,5 +1,9 @@
 # Change Log
 
+## 2026-10-18
+
+* **Changed**: the domain concept moved from `domains/top` to `domains/ktl-federation`, titled "The KTL federation domain". A domain concept is named for the domain, never for its position, as KTL's federation figures now name each domain. The confirmation of 2026-10-16 was given to `domains/top` and does not move with it, so the domain waits for a confirmation of its own. The three members' `isPartOf` names the new id, so `members/ai-linkmo.md` reads as edited since a person confirmed it until the curator looks again.
+
 ## 2026-10-16
 
 * **Prose**: reworded 3 concept bodies in plain English. No fact, link, number or frontmatter changed.

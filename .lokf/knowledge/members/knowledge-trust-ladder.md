@@ -9,15 +9,15 @@ base_iri: https://w3id.org/ktl/knowledge/
 version: v0.43.0
 release: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/tag/v0.43.0
 distribution:
-- name: knowledge-v0.43.0-knowledge-trust-ladder.zip
-  access_url: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/download/v0.43.0/knowledge-v0.43.0-knowledge-trust-ladder.zip
-  media_type: application/zip
-  checksum: sha256:a0a80fc411c23597968699716278d04918b795530f1fe55825709453eb6b8083
+  - name: knowledge-v0.43.0-knowledge-trust-ladder.zip
+    access_url: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/download/v0.43.0/knowledge-v0.43.0-knowledge-trust-ladder.zip
+    media_type: application/zip
+    checksum: sha256:a0a80fc411c23597968699716278d04918b795530f1fe55825709453eb6b8083
 isPartOf:
-- https://w3id.org/ktl/federation/knowledge/domains/top
+  - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
-  by: process:knowledge-federate
-  at: "2026-10-16T10:00:29Z"
+  by: process:ktl-librarian
+  at: "2026-10-18T01:10:53Z"
 status: draft
 ---
 

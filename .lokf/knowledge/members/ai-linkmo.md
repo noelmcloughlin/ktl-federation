@@ -9,15 +9,15 @@ base_iri: https://noelmcloughlin.github.io/ai-linkmo/knowledge/
 version: v0.3.2
 release: https://github.com/noelmcloughlin/ai-linkmo/releases/tag/v0.3.2
 distribution:
-- name: knowledge-v0.3.2-ai-linkmo.zip
-  access_url: https://github.com/noelmcloughlin/ai-linkmo/releases/download/v0.3.2/knowledge-v0.3.2-ai-linkmo.zip
-  media_type: application/zip
-  checksum: sha256:a6a0e32ff76051782abe69e03bd9472a11e23b0a68d942fec7a4af8514066e61
+  - name: knowledge-v0.3.2-ai-linkmo.zip
+    access_url: https://github.com/noelmcloughlin/ai-linkmo/releases/download/v0.3.2/knowledge-v0.3.2-ai-linkmo.zip
+    media_type: application/zip
+    checksum: sha256:a6a0e32ff76051782abe69e03bd9472a11e23b0a68d942fec7a4af8514066e61
 isPartOf:
-- https://w3id.org/ktl/federation/knowledge/domains/top
+  - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
-  by: process:knowledge-federate
-  at: "2026-10-16T10:00:29Z"
+  by: process:ktl-librarian
+  at: "2026-10-18T01:10:53Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-16T13:37:53Z"

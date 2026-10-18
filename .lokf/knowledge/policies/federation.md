@@ -19,6 +19,7 @@ verified:
     at: "2026-10-18T11:43:47Z"
   - by: human:noelmcloughlin
     at: "2026-10-18T13:26:20Z"
+status: draft
 stale_after: 2027-04-18
 ---
 
@@ -52,3 +53,7 @@ A member may be a domain in turn, and the build then follows that domain's membe
 ## What a confirmation means
 
 A person's confirmation of a member concept attests that the member belongs under the admission rule and that the domain's cross-bundle claims hold. It does not vouch for the member's own concepts. Each member keeps its own trust labels, computed from its events when the workspace is read.
+
+## Open questions
+
+- 2026-10-18, human:noelmcloughlin: it has an old sentence at line 50

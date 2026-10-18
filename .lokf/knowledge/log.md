@@ -2,6 +2,9 @@
 
 ## 2026-10-18
 
+* **Curation**: human:noelmcloughlin confirmed 1 concept: the Knowledge Trust Ladder member at v0.50.1, after checking the release's checksum, attestation and namespace, keeping the review date 2027-04-18, and cleared its question about the move. Nothing was sent back or retired.
+* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.49.0 to v0.50.1; the release carries `knowledge-v0.50.1-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.50.1 after the confirmed v0.49.0; does this member move to it?
 * **Curation**: human:noelmcloughlin corrected 1 concept now: the domain at `domains/ktl-federation` says its members may be of type `MemberBundle` or `MemberDomain`, as `docs/architecture.md` says, and was confirmed against that page's later edits, keeping the review date 2027-04-18. Nothing was sent back or retired.
 * **Curation**: human:noelmcloughlin confirmed 3 concepts: the federation policy again, after its edit added the value test and the diamond rule, and the two new members, KTL Curator at 1.6.4 and KTL Registrar at 1.7.5, each checked against the four admission conditions and given the review date 2027-04-18. Their two admission questions are cleared. Nothing was sent back or retired.
 * **Prose**: reworded 2 concept bodies in plain English. No fact, link, number or frontmatter changed.

@@ -4,7 +4,7 @@ A member's new release changes nothing here until a person confirms the member c
 
 ## What you need
 
-- ktl-curator in your agent, from the install lines in [CONTRIBUTING](../CONTRIBUTING.md#development-setup), or the KTL Curator plugin in Obsidian.
+- ktl-curator in your agent, from the install lines in [CONTRIBUTING](../CONTRIBUTING.md#development-setup), or the KTL Curator plugin in Obsidian. In Obsidian, list `Domain`, `MemberBundle` and `MemberDomain` under *Settings → Type vocabulary → Known LOKF types* in both KTL Curator and KTL Registrar, the same list in each. They are the classes of this host's domain schema, `.lokf/domain.yaml`, which neither plugin can read because it sits outside the `knowledge_bundle` vault.
 - Git set to sign your commits, and your public key in `.lokf/curators/` as `<login>.asc` (GPG) or `<login>.pub` (SSH), where `<login>` is your forge login. Add the key in a change of its own first: the provenance check refuses a change that adds a person's key together with that person's confirmation.
 - [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just), for the checks.
 

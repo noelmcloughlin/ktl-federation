@@ -8,7 +8,7 @@ A member's new release changes nothing here until a person confirms the member c
 - Git set to sign your commits, and your public key in `.lokf/curators/` as `<login>.asc` (GPG) or `<login>.pub` (SSH), where `<login>` is your forge login. Add the key in a change of its own first: the provenance check refuses a change that adds a person's key together with that person's confirmation.
 - [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just), for the checks.
 
-ktl-curator records each answer under your forge login. Its [portability page](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/main/skills/ktl-curator/references/portability.md) says where it reads that login on GitHub, GitLab, Forgejo and other forges.
+ktl-curator records each answer under your forge login. [Its page in KTL's bundle](https://w3id.org/ktl/knowledge/playbooks/ktl-curator-skill) says where it reads that login on GitHub, GitLab and any other forge.
 
 ## Confirm the change
 

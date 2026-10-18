@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-18
+
 ### Fixed
 
 - **The pages say when a member joins the workspace.** The architecture and curation pages and the figure said a release changes nothing until a person confirms it. The build takes every member concept on the default branch, so a release joins when its pull request merges, and the confirmation records that it belongs.

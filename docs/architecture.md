@@ -6,14 +6,14 @@ This page says what this repository holds, how its domain stays current, and how
 
 KTL sets out the design on two pages. [The curated context layer](https://w3id.org/ktl/docs/context-layer/) says what a context layer is, why one bundle is already one repository's layer, and why KTL federates bundles through domains. [A federation of bundles](https://w3id.org/ktl/docs/federation/) says how a domain names bundles and other domains, how the workspace is built and kept current, and what an adopter decides. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing.
 
-This repository is the first domain host. Its first members are KTL's bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist.
+This repository is the first domain host. Its members are KTL's bundle, the bundles of the KTL Curator and KTL Registrar plugins for Obsidian, the bundle of KTL's reference host ai-linkmo, and the bundle of lmodel's gist.
 
 The figure reads from the bottom up. Each member releases its bundle from its own repository. This domain names one release of each, and its builds turn those releases into the workspace, the domain's context layer, which readers query.
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../.assets/ktl-federation-context-layer-dark.svg">
-    <img src="../.assets/ktl-federation-context-layer.svg" alt="Drawn bottom to top: three member bundles, Knowledge Trust Ladder, AI-LinkMO and gist, each on its own trust ladder and released to GitHub Releases as a zip with its checksum and attestation; the domain, this repository's bundle, whose members/ concepts name one release each, whose domains/ktl-federation is where the build starts, and whose policies/federation is the admission rule; the workspace, one named graph per member, built on each release of the domain; and, at the top, the readers." width="720" />
+    <img src="../.assets/ktl-federation-context-layer.svg" alt="Drawn bottom to top: five member bundles, Knowledge Trust Ladder, KTL Curator, KTL Registrar, AI-LinkMO and gist, each on its own trust ladder and released to GitHub Releases as a zip with its checksum and attestation; the domain, this repository's bundle, whose members/ concepts name one release each, whose domains/ktl-federation is where the build starts, and whose policies/federation says what admits a bundle, what a member adds and the diamond rule; the workspace, one named graph per member, built on each release of the domain; and, at the top, the readers." width="720" />
   </picture>
 </p>
 
@@ -23,7 +23,7 @@ A domain is a named set of bundles with one accountable owner, kept as a thin LO
 
 - `domains/ktl-federation.md` is the domain concept. Its `unowned_targets` is `fail`: a typed relation whose target lies in no member's namespace stops the build. It sets no `max_depth`, so the build follows member domains three tiers deep.
 - `members/` holds one concept per member: a `MemberBundle`, or a `MemberDomain` when the member's bundle is itself a domain. Each names the member's namespace, one release, the release zip as its distribution with that zip's SHA-256 digest, and the schema released beside the zip when the member publishes one. A member names the newest release that carries a bundle zip, not the newest release.
-- `policies/federation.md` is the admission rule: a member is released with the KTL sidecar's release workflow, validates on LOKF core or on a schema it publishes, has a stable namespace under an authority its publisher controls, and has one accountable owner.
+- `policies/federation.md` is the federation policy: what admits a bundle, what a member adds, which release a member names, and what the build does with a target no member owns or a bundle two domains name. A bundle is admitted when it is released with the KTL sidecar's release workflow, validates on LOKF core or on a schema it publishes, has a stable namespace under an authority its publisher controls, and has one accountable owner.
 
 A person's confirmation of a member attests two things only: that the member belongs, and that the domain's cross-bundle claims hold. For a `MemberDomain`, it attests that the domain belongs and who answers for it, not what that domain's members say. It is the curator's ordinary confirm, recorded as a `verified` event in that person's name and backed by a signed commit, which the registrar's `provenance` job checks.
 

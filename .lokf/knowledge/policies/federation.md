@@ -7,7 +7,7 @@ description: What admits a knowledge bundle to this domain, what a member adds, 
 resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-18T12:00:24Z"
+  at: "2026-10-18T23:50:58Z"
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
@@ -48,7 +48,7 @@ The build resolves every typed relation whose target lies outside the asserting 
 
 ## The diamond rule
 
-A member may be a domain in turn, and the build then follows that domain's members into the same workspace. So two domains in one workspace may name the same bundle. When both name the same release, the bundle joins the workspace once, and the lock records both domains. When they name different releases, the build stops, because one named graph holds one release. The two owners then agree on one release. A shared model, such as the gist upper ontology, is the ordinary case: every domain whose members link to its terms names it.
+A member may be a domain in turn, and the build then follows that domain's members into the same workspace. So two domains in one workspace may name the same bundle. When both name the same release, the bundle joins the workspace once, and the lock records both domains. When they name different releases, the build stops, because one named graph holds one release. It stays stopped until the two owners agree on one release and both pin it. A shared model, such as the gist upper ontology, is the ordinary case: every domain whose members link to its terms names it.
 
 ## What a confirmation means
 

@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The domain concept is `domains/ktl-federation`, named for the domain rather than its position.** The workspace index and every member's `isPartOf` name the new id, and the domain waits for a confirmation of its own.
+
 ## [0.2.6] - 2026-10-18
 
 ### Security

@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The members name their newest bundle releases: Knowledge Trust Ladder v0.49.0, AI-LinkMO v0.4.9 and gist v0.3.7.** Each zip's checksum and attestation were verified, and each move waits for a person's confirmation.
+
 ## [0.3.0] - 2026-10-18
 
 ### Changed

@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Security
+
+- **The sidecar copies and the skills pin are at Knowledge Trust Ladder [v0.50.1](https://github.com/noelmcloughlin/knowledge-trust-ladder/compare/v0.48.0...v0.50.1).** The release changed `.lokf/scripts/knowledge-preflight.sh`, `.lokf/scripts/knowledge-report.sh` and `.lokf/scripts/knowledge-sync.sh` here.
+
 ## [0.6.1] - 2026-10-18
 
 ### Fixed

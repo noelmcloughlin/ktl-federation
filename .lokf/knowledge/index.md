@@ -22,7 +22,7 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 
 # Policies
 
-* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, which release a member names, and what the workspace build does with a cross-bundle target no member owns.
+* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target no member owns or a bundle two domains name.
 
 # Members
 

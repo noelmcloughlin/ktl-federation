@@ -3,11 +3,11 @@ type: Policy
 id: https://w3id.org/ktl/federation/knowledge/policies/federation
 genre: reference
 title: Federation policy
-description: What admits a knowledge bundle to this domain, which release a member names, and what the workspace build does with a cross-bundle target no member owns.
+description: What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target no member owns or a bundle two domains name.
 resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-18T11:10:08Z"
+  at: "2026-10-18T12:00:24Z"
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
@@ -35,9 +35,17 @@ The registry refuses a `base_iri` that nests inside another member's, so no two 
 
 A member concept names one release, the newest that carries a zip. A release whose bundle did not change carries no zip.
 
+## What a member adds
+
+A bundle that meets the admission rule may join. Value is a stricter test: readers query across the member, or other members link into it. A domain whose members never link to one another has proved its mechanism, not its worth.
+
 ## The gate
 
 The build resolves every typed relation whose target lies outside the asserting bundle's namespace against the federation's registry. The top domain's `unowned_targets` says what happens to a target no member owns: `fail` stops the build and keeps the previous workspace, and `report` lists it and goes on. This domain sets `fail`.
+
+## The diamond rule
+
+A member may be a domain in turn, and the build then follows that domain's members into the same workspace. So two domains in one workspace may name the same bundle. When both name the same release, the bundle joins the workspace once, and the lock records both domains. When they name different releases, the build stops, because one named graph holds one release. The two owners then agree on one release. A shared model, such as the gist upper ontology, is the ordinary case: every domain whose members link to its terms names it.
 
 ## What a confirmation means
 

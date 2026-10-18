@@ -2,6 +2,7 @@
 
 ## 2026-10-18
 
+* **Changed**: the federation policy states the value test and the diamond rule, as KTL's federation page and the domain bundle playbook give them, and its description names both. No admission condition changed. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Added**: KTL Curator knowledge bundle, noelmcloughlin/obsidian-ktl-curator at 1.6.4; a person confirms the member to admit it.
 * **Open question**: KTL Curator knowledge bundle: noelmcloughlin/obsidian-ktl-curator is proposed as a member at 1.6.4; does it belong under the admission rule?
 * **Added**: KTL Registrar knowledge bundle, noelmcloughlin/obsidian-ktl-registrar at 1.7.5; a person confirms the member to admit it.

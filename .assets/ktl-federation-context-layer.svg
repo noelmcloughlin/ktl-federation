@@ -49,7 +49,7 @@
 <g transform="translate(46,453)" stroke="#5F5E5A" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="-10" y="-9" width="20" height="5" rx="1"/><path d="M-8 -4 V9 H8 V-4"/><line x1="-3" y1="1" x2="3" y2="1"/></g>
 <text x="70" y="442" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#2C2C2A">GitHub Releases</text>
 <text x="70" y="458" font-family="Arial, sans-serif" font-size="10.5" fill="#5F5E5A">each member's release carries knowledge-&lt;tag&gt;-&lt;name&gt;.zip, its .sha256 and a build attestation</text>
-<text x="70" y="473" font-family="Arial, sans-serif" font-size="9.5" fill="#6E6D66">nothing in a zip is edited; a new release changes nothing here until a person confirms it</text>
+<text x="70" y="473" font-family="Arial, sans-serif" font-size="9.5" fill="#6E6D66">nothing in a zip is edited; a new release joins the next build once its member concept merges</text>
 <line x1="360" y1="512" x2="360" y2="486" stroke="#6E6D66" stroke-width="1.3"/>
 <path d="M355.5 492.6 L360 486 L364.5 492.6" fill="none" stroke="#6E6D66" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="368" y="503" font-family="Arial, sans-serif" font-size="10" fill="#6E6D66">each member releases its bundle with the KTL sidecar's release workflow</text>

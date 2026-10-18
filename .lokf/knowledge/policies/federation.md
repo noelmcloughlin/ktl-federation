@@ -8,7 +8,6 @@ resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
   at: "2026-10-18T11:10:08Z"
-status: draft
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
@@ -16,6 +15,9 @@ sources:
 verified:
   - by: process:ktl-librarian
     at: "2026-10-18T11:10:08Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-18T11:43:47Z"
+stale_after: 2027-04-18
 ---
 
 # Overview

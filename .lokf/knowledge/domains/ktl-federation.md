@@ -11,7 +11,6 @@ relatedTo:
 generated:
   by: process:ktl-librarian
   at: "2026-10-18T11:10:08Z"
-status: draft
 sources:
   - resource: docs/architecture.md
   - resource: .lokf/domain.yaml
@@ -19,6 +18,9 @@ sources:
 verified:
   - by: process:ktl-librarian
     at: "2026-10-18T11:10:08Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-18T11:43:05Z"
+stale_after: 2027-04-18
 ---
 
 # Overview

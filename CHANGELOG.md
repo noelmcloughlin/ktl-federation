@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-18
+
 ### Changed
 
 - **The Knowledge Trust Ladder member names its v0.50.1 bundle release.** The zip's checksum and attestation were verified, and a person confirmed the move.

@@ -6,11 +6,11 @@ This page says what this repository holds, how its domain stays current, and how
 
 KTL sets out the design on two pages. [The curated context layer](https://w3id.org/ktl/docs/context-layer/) says what a context layer is, why one bundle is already one repository's layer, and why KTL federates bundles through domains. [A federation of bundles](https://w3id.org/ktl/docs/federation/) says how a domain names bundles and other domains, how the workspace is built and kept current, and what an adopter decides. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing.
 
-This repository is the first domain host. Its first members are KTL's own bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist.
+This repository is the first domain host. Its first members are KTL's bundle, the bundle of its reference host ai-linkmo, and the bundle of lmodel's gist.
 
 ## The domain
 
-A domain is a named set of bundles with one accountable owner, kept as a thin LOKF bundle in a repository of its own. The bundle under `.lokf/knowledge/` is the domain of the KTL federation. Every domain bounds a workspace of its own: this domain's builds start here, so it is the top domain of the workspace they build, and another domain may still name it as a member.
+A domain is a named set of bundles with one accountable owner, kept as a thin LOKF bundle in a repository of its own. The bundle under `.lokf/knowledge/` is the domain of the KTL federation. Every domain bounds a workspace of its own. This domain's builds start here, so it is the top domain of the workspace they build. Another domain may still name it as a member.
 
 - `domains/ktl-federation.md` is the domain concept. Its `unowned_targets` is `fail`: a typed relation whose target lies in no member's namespace stops the build. It sets no `max_depth`, so the build follows member domains three tiers deep.
 - `members/` holds one concept per member: a `MemberBundle`, or a `MemberDomain` when the member's bundle is itself a domain. Each names the member's namespace, one release, the release zip as its distribution with that zip's SHA-256 digest, and the schema released beside the zip when the member publishes one. A member names the newest release that carries a bundle zip, not the newest release.
@@ -70,7 +70,7 @@ uv run --project .lokf .lokf/scripts/knowledge-federate.py mcp
 
 ## What remains a design
 
-This host serves the static workspace and hosts no endpoint; a team that wants one runs the container. Three parts remain designs: loading a member's graph on first use, harvesting remote artifacts under the `sensitivity` gate of section 11.5, and per-query permissions, which stay with the store's access control. [What exists, and what remains a design](https://w3id.org/ktl/docs/federation/#what-exists-and-what-remains-a-design) lists each part and where it lives.
+This host serves the static workspace and hosts no endpoint. A team that wants one runs the container. Three parts remain designs: loading a member's graph on first use, harvesting remote artifacts under the `sensitivity` gate of section 11.5, and per-query permissions, which stay with the store's access control. [What exists, and what remains a design](https://w3id.org/ktl/docs/federation/#what-exists-and-what-remains-a-design) lists each part and where it lives.
 
 ## Decisions this domain has made
 

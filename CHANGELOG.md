@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The federation policy's diamond rule says the build stays stopped until both owners pin one release**, as KTL's federation page now says.
+
 ## [0.8.1] - 2026-10-18
 
 ### Security

@@ -23,7 +23,7 @@ status: draft
 
 # Overview
 
-This member is the knowledge bundle of [noelmcloughlin/obsidian-ktl-curator](https://github.com/noelmcloughlin/obsidian-ktl-curator). Its own index describes it as: Help a person judge what a LOKF knowledge bundle claims: a trust report computed from frontmatter, and a review session that records confirm, send back, and retire verdicts in the bundle itself. It was released at 1.6.4 on 2026-10-17, and the release workflow attached the bundle as `knowledge-1.6.4-obsidian-ktl-curator.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/curator/knowledge/`.
+This member is the knowledge bundle of [noelmcloughlin/obsidian-ktl-curator](https://github.com/noelmcloughlin/obsidian-ktl-curator). Its own index says it helps a person judge what a LOKF knowledge bundle claims. It does so with a trust report computed from frontmatter, and a review session that records confirm, send back, and retire verdicts in the bundle itself. It was released at 1.6.4 on 2026-10-17, and the release workflow attached the bundle as `knowledge-1.6.4-obsidian-ktl-curator.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/curator/knowledge/`.
 
 ## Open questions
 

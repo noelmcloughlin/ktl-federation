@@ -23,7 +23,7 @@ status: draft
 
 # Overview
 
-This member is the knowledge bundle of [noelmcloughlin/obsidian-ktl-registrar](https://github.com/noelmcloughlin/obsidian-ktl-registrar). Its own index describes it as: Validate the Linked Open Knowledge Format (LOKF) semantic layer on top of OKF v0.2 in Obsidian. It was released at 1.7.5 on 2026-10-17, and the release workflow attached the bundle as `knowledge-1.7.5-obsidian-ktl-registrar.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/registrar/knowledge/`.
+This member is the knowledge bundle of [noelmcloughlin/obsidian-ktl-registrar](https://github.com/noelmcloughlin/obsidian-ktl-registrar). Its own index says it validates the Linked Open Knowledge Format (LOKF) semantic layer on top of OKF v0.2 in Obsidian. It was released at 1.7.5 on 2026-10-17, and the release workflow attached the bundle as `knowledge-1.7.5-obsidian-ktl-registrar.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/registrar/knowledge/`.
 
 ## Open questions
 

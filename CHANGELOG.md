@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Fixed
+
+- **The build takes each member as a person last confirmed it.** It built every member concept at the tag, as the 0.6.0 pages said, so a merged move or a new member joined the workspace before anyone confirmed it. A moved member is now built at its confirmed release while that confirmation stands, and a new one waits outside until confirmed. The domain's own gate policy and depth count only as confirmed too, and the pages and the figure say so again.
+
 ## [0.6.0] - 2026-10-18
 
 ### Fixed

@@ -1,6 +1,6 @@
 # Confirming a member change
 
-A member's new release, or a new member, joins the workspace when the pull request that names it merges, since the build takes every member concept on the default branch. A person's confirmation records that the member belongs, and the health line shows each member no person has confirmed since it moved. This page gives the steps. They work on GitHub, on another forge, and in a plain git clone. Where this page says pull request, GitLab says merge request.
+A member's new release changes nothing here until a person confirms the member concept that names it, and a new member joins only when a person confirms it. This page gives the steps. They work on GitHub, on another forge, and in a plain git clone. Where this page says pull request, GitLab says merge request.
 
 ## What you need
 

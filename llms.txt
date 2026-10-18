@@ -1,6 +1,6 @@
 # KTL Federation
 
-> The top domain of the Knowledge Trust Ladder federation: the knowledge bundles it federates, each named by its released zip and confirmed by a person, and the workspace built from them.
+> The domain of the Knowledge Trust Ladder (KTL) federation: the knowledge bundles it federates, each named by its released zip and confirmed by a person, and the workspace built from them.
 
 ## Agent context
 

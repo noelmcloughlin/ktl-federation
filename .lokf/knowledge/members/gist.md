@@ -9,15 +9,15 @@ base_iri: https://w3id.org/lmodel/gist/knowledge/
 version: v0.3.3
 release: https://github.com/lmodel/gist/releases/tag/v0.3.3
 distribution:
-- name: knowledge-v0.3.3-gist-linkml.zip
-  access_url: https://github.com/lmodel/gist/releases/download/v0.3.3/knowledge-v0.3.3-gist-linkml.zip
-  media_type: application/zip
-  checksum: sha256:e6a8030daa651a522d3e50ae1b611fbb597ca67382c30fd94719d956f4190206
+  - name: knowledge-v0.3.3-gist-linkml.zip
+    access_url: https://github.com/lmodel/gist/releases/download/v0.3.3/knowledge-v0.3.3-gist-linkml.zip
+    media_type: application/zip
+    checksum: sha256:e6a8030daa651a522d3e50ae1b611fbb597ca67382c30fd94719d956f4190206
 isPartOf:
-- https://w3id.org/ktl/federation/knowledge/domains/top
+  - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
-  by: process:knowledge-federate
-  at: "2026-10-16T10:00:29Z"
+  by: process:ktl-librarian
+  at: "2026-10-18T01:10:53Z"
 status: draft
 ---
 

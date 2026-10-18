@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The domain concept says a member is a `MemberBundle` or a `MemberDomain`, as the architecture page does.** A person corrected it and confirmed it against that page's latest edits.
+
 ## [0.6.2] - 2026-10-18
 
 ### Security

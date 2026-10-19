@@ -15,6 +15,8 @@ The [domain](https://w3id.org/ktl/federation/knowledge/) is a thin [LOKF](https:
 | Member | Its bundle | Its member concept here |
 | --- | --- | --- |
 | KTL, which publishes the skills | [w3id.org/ktl/knowledge](https://w3id.org/ktl/knowledge/) | [members/knowledge-trust-ladder](https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder) |
+| KTL Curator, the Obsidian plugin for the person who decides what a bundle may claim | [w3id.org/ktl/curator/knowledge](https://w3id.org/ktl/curator/knowledge/) | [members/obsidian-ktl-curator](https://w3id.org/ktl/federation/knowledge/members/obsidian-ktl-curator) |
+| KTL Registrar, the Obsidian plugin that keeps a bundle well-formed as you edit it | [w3id.org/ktl/registrar/knowledge](https://w3id.org/ktl/registrar/knowledge/) | [members/obsidian-ktl-registrar](https://w3id.org/ktl/federation/knowledge/members/obsidian-ktl-registrar) |
 | AI-LinkMO, a reference implementation of operational AI governance | [its knowledge pages](https://noelmcloughlin.github.io/ai-linkmo/knowledge/) | [members/ai-linkmo](https://w3id.org/ktl/federation/knowledge/members/ai-linkmo) |
 | gist, a LinkML rendering of Semantic Arts' gist upper ontology, from lmodel | [w3id.org/lmodel/gist/knowledge](https://w3id.org/lmodel/gist/knowledge/) | [members/gist](https://w3id.org/ktl/federation/knowledge/members/gist) |
 

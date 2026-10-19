@@ -14,6 +14,8 @@ This repository is the domain of the KTL federation: a thin [LOKF](https://lokf.
 | `.lokf/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
 | `.lokf/scripts/`, `.github/workflows/` | Copies of the KTL sidecar's templates. Edit them upstream, never here. |
 | `website/` | The site, from the ktl-website templates; `site.config.mjs` is this repository's own. |
+| `.assets/` | The figure the docs show, light and dark, and `companions/`, its Archify flow diagram with the candidate it is drawn from. |
+| `scripts/companion-diagrams.mjs` | This repository's own: draws the Archify companions in `.assets/companions/` again. A maintainer runs it by hand; no workflow does. |
 
 ## Development setup
 
@@ -54,7 +56,7 @@ AI assistance is welcome. [AI_COVENANT.md](AI_COVENANT.md) sets the rules, for p
 
 - Write `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md) as you go. The release job refuses an empty one.
 - `.releaserc.json` releases a minor version for `chore(lokf)`, the type the librarian's pull requests carry, as well as for `feat:`, `fix:` and `security:`, because a domain release is what rebuilds the workspace. A pull request that would release must carry a releasing type in its title, since a squash merge takes its subject from it.
-- On merge, [`semantic-release.yml`](.github/workflows/semantic-release.yml) promotes the changelog, tags `vX.Y.Z`, publishes the GitHub Release, and dispatches `knowledge-release.yaml` for the tag once `KNOWLEDGE_RELEASE_ENABLED` is `true`.
+- On merge, [`semantic-release.yml`](.github/workflows/semantic-release.yml) promotes the changelog, tags `vX.Y.Z`, publishes the GitHub Release, and dispatches `knowledge-release.yaml` for the tag once `KNOWLEDGE_RELEASE_ENABLED` is `true`, and `knowledge-federation.yaml`, which rebuilds the workspace, once `KNOWLEDGE_FEDERATION_ENABLED` is `true`.
 - Below 1.0.0: the `v0.1.0` baseline tag points at the first commit, so the first release is `0.2.0`. `.releaserc.json` maps a breaking change to `minor`.
 - The release job runs in the `release` GitHub Environment. Configure required reviewers on it in Settings → Environments, or every qualifying merge releases unattended. A branch rule requiring pull requests or signed commits would reject the release job's push to `main`. [SECURITY.md](SECURITY.md) says what holds `main` instead.
 

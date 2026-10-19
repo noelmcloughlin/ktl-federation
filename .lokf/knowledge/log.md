@@ -2,6 +2,7 @@
 
 ## 2026-10-19
 
+* **Curation**: human:noelmcloughlin confirmed 3 concepts: the Knowledge Trust Ladder member at v0.52.0, the AI-LinkMO member at v0.4.10 and the gist member at v0.3.10, after checking each release's checksum, attestation and namespace, keeping each review date 2027-04-18, and cleared each one's question about the move. Nothing was sent back or retired.
 * **Changed**: AI-LinkMO knowledge bundle moved from v0.4.9 to v0.4.10; the release carries `knowledge-v0.4.10-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: AI-LinkMO knowledge bundle: noelmcloughlin/ai-linkmo released v0.4.10 after the confirmed v0.4.9; does this member move to it?
 * **Changed**: gist knowledge bundle moved from v0.3.7 to v0.3.10; the release carries `knowledge-v0.3.10-gist-linkml.zip`. Edited since a person confirmed it; the label says so until the curator looks again.

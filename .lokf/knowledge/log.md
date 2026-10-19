@@ -1,5 +1,14 @@
 # Change Log
 
+## 2026-10-19
+
+* **Changed**: AI-LinkMO knowledge bundle moved from v0.4.9 to v0.4.10; the release carries `knowledge-v0.4.10-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: AI-LinkMO knowledge bundle: noelmcloughlin/ai-linkmo released v0.4.10 after the confirmed v0.4.9; does this member move to it?
+* **Changed**: gist knowledge bundle moved from v0.3.7 to v0.3.10; the release carries `knowledge-v0.3.10-gist-linkml.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: gist knowledge bundle: lmodel/gist released v0.3.10 after the confirmed v0.3.7; does this member move to it?
+* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.50.1 to v0.52.0; the release carries `knowledge-v0.52.0-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.52.0 after the confirmed v0.50.1; does this member move to it?
+
 ## 2026-10-18
 
 * **Curation**: human:noelmcloughlin confirmed 1 concept: the domain at `domains/ktl-federation`, against `.lokf/domain.yaml` after the v0.52.0 sync added a comment about a member domain's workspace, keeping the review date 2027-04-18. Nothing was sent back or retired.

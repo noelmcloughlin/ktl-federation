@@ -17,6 +17,8 @@ The figure reads from the bottom up. Each member releases its bundle from its ow
   </picture>
 </p>
 
+As a flow diagram, drawn with [Archify](https://github.com/tt-a1i/archify) under the MIT License: [light](../.assets/companions/ktl-federation-context-layer.svg), [dark](../.assets/companions/ktl-federation-context-layer-dark.svg).
+
 ## The domain
 
 A domain is a named set of bundles with one accountable owner, kept as a thin LOKF bundle in a repository of its own. The bundle under `.lokf/knowledge/` is the domain of the KTL federation. Every domain bounds a workspace of its own. This domain's builds start here, so it is the top domain of the workspace they build. Another domain may still name it as a member.

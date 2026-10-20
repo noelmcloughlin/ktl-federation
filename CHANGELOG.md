@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-20
+
 ### Changed
 
 - **The graph page's full screen keeps the graph at full height and stays on when the view changes,** and its filters show counts, *All* and *None*, and how many concepts are shown. The component is ahead of the skills pin until Knowledge Trust Ladder releases the same change.

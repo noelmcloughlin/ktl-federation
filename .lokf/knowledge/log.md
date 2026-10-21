@@ -2,6 +2,7 @@
 
 ## 2026-10-21
 
+* **Curation**: human:noelmcloughlin confirmed 2 concepts: the new linkml-sidecar member at v0.0.1, admitted under the admission rule with the review date 2027-04-21, and the Knowledge Trust Ladder member's move to v0.55.0, keeping its review date 2027-04-18, after checking each release's checksum, attestation and namespace, and cleared each one's question. Nothing was sent back or retired.
 * **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.52.0 to v0.55.0; the release carries `knowledge-v0.55.0-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.55.0 after the confirmed v0.52.0; does this member move to it?
 * **Added**: linkml-sidecar Knowledge Bundle, noelmcloughlin/linkml-sidecar at v0.0.1; a person confirms the member to admit it.

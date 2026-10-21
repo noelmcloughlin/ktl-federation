@@ -18,13 +18,12 @@ isPartOf:
 generated:
   by: process:knowledge-federate
   at: "2026-10-21T23:08:31Z"
-status: draft
+verified:
+  - by: human:noelmcloughlin
+    at: "2026-10-21T23:19:11Z"
+stale_after: 2027-04-21
 ---
 
 # Overview
 
 This member is the knowledge bundle of [noelmcloughlin/linkml-sidecar](https://github.com/noelmcloughlin/linkml-sidecar). The description in its own index reads "Two Agent Skills that give a code repository a LinkML data model as a sidecar: linkml-sidecar installs a hidden .linkml/ project from linkml-project-copier without touching the host's build, and linkml-author turns its dummy schema into the real model and keeps it generated, documented and tested." It was released at v0.0.1 on 2026-10-21, and the release workflow attached the bundle as `knowledge-v0.0.1-linkml-sidecar.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://noelmcloughlin.github.io/linkml-sidecar/knowledge/`.
-
-## Open questions
-
-- 2026-10-21, process:knowledge-federate: noelmcloughlin/linkml-sidecar is proposed as a member at v0.0.1; does it belong under the admission rule?

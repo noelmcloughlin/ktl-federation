@@ -25,14 +25,11 @@ verified:
     at: "2026-10-18T17:51:42Z"
   - by: human:noelmcloughlin
     at: "2026-10-19T00:33:15Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-21T23:20:00Z"
 stale_after: 2027-04-18
-status: draft
 ---
 
 # Overview
 
 This member is the knowledge bundle of [knowledge-trust-ladder](https://github.com/noelmcloughlin/knowledge-trust-ladder), the repository that publishes the KTL skills, as released at v0.55.0 on 2026-10-21. The release workflow attached the bundle as `knowledge-v0.55.0-knowledge-trust-ladder.zip` with a `.sha256` file and a build attestation that `gh attestation verify` checks. Its concepts are in the namespace `https://w3id.org/ktl/knowledge/`, and the workspace loads them into a named graph with that IRI.
-
-## Open questions
-
-- 2026-10-21, process:knowledge-federate: noelmcloughlin/knowledge-trust-ladder released v0.55.0 after the confirmed v0.52.0; does this member move to it?

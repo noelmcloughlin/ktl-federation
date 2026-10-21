@@ -1,12 +1,5 @@
 # Change Log
 
-## 2026-10-21
-
-* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.52.0 to v0.55.0; the release carries `knowledge-v0.55.0-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
-* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.55.0 after the confirmed v0.52.0; does this member move to it?
-* **Added**: linkml-sidecar Knowledge Bundle, noelmcloughlin/linkml-sidecar at v0.0.1; a person confirms the member to admit it.
-* **Open question**: linkml-sidecar Knowledge Bundle: noelmcloughlin/linkml-sidecar is proposed as a member at v0.0.1; does it belong under the admission rule?
-
 ## 2026-10-19
 
 * **Curation**: human:noelmcloughlin confirmed 3 concepts: the Knowledge Trust Ladder member at v0.52.0, the AI-LinkMO member at v0.4.10 and the gist member at v0.3.10, after checking each release's checksum, attestation and namespace, keeping each review date 2027-04-18, and cleared each one's question about the move. Nothing was sent back or retired.

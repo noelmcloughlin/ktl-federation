@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-21
+
 ### Added
 
 - **The linkml-sidecar bundle is a member at its v0.0.1 release.** Its zip's checksum and attestation were verified, and a person confirmed it under the admission rule.

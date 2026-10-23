@@ -20,7 +20,7 @@
     "@fontsource-variable/source-serif-4": "^5.3.1",
     "astro": "^7.3.8",
     "astro-og-canvas": "^0.13.2",
-    "cytoscape": "^3.34.3",
+    "cytoscape": "^3.34.4",
     "cytoscape-fcose": "^2.2.0",
     "mermaid": "^12.2.0",
     "satteri": "^0.10.5",

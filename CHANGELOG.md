@@ -6,6 +6,11 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The gist, Knowledge Trust Ladder and linkml-sidecar members name their v0.3.13, v0.55.1 and v0.2.0 bundle releases.** Each zip's checksum and attestation were verified, and a person confirmed each move.
+- **The domain concept reads in plain English, and states the `fail` rule, `max_depth`, `sensitivity` and `private_addresses` as `.lokf/domain.yaml` defines them.** A person corrected it and confirmed it.
+
 ## [0.12.2] - 2026-10-26
 
 ### Security

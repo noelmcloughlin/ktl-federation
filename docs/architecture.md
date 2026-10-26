@@ -81,7 +81,7 @@ uv run --project .lokf .lokf/scripts/knowledge-federate.py mcp
 
 ## What remains a design
 
-This host serves the static workspace and hosts no endpoint. A team that wants one runs the container. Three parts remain designs: loading a member's graph on first use, harvesting remote artifacts under the `sensitivity` gate of section 11.5, and per-query permissions, which stay with the store's access control. [What exists, and what remains a design](https://w3id.org/ktl/docs/federation/#what-exists-and-what-remains-a-design) lists each part and where it lives.
+This host serves the static workspace and hosts no endpoint. A team that wants one runs the container. One part of section 11 remains a design: fetching a member from a private repository, which section 11.5 of the LOKF specification leaves to a later version. Per-query permissions stay with the store's access control. [What exists, and what remains a design](https://w3id.org/ktl/docs/federation/#what-exists-and-what-remains-a-design) lists each part and where it lives.
 
 ## Decisions this domain has made
 

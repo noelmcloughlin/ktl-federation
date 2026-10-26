@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-10-26
+
 ### Added
 
 - **The bundle gains concepts for confirming a member change, the workspace and the domain schema, playbooks for contributing, releasing and the website, and a map of its sources.** Each is a draft until a person confirms it.

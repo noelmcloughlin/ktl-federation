@@ -10,7 +10,7 @@ relatedTo:
   - https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: human:noelmcloughlin
-  at: "2026-10-18T17:21:47Z"
+  at: "2026-10-26T17:07:54Z"
 sources:
   - resource: docs/architecture.md
   - resource: .lokf/domain.yaml
@@ -24,6 +24,8 @@ verified:
     at: "2026-10-18T17:21:47Z"
   - by: human:noelmcloughlin
     at: "2026-10-18T23:56:15Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-26T17:07:54Z"
 stale_after: 2027-04-18
 ---
 
@@ -33,6 +35,8 @@ A domain is a named set of knowledge bundles with one accountable owner. This on
 
 The owner's confirmation of a member attests two things: that the member belongs under the admission rule in [the federation policy](../policies/federation.md), and that any claim this domain makes across bundles holds. This release makes no cross-bundle claim.
 
-`unowned_targets` is the build's gate policy. With `fail`, a typed relation in any member whose target lies in no member's namespace stops the build and keeps the previous workspace. With `report`, the build lists it and goes on.
+`unowned_targets` is the build's gate policy. With `fail`, a typed relation in any member whose target no member owns, or whose target lies in a member's namespace and names no concept of it, stops the build and keeps the previous workspace. With `report`, the build lists it and goes on.
 
-It sets no `max_depth`, so the build follows member domains three tiers deep, and this domain's own members are tier 1.
+It sets no `max_depth`, how many tiers of members the build follows when a member is itself a domain, so the build follows 3; this domain's own members are tier 1.
+
+It sets no `sensitivity`, the most sensitive member its workspace may hold, public or internal, so the workspace holds public members only. A person who confirms `internal` clears the workspace to aggregate internal bundles, as section 11.5 of the LOKF specification asks of a registry's owner.

@@ -2,7 +2,7 @@
 
 ## 2026-10-26
 
-* **Curation**: human:noelmcloughlin corrected 3 concepts and confirmed 1. The domain now gives the wider `fail` rule, `max_depth` and `sensitivity` in `.lokf/domain.yaml`'s words. The gist and Knowledge Trust Ladder members now give their release dates as 2026-10-23 and 2026-10-22. The linkml-sidecar member is confirmed at v0.2.0. All three member questions are cleared, and the review dates are kept. The same correction came up twice: the librarian moved a member's version but kept the old release date, so its federate step should take the date from the release.
+* **Curation**: human:noelmcloughlin corrected 3 concepts and confirmed 1. The domain now gives the wider `fail` rule, `max_depth`, `sensitivity` and `private_addresses` in `.lokf/domain.yaml`'s words. The gist and Knowledge Trust Ladder members now give their release dates as 2026-10-23 and 2026-10-22. The linkml-sidecar member is confirmed at v0.2.0. All three member questions are cleared, and the review dates are kept. The same correction came up twice: the librarian moved a member's version but kept the old release date, so its federate step should take the date from the release.
 * **Changed**: gist knowledge bundle moved from v0.3.10 to v0.3.13; the release carries `knowledge-v0.3.13-gist-linkml.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: gist knowledge bundle: lmodel/gist released v0.3.13 after the confirmed v0.3.10; does this member move to it?
 * **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.55.0 to v0.55.1; the release carries `knowledge-v0.55.1-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.

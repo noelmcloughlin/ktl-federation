@@ -10,7 +10,7 @@ relatedTo:
   - https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: human:noelmcloughlin
-  at: "2026-10-26T17:07:54Z"
+  at: "2026-10-26T17:15:22Z"
 sources:
   - resource: docs/architecture.md
   - resource: .lokf/domain.yaml
@@ -26,6 +26,8 @@ verified:
     at: "2026-10-18T23:56:15Z"
   - by: human:noelmcloughlin
     at: "2026-10-26T17:07:54Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-26T17:15:22Z"
 stale_after: 2027-04-18
 ---
 
@@ -40,3 +42,5 @@ The owner's confirmation of a member attests two things: that the member belongs
 It sets no `max_depth`, how many tiers of members the build follows when a member is itself a domain, so the build follows 3; this domain's own members are tier 1.
 
 It sets no `sensitivity`, the most sensitive member its workspace may hold, public or internal, so the workspace holds public members only. A person who confirms `internal` clears the workspace to aggregate internal bundles, as section 11.5 of the LOKF specification asks of a registry's owner.
+
+It sets no `private_addresses`, which says whether the build may fetch a member from a private, loopback or link-local address, so the build refuses. A person confirms `allow` for a forge on the host's own network.

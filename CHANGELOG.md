@@ -12,7 +12,7 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ### Changed
 
-- **The gist, Knowledge Trust Ladder, linkml-sidecar, KTL Curator and KTL Registrar members name their v0.3.13, v0.55.1, v0.3.2, 1.6.9 and 1.7.10 bundle releases, and linkml-sidecar's namespace moves to `https://w3id.org/ktl/linkml-sidecar/knowledge/`.** Each zip's checksum and attestation were verified, and a person confirmed each move.
+- **The gist, Knowledge Trust Ladder, linkml-sidecar, KTL Curator and KTL Registrar members name their v0.3.13, v0.56.1, v0.3.2, 1.6.9 and 1.7.10 bundle releases, and linkml-sidecar's namespace moves to `https://w3id.org/ktl/linkml-sidecar/knowledge/`.** Each zip's checksum and attestation were verified, and a person confirmed each move.
 - **The domain concept reads in plain English, and states the `fail` rule, `max_depth`, `sensitivity` and `private_addresses` as `.lokf/domain.yaml` defines them.** A person corrected it and confirmed it.
 
 ## [0.12.3] - 2026-10-26

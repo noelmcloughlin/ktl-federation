@@ -2,6 +2,7 @@
 
 ## 2026-10-26
 
+* **Prose**: reworded 4 concept bodies in plain English. No fact, link, number or frontmatter changed.
 * **Added**: the knowledge sources map, which names every top-level path and the outside pages this bundle rests on, the concept each yields, and the files left out on purpose.
 * **Added**: the contributing playbook, from `CONTRIBUTING.md`, the pull request template, the lint workflow and the AI covenant.
 * **Added**: the releasing playbook, from `semantic-release.yml`, `.releaserc.json`, the changelog script, `knowledge-release.yaml`, `CONTRIBUTING.md` and `SECURITY.md`.

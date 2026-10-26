@@ -21,13 +21,13 @@ status: draft
 
 # Overview
 
-The site is the Astro project in `website/`, laid down from the ktl-website templates. `website/site.config.mjs` sets its address, `https://noelmcloughlin.github.io/ktl-federation/`. Every page comes from a file the repository already holds, so a change to the site is a change to that file.
+The site is the Astro project in `website/`, copied from the ktl-website templates. `website/site.config.mjs` sets its address, `https://noelmcloughlin.github.io/ktl-federation/`. Every page comes from a file the repository already holds, so a change to the site is a change to that file.
 
 ## What each page comes from
 
 - Each concept in `.lokf/knowledge/` becomes a page under `knowledge/`, with its trust label, its sources and its typed relations both ways.
 - The four files `lokf export` writes are served under `knowledge/`, beside each concept's Markdown file and its JSON-LD. The bundle log is served as an Atom feed, `knowledge/log.xml`.
-- The README becomes the home page, each page under `docs/` a page under `docs/`, and `CHANGELOG.md` a page per release under `changelog/`.
+- The README becomes the home page, each page under `docs/` becomes a page under `docs/`, and `CHANGELOG.md` becomes a page per release under `changelog/`.
 - The home page and each docs page are served as Markdown too, at the page's path with `.md` added.
 
 `site.config.mjs` sets `SCHEMA` to `auto`, so the site shows a LinkML schema's pages only when the repository has a project whose justfile has a `gen-doc` recipe. It sets `BROWSE` to `null`, so the site serves no data.
@@ -43,7 +43,7 @@ npm run dev        # http://localhost:4321/ktl-federation/
 npm run build      # dist/, then checks every link between its pages
 ```
 
-Both commands run `npm run sync` first. It runs `lokf export` from the sidecar's own environment in `.lokf/` and writes the generated pages, and nothing it writes is committed.
+Both commands run `npm run sync` first. It runs `lokf export` from the sidecar's own environment in `.lokf/`, and writes the generated pages. Nothing it writes is committed.
 
 ## What to edit
 
@@ -60,4 +60,4 @@ This host has one Pages deployer, the federation workflow, so it leaves `KNOWLED
 - `knowledge-website.yaml` builds the site and checks every link: on a pull request that touches the site's sources, on a push to the default branch that does, every Monday, and by hand. Its `deploy` job runs only once `KNOWLEDGE_WEBSITE_ENABLED` is `true`, so here it deploys nothing.
 - `knowledge-federation.yaml` builds the website on each release, beside [the workspace](../datasets/workspace.md). A push to the default branch rebuilds the website alone and reuses the newest released workspace. Its `publish` job deploys the result to Pages.
 
-A workspace that holds internal metadata goes to the release alone, never to the site.
+A workspace that holds internal metadata is uploaded to the release only, and never deployed to the site.

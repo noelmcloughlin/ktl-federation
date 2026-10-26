@@ -35,11 +35,11 @@ semantic-release reads the Conventional Commits on `main`. Besides `feat` and `f
 
 The `v0.1.0` baseline tag points at the first commit, so the first release was `0.2.0`, not `1.0.0`.
 
-A squash merge takes its commit subject from the pull request's title. So a pull request whose commits would release must carry a releasing type in its title too. The `plan` job previews every pull request into `main` with `--dry-run`, and fails one whose title would lose the release.
+A squash merge takes its commit subject from the pull request's title. So a pull request whose commits would release must carry a releasing type in its title too. The `plan` job previews every pull request into `main` with `--dry-run`. It fails a pull request whose commits would release but whose title has no releasing type.
 
 ## The changelog
 
-Write `## [Unreleased]` in `CHANGELOG.md` as you go. `.github/scripts/changelog-release.mjs` refuses a release whose Unreleased section is empty. On release it renames that section to `## [<version>] - <date>`, uses its text as the release notes, and opens an empty `## [Unreleased]` above it.
+Write `## [Unreleased]` in `CHANGELOG.md` as you go. `.github/scripts/changelog-release.mjs` refuses a release whose Unreleased section is empty. When a release runs, the script renames that section to `## [<version>] - <date>`, uses its text as the release notes, and opens an empty `## [Unreleased]` above it.
 
 The librarian cannot write the changelog. A person adds the line for a confirmed member change, as [Confirming a member change](confirming-a-member-change.md) says.
 
@@ -54,7 +54,7 @@ The `release` job runs only on a push to `main`, in the `release` GitHub Environ
 
 Configure required reviewers on the `release` Environment, under Settings → Environments, or every qualifying merge releases unattended. A branch rule that requires pull requests or signed commits would reject the release job's push to `main`.
 
-`SECURITY.md` names three repository settings that hold `main` instead, which nothing in CI can assert:
+`SECURITY.md` names three repository settings that hold `main` instead. Nothing in CI can assert them:
 
 - required reviewers on the `release` Environment;
 - a rule blocking deletion and force-pushes on `main`;

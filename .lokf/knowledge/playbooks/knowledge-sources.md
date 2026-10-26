@@ -54,7 +54,9 @@ This map lists where the domain bundle's concepts come from, which concepts each
 
 Start from `bash .lokf/scripts/knowledge-report.sh worklist`, which names each concept whose local source moved since it was derived or last checked. It compares nothing for a source that is a URL, so re-read KTL's pages and the workspace index on every run.
 
-Check a sidecar copy against the ktl-sidecar templates at the release that `TRUST_LADDER_SKILLS_REF` in `.github/workflows/knowledge-librarian.yaml` names. `bash .lokf/scripts/knowledge-report.sh coverage` counts the tracked files that no concept and no row of this map names.
+Check a sidecar copy against the ktl-sidecar templates at the release named by `TRUST_LADDER_SKILLS_REF` in `.github/workflows/knowledge-librarian.yaml`.
+
+`bash .lokf/scripts/knowledge-report.sh coverage` counts the tracked files that no concept and no row of this map names.
 
 ## Left out on purpose
 

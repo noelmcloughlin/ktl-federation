@@ -2,6 +2,7 @@
 
 ## 2026-10-26
 
+* **Curation**: human:noelmcloughlin confirmed 3 concepts (the linkml-sidecar, KTL Curator and KTL Registrar members, at v0.3.2, 1.6.9 and 1.7.10), each against its release, checksum and attestation, and cleared their federate questions.
 * **Prose**: reworded 4 concept bodies in plain English. No fact, link, number or frontmatter changed.
 * **Added**: the knowledge sources map, which names every top-level path and the outside pages this bundle rests on, the concept each yields, and the files left out on purpose.
 * **Added**: the contributing playbook, from `CONTRIBUTING.md`, the pull request template, the lint workflow and the AI covenant.

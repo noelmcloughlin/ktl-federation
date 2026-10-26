@@ -21,14 +21,11 @@ generated:
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T13:28:22Z"
-stale_after: 2027-04-18
-status: draft
+  - by: human:noelmcloughlin
+    at: "2026-10-26T18:29:04Z"
+stale_after: 2027-04-26
 ---
 
 # Overview
 
 This member is the knowledge bundle of [noelmcloughlin/obsidian-ktl-curator](https://github.com/noelmcloughlin/obsidian-ktl-curator). Its own index says it helps a person judge what a LOKF knowledge bundle claims. It does so with a trust report computed from frontmatter, and a review session that records confirm, send back, and retire verdicts in the bundle itself. It was released at 1.6.9 on 2026-10-26, and the release workflow attached the bundle as `knowledge-1.6.9-obsidian-ktl-curator.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/curator/knowledge/`.
-
-## Open questions
-
-- 2026-10-26, process:knowledge-federate: noelmcloughlin/obsidian-ktl-curator released 1.6.9 after the confirmed 1.6.4; does this member move to it?

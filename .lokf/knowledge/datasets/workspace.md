@@ -10,9 +10,10 @@ relatedTo:
 sources:
   - resource: docs/architecture.md
   - resource: https://w3id.org/ktl/federation/workspace/index.md
+  - resource: .github/workflows/knowledge-federation.yaml
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T18:11:40Z"
+  at: "2026-10-26T18:19:07Z"
 status: draft
 ---
 

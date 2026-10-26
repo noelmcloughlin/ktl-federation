@@ -2,6 +2,11 @@
 
 ## 2026-10-26
 
+* **Added**: the knowledge sources map, which names every top-level path and the outside pages this bundle rests on, the concept each yields, and the files left out on purpose.
+* **Added**: the contributing playbook, from `CONTRIBUTING.md`, the pull request template, the lint workflow and the AI covenant.
+* **Added**: the releasing playbook, from `semantic-release.yml`, `.releaserc.json`, the changelog script, `knowledge-release.yaml`, `CONTRIBUTING.md` and `SECURITY.md`.
+* **Added**: the knowledge website playbook, from `website/README.md`, `site.config.mjs`, the website and federation workflows, and `SECURITY.md`.
+* **Changed**: the workspace concept cites `.github/workflows/knowledge-federation.yaml`, so a change to the build's workflow puts it on the work list. No claim changed.
 * **Added**: Confirming a member change, from `docs/curation.md`, with where a member change comes from as `docs/architecture.md` says. No concept covered `docs/curation.md` before.
 * **Added**: The KTL federation workspace, from `docs/architecture.md`: how each release builds it, what the release and the site carry, and how to read it.
 * **Added**: The domain schema, from `.lokf/domain.yaml` and `docs/architecture.md`: the four classes it adds over LOKF core, and how a host extends it.

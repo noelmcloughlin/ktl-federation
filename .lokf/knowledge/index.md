@@ -22,7 +22,7 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 
 # Policies
 
-* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target that names no member's concept or a bundle two domains name.
+* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, what a member adds, which release a member names, what a person's confirmation attests, and who arbitrates a claim across bundles. It also says what the build does with a target that names no member's concept or a bundle two domains name.
 
 # Members
 
@@ -32,3 +32,15 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 * [KTL Curator knowledge bundle](members/obsidian-ktl-curator.md) - The bundle of the noelmcloughlin/obsidian-ktl-curator repository as released at 1.6.9 on 2026-10-26.
 * [KTL Registrar knowledge bundle](members/obsidian-ktl-registrar.md) - The bundle of the noelmcloughlin/obsidian-ktl-registrar repository as released at 1.7.10 on 2026-10-26.
 * [linkml-sidecar Knowledge Bundle](members/linkml-sidecar.md) - The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.3.2 on 2026-10-26.
+
+# Playbooks
+
+* [Confirming a member change](playbooks/confirming-a-member-change.md) - How a person confirms a member's move to a new release, or a new member, with ktl-curator or the KTL Curator plugin. It names what you need, the steps on the change's branch, the checks to run before the merge, and how to draft a new member with the members script.
+
+# Datasets
+
+* [The KTL federation workspace](datasets/workspace.md) - The graph each release of this domain builds from its members, one named graph per bundle plus a graph for the lock. It names the build's checks, what the release's workspace zip and the site's /workspace/ folder hold, the stored queries, and the serve, mcp and Oxigraph ways to read it.
+
+# References
+
+* [The domain schema](references/domain-schema.md) - The LinkML schema in .lokf/domain.yaml that adds Domain, MemberBundle, MemberDomain and ReleaseDistribution over LOKF core, so lokf validate checks a member's namespace, release and checksum. Its namespace is KTL's, and a host that needs more classes imports it.

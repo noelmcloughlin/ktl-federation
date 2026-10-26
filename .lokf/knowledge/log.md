@@ -2,6 +2,10 @@
 
 ## 2026-10-26
 
+* **Added**: Confirming a member change, from `docs/curation.md`, with where a member change comes from as `docs/architecture.md` says. No concept covered `docs/curation.md` before.
+* **Added**: The KTL federation workspace, from `docs/architecture.md`: how each release builds it, what the release and the site carry, and how to read it.
+* **Added**: The domain schema, from `.lokf/domain.yaml` and `docs/architecture.md`: the four classes it adds over LOKF core, and how a host extends it.
+* **Changed**: Federation policy: it now gives this domain's decisions on pinning, arbitration and permissions, what confirming a `MemberDomain` attests, and that a confirmation is a signed `verified` event, as `docs/architecture.md` says, and cites that page. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Changed**: Federation policy: the gate now also stops on a target in a member's namespace that names no concept there, and runs on pull requests, as KTL's docs/federation.md and domain-bundle playbook say since 2026-10-19; neither says the gate keeps the previous workspace, so that clause is gone. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.56.1 after the confirmed v0.55.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
 * **Changed**: linkml-sidecar Knowledge Bundle moved from v0.2.0 to v0.3.2, and its namespace from `https://noelmcloughlin.github.io/linkml-sidecar/knowledge/` to `https://w3id.org/ktl/linkml-sidecar/knowledge/`; the release carries `knowledge-v0.3.2-linkml-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.

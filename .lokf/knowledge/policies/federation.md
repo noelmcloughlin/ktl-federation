@@ -3,15 +3,16 @@ type: Policy
 id: https://w3id.org/ktl/federation/knowledge/policies/federation
 genre: reference
 title: Federation policy
-description: What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target that names no member's concept or a bundle two domains name.
+description: What admits a knowledge bundle to this domain, what a member adds, which release a member names, what a person's confirmation attests, and who arbitrates a claim across bundles. It also says what the build does with a target that names no member's concept or a bundle two domains name.
 resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T17:59:45Z"
+  at: "2026-10-26T18:11:40Z"
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
   - resource: https://w3id.org/ktl/docs/context-layer
+  - resource: docs/architecture.md
 verified:
   - by: process:ktl-librarian
     at: "2026-10-18T11:10:08Z"
@@ -53,4 +54,14 @@ A member may be a domain in turn, and the build then follows that domain's membe
 
 ## What a confirmation means
 
-A person's confirmation of a member concept attests that the member belongs under the admission rule and that the domain's cross-bundle claims hold. It does not vouch for the member's own concepts. Each member keeps its own trust labels, computed from its events when the workspace is read.
+A person's confirmation of a member concept attests that the member belongs under the admission rule and that the domain's cross-bundle claims hold. For a `MemberDomain`, it attests that the domain belongs and who answers for it, not what that domain's members say. It does not vouch for the member's own concepts. Each member keeps its own trust labels, computed from its events when the workspace is read.
+
+A confirmation is the curator's ordinary confirm, recorded as a `verified` event in that person's name and backed by a signed commit, which the registrar's `provenance` job checks.
+
+## This domain's decisions
+
+KTL's federation page lists the [decisions an adopter must make](https://w3id.org/ktl/docs/federation/#decisions-an-adopter-must-make). Beside the admission rule and the value test above, this domain's answers are:
+
+- **Pin.** Each member concept names one release, and a person confirms each move. A domain that names this one adds a pin of its own. So a member's release reaches that domain's workspace only after a confirmation and a release here, then a confirmation and a release there.
+- **Who arbitrates.** This domain's owner arbitrates a claim across bundles, by a confirmed concept in this bundle, never by a rewrite of a member.
+- **Permissions.** Every member is a public repository. A bundle that must not be seen whole does not join.

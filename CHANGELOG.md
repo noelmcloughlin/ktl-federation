@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Added
+
+- **The bundle gains concepts for confirming a member change, the workspace and the domain schema, playbooks for contributing, releasing and the website, and a map of its sources.** Each is a draft until a person confirms it.
+
 ### Changed
 
 - **The gist, Knowledge Trust Ladder and linkml-sidecar members name their v0.3.13, v0.55.1 and v0.2.0 bundle releases.** Each zip's checksum and attestation were verified, and a person confirmed each move.

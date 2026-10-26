@@ -1,0 +1,7 @@
+# Playbooks
+
+* [Confirming a member change](confirming-a-member-change.md) - How a person confirms a member's move to a new release, or a new member, with ktl-curator or the KTL Curator plugin. It names what you need, the steps on the change's branch, the checks to run before the merge, and how to draft a new member with the members script.
+* [Knowledge sources](knowledge-sources.md) - Map of the repository paths and outside pages this domain bundle is derived from, the concepts each yields, the files left out on purpose, and how to re-check each on a later refresh.
+* [Contributing to this domain](contributing.md) - How to set up a clone, what to check before a pull request to this domain, and the rules for AI-assisted changes. It names the gate's two checks, the lint CI runs, the sidecar copies never edited here, and the changelog entry a change in behaviour needs.
+* [Releasing this domain](releasing.md) - How a merge to main releases this domain and rebuilds the workspace. It names the commit types that release, the changelog rule, the release job's Environment, the two workflows the release dispatches, and the repository settings that hold main.
+* [The knowledge website](knowledge-website.md) - How the site at noelmcloughlin.github.io/ktl-federation is built from the bundle, the README, docs/ and the changelog, how to preview it, what to edit for each part, and why the federation workflow deploys it on this host, not the website workflow.

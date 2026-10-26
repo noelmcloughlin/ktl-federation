@@ -31,7 +31,7 @@ A person's confirmation of a member attests two things only: that the member bel
 
 The domain's `base_iri` is `https://w3id.org/ktl/federation/knowledge/`. It sits beside KTL's own namespace, never above it, since the registry refuses a `base_iri` nested inside another and routes an IRI to its owner by the longest matching namespace. `https://w3id.org/ktl/federation/` itself is the site, with the workspace under it.
 
-`.lokf/domain.yaml` is the domain schema. It declares four classes over LOKF core: `Domain`, which carries `unowned_targets` and `max_depth`; `MemberBundle`; `MemberDomain`; and `ReleaseDistribution`, which carries the zip's checksum. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
+`.lokf/domain.yaml` is the domain schema. It declares four classes over LOKF core: `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`; `MemberBundle`; `MemberDomain`; and `ReleaseDistribution`, which carries the zip's checksum. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
 
 ## What is here
 

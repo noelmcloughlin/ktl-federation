@@ -1,5 +1,35 @@
 # Change Log
 
+## 2026-10-26
+
+* **Curation**: human:noelmcloughlin confirmed 3 concepts (the linkml-sidecar, KTL Curator and KTL Registrar members, at v0.3.2, 1.6.9 and 1.7.10) and corrected 1 (the Knowledge Trust Ladder member, moved to v0.56.1), each against its release, checksum and attestation, and cleared their federate questions.
+* **Prose**: reworded 4 concept bodies in plain English. No fact, link, number or frontmatter changed.
+* **Added**: the knowledge sources map, which names every top-level path and the outside pages this bundle rests on, the concept each yields, and the files left out on purpose.
+* **Added**: the contributing playbook, from `CONTRIBUTING.md`, the pull request template, the lint workflow and the AI covenant.
+* **Added**: the releasing playbook, from `semantic-release.yml`, `.releaserc.json`, the changelog script, `knowledge-release.yaml`, `CONTRIBUTING.md` and `SECURITY.md`.
+* **Added**: the knowledge website playbook, from `website/README.md`, `site.config.mjs`, the website and federation workflows, and `SECURITY.md`.
+* **Changed**: the workspace concept cites `.github/workflows/knowledge-federation.yaml`, so a change to the build's workflow puts it on the work list. No claim changed.
+* **Added**: Confirming a member change, from `docs/curation.md`, with where a member change comes from as `docs/architecture.md` says. No concept covered `docs/curation.md` before.
+* **Added**: The KTL federation workspace, from `docs/architecture.md`: how each release builds it, what the release and the site carry, and how to read it.
+* **Added**: The domain schema, from `.lokf/domain.yaml` and `docs/architecture.md`: the four classes it adds over LOKF core, and how a host extends it.
+* **Changed**: Federation policy: it now gives this domain's decisions on pinning, arbitration and permissions, what confirming a `MemberDomain` attests, and that a confirmation is a signed `verified` event, as `docs/architecture.md` says, and cites that page. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Changed**: Federation policy: the gate now also stops on a target in a member's namespace that names no concept there, and runs on pull requests, as KTL's docs/federation.md and domain-bundle playbook say since 2026-10-19; neither says the gate keeps the previous workspace, so that clause is gone. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.56.1 after the confirmed v0.55.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+* **Changed**: linkml-sidecar Knowledge Bundle moved from v0.2.0 to v0.3.2, and its namespace from `https://noelmcloughlin.github.io/linkml-sidecar/knowledge/` to `https://w3id.org/ktl/linkml-sidecar/knowledge/`; the release carries `knowledge-v0.3.2-linkml-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: linkml-sidecar Knowledge Bundle: noelmcloughlin/linkml-sidecar released v0.3.2 after the confirmed v0.2.0; does this member move to it?
+* **Changed**: KTL Curator knowledge bundle moved from 1.6.4 to 1.6.9; the release carries `knowledge-1.6.9-obsidian-ktl-curator.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: KTL Curator knowledge bundle: noelmcloughlin/obsidian-ktl-curator released 1.6.9 after the confirmed 1.6.4; does this member move to it?
+* **Changed**: KTL Registrar knowledge bundle moved from 1.7.5 to 1.7.10; the release carries `knowledge-1.7.10-obsidian-ktl-registrar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: KTL Registrar knowledge bundle: noelmcloughlin/obsidian-ktl-registrar released 1.7.10 after the confirmed 1.7.5; does this member move to it?
+* **Curation**: human:noelmcloughlin corrected the domain at `domains/ktl-federation` with plain-English wording: the overview is split into three paragraphs, the `fail` conditions are a list, and each setting is defined before what this domain sets. It now says the domain makes no cross-bundle claim yet, as `docs/architecture.md` does. No fact, link or number changed.
+* **Curation**: human:noelmcloughlin corrected 3 concepts and confirmed 1. The domain now gives the wider `fail` rule, `max_depth`, `sensitivity` and `private_addresses` in `.lokf/domain.yaml`'s words. The gist and Knowledge Trust Ladder members now give their release dates as 2026-10-23 and 2026-10-22. The linkml-sidecar member is confirmed at v0.2.0. All three member questions are cleared, and the review dates are kept. The same correction came up twice: the librarian moved a member's version but kept the old release date, so its federate step should take the date from the release.
+* **Changed**: gist knowledge bundle moved from v0.3.10 to v0.3.13; the release carries `knowledge-v0.3.13-gist-linkml.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: gist knowledge bundle: lmodel/gist released v0.3.13 after the confirmed v0.3.10; does this member move to it?
+* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.55.0 to v0.55.1; the release carries `knowledge-v0.55.1-knowledge-trust-ladder.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.55.1 after the confirmed v0.55.0; does this member move to it?
+* **Changed**: linkml-sidecar Knowledge Bundle moved from v0.0.1 to v0.2.0; the release carries `knowledge-v0.2.0-linkml-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: linkml-sidecar Knowledge Bundle: noelmcloughlin/linkml-sidecar released v0.2.0 after the confirmed v0.0.1; does this member move to it?
+
 ## 2026-10-21
 
 * **Curation**: human:noelmcloughlin confirmed 2 concepts: the new linkml-sidecar member at v0.0.1, admitted under the admission rule with the review date 2027-04-21, and the Knowledge Trust Ladder member's move to v0.55.0, keeping its review date 2027-04-18, after checking each release's checksum, attestation and namespace, and cleared each one's question. Nothing was sent back or retired.

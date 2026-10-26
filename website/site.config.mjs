@@ -19,7 +19,7 @@ export const BASE = "/ktl-federation";
 // description, for search engines and as the home page's tagline when
 // HOME.tagline is not set.
 export const TITLE = "KTL Federation";
-export const DESCRIPTION = "The top domain of the Knowledge Trust Ladder federation: the knowledge bundles it federates, each named by its released zip and confirmed by a person, and the workspace built from them.";
+export const DESCRIPTION = "The domain of the Knowledge Trust Ladder federation: the knowledge bundles it federates, each named by its released zip and confirmed by a person, and the workspace built from them.";
 
 // The branch an "Edit page" link opens.
 export const BRANCH = "main";

@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-10-26
+
 ### Security
 
 - **`.lokf/uv.lock` pins certifi 2026.10.23.** Earlier releases bundle emSign root certificates whose intermediate keys were compromised ([GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2)), which the `lokf` toolkit trusts through `requests`.

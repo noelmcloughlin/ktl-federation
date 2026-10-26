@@ -2,6 +2,10 @@
 
 ## 2026-10-26
 
+* **Changed**: Federation policy: the gate now also stops on a target in a member's namespace that names no concept there, and runs on pull requests, as KTL's docs/federation.md and domain-bundle playbook say since 2026-10-19; neither says the gate keeps the previous workspace, so that clause is gone. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.56.1 after the confirmed v0.55.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+* **Changed**: linkml-sidecar Knowledge Bundle moved from v0.2.0 to v0.3.2, and its namespace from `https://noelmcloughlin.github.io/linkml-sidecar/knowledge/` to `https://w3id.org/ktl/linkml-sidecar/knowledge/`; the release carries `knowledge-v0.3.2-linkml-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: linkml-sidecar Knowledge Bundle: noelmcloughlin/linkml-sidecar released v0.3.2 after the confirmed v0.2.0; does this member move to it?
 * **Changed**: KTL Curator knowledge bundle moved from 1.6.4 to 1.6.9; the release carries `knowledge-1.6.9-obsidian-ktl-curator.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: KTL Curator knowledge bundle: noelmcloughlin/obsidian-ktl-curator released 1.6.9 after the confirmed 1.6.4; does this member move to it?
 * **Changed**: KTL Registrar knowledge bundle moved from 1.7.5 to 1.7.10; the release carries `knowledge-1.7.10-obsidian-ktl-registrar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.

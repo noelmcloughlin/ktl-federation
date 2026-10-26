@@ -3,11 +3,11 @@ type: Policy
 id: https://w3id.org/ktl/federation/knowledge/policies/federation
 genre: reference
 title: Federation policy
-description: What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target no member owns or a bundle two domains name.
+description: What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target that names no member's concept or a bundle two domains name.
 resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-18T23:50:58Z"
+  at: "2026-10-26T17:59:45Z"
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
@@ -45,7 +45,7 @@ A bundle that meets the admission rule may join. Value is a stricter test: reade
 
 ## The gate
 
-The build resolves every typed relation whose target lies outside the asserting bundle's namespace against the federation's registry. The top domain's `unowned_targets` says what happens to a target no member owns: `fail` stops the build and keeps the previous workspace, and `report` lists it and goes on. This domain sets `fail`.
+The build resolves every typed relation whose target lies outside the asserting bundle's namespace against the federation's registry. Under the top domain's `unowned_targets`, `fail` stops the build on a target in no member's namespace, or on one in a member's namespace that names no concept of that member, and `report` lists it and goes on. A pull request's check runs the same gate, so such a link fails before the merge. This domain sets `fail`.
 
 ## The diamond rule
 

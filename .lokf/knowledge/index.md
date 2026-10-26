@@ -22,7 +22,7 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 
 # Policies
 
-* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target no member owns or a bundle two domains name.
+* [Federation policy](policies/federation.md) - What admits a knowledge bundle to this domain, what a member adds, which release a member names, and what the build does with a target that names no member's concept or a bundle two domains name.
 
 # Members
 
@@ -31,4 +31,4 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 * [gist knowledge bundle](members/gist.md) - The bundle of the lmodel/gist repository, a LinkML rendering of Semantic Arts' gist upper ontology, as released at v0.3.13 on 2026-10-23 under the name gist-linkml.
 * [KTL Curator knowledge bundle](members/obsidian-ktl-curator.md) - The bundle of the noelmcloughlin/obsidian-ktl-curator repository as released at 1.6.9 on 2026-10-26.
 * [KTL Registrar knowledge bundle](members/obsidian-ktl-registrar.md) - The bundle of the noelmcloughlin/obsidian-ktl-registrar repository as released at 1.7.10 on 2026-10-26.
-* [linkml-sidecar Knowledge Bundle](members/linkml-sidecar.md) - The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.2.0 on 2026-10-22.
+* [linkml-sidecar Knowledge Bundle](members/linkml-sidecar.md) - The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.3.2 on 2026-10-26.

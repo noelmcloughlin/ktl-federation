@@ -19,6 +19,7 @@ The [domain](https://w3id.org/ktl/federation/knowledge/) is a thin [LOKF](https:
 | KTL Registrar, the Obsidian plugin that keeps a bundle well-formed as you edit it | [w3id.org/ktl/registrar/knowledge](https://w3id.org/ktl/registrar/knowledge/) | [members/obsidian-ktl-registrar](https://w3id.org/ktl/federation/knowledge/members/obsidian-ktl-registrar) |
 | AI-LinkMO, a reference implementation of operational AI governance | [its knowledge pages](https://noelmcloughlin.github.io/ai-linkmo/knowledge/) | [members/ai-linkmo](https://w3id.org/ktl/federation/knowledge/members/ai-linkmo) |
 | gist, a LinkML rendering of Semantic Arts' gist upper ontology, from lmodel | [w3id.org/lmodel/gist/knowledge](https://w3id.org/lmodel/gist/knowledge/) | [members/gist](https://w3id.org/ktl/federation/knowledge/members/gist) |
+| linkml-sidecar, the skills that give a repository a LinkML schema without touching its build | [w3id.org/ktl/linkml-sidecar/knowledge](https://w3id.org/ktl/linkml-sidecar/knowledge/) | [members/linkml-sidecar](https://w3id.org/ktl/federation/knowledge/members/linkml-sidecar) |
 
 Each member concept names its release and checksum, and [the workspace index](https://w3id.org/ktl/federation/workspace/index.md) lists every member's release and health line. [The federation policy](https://w3id.org/ktl/federation/knowledge/policies/federation) says what admits a bundle and what the build does with a link no member owns.
 

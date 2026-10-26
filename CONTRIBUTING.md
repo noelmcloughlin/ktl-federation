@@ -10,7 +10,7 @@ This repository is the domain of the KTL federation: a thin [LOKF](https://lokf.
 
 | Path | Holds |
 | --- | --- |
-| `.lokf/knowledge/` | The domain bundle: `domains/`, `members/`, `policies/`. |
+| `.lokf/knowledge/` | The domain bundle: `domains/`, `members/`, `policies/`, and the `playbooks/`, `datasets/` and `references/` that describe this repository. |
 | `.lokf/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
 | `.lokf/scripts/`, `.github/workflows/` | Copies of the KTL sidecar's templates. Edit them upstream, never here. |
 | `website/` | The site, from the ktl-website templates; `site.config.mjs` is this repository's own. |

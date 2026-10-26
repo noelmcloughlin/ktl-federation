@@ -2,6 +2,7 @@
 
 ## 2026-10-26
 
+* **Curation**: human:noelmcloughlin corrected the domain at `domains/ktl-federation` with plain-English wording: the overview is split into three paragraphs, the `fail` conditions are a list, and each setting is defined before what this domain sets. It now says the domain makes no cross-bundle claim yet, as `docs/architecture.md` does. No fact, link or number changed.
 * **Curation**: human:noelmcloughlin corrected 3 concepts and confirmed 1. The domain now gives the wider `fail` rule, `max_depth`, `sensitivity` and `private_addresses` in `.lokf/domain.yaml`'s words. The gist and Knowledge Trust Ladder members now give their release dates as 2026-10-23 and 2026-10-22. The linkml-sidecar member is confirmed at v0.2.0. All three member questions are cleared, and the review dates are kept. The same correction came up twice: the librarian moved a member's version but kept the old release date, so its federate step should take the date from the release.
 * **Changed**: gist knowledge bundle moved from v0.3.10 to v0.3.13; the release carries `knowledge-v0.3.13-gist-linkml.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: gist knowledge bundle: lmodel/gist released v0.3.13 after the confirmed v0.3.10; does this member move to it?

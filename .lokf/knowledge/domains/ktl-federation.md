@@ -10,7 +10,7 @@ relatedTo:
   - https://w3id.org/ktl/federation/knowledge/policies/federation
 generated:
   by: human:noelmcloughlin
-  at: "2026-10-26T17:27:52Z"
+  at: "2026-10-27T09:59:56Z"
 sources:
   - resource: docs/architecture.md
   - resource: .lokf/domain.yaml
@@ -39,9 +39,11 @@ A domain is a named set of knowledge bundles with one accountable owner. This on
 
 Every domain bounds a workspace of its own. The workspace is the graph built from the members' releases, with one named graph per bundle, named by that bundle's `base_iri`.
 
-The members are the concepts under `members/`. Each is of type `MemberBundle` or `MemberDomain`, and each names one release by its zip and that zip's checksum. Nothing from a member is copied into this bundle, so a member's new release changes nothing here until a person confirms a member concept that names it.
+The members are the concepts under `members/`. Each is of type `MemberBundle` or `MemberDomain`, and each names one release by its zip and that zip's checksum. A file that fails a check stops the job, and the old snapshot stays. Nothing from a member is copied into this bundle, so a member's new release changes nothing here until a person confirms a member concept that names it.
 
 When the owner confirms a member, the confirmation attests two things: that the member belongs under the admission rule in [the federation policy](../policies/federation.md), and that any claim this domain makes across bundles holds. This domain makes no cross-bundle claim yet.
+
+This concept is a `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`.
 
 `unowned_targets` is the build's gate policy. With `fail`, the build stops and keeps the previous workspace when a typed relation in any member has a target that:
 

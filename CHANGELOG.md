@@ -6,6 +6,11 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The domain concept says that a `Domain` carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`, and that a file that fails a check stops the job and the old snapshot stays.** A person corrected it, and it waits for a confirmation.
+- **The federation policy is a draft again.** A person sent it back for the librarian to review against its sources.
+
 ## [0.13.1] - 2026-10-27
 
 ### Security

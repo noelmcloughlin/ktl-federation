@@ -1,5 +1,9 @@
 # Change Log
 
+## 2026-10-27
+
+* **Curation**: human:noelmcloughlin corrected 1 concept (the domain, without a new confirmation) and sent 1 back (the federation policy, to review against its sources).
+
 ## 2026-10-26
 
 * **Curation**: human:noelmcloughlin confirmed 3 concepts (the linkml-sidecar, KTL Curator and KTL Registrar members, at v0.3.2, 1.6.9 and 1.7.10) and corrected 1 (the Knowledge Trust Ladder member, moved to v0.56.1), each against its release, checksum and attestation, and cleared their federate questions.

@@ -23,6 +23,7 @@ verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T23:53:12Z"
 stale_after: 2027-04-18
+status: draft
 ---
 
 # Overview
@@ -65,3 +66,7 @@ KTL's federation page lists the [decisions an adopter must make](https://w3id.or
 - **Pin.** Each member concept names one release, and a person confirms each move. A domain that names this one adds a pin of its own. So a member's release reaches that domain's workspace only after a confirmation and a release here, then a confirmation and a release there.
 - **Who arbitrates.** This domain's owner arbitrates a claim across bundles, by a confirmed concept in this bundle, never by a rewrite of a member.
 - **Permissions.** Every member is a public repository. A bundle that must not be seen whole does not join.
+
+## Open questions
+
+- 2026-10-27, human:noelmcloughlin: review against sources.

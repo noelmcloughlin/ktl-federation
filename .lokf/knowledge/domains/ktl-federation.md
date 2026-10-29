@@ -58,7 +58,3 @@ With `report`, the build lists such a relation and goes on.
 `sensitivity` is the most sensitive member the workspace may hold: public or internal. This domain sets none, so the workspace holds public members only. A person who confirms `internal` clears the workspace to aggregate internal bundles, as section 11.5 of the LOKF specification asks of a registry's owner.
 
 `private_addresses` says whether the build may fetch a member from a private, loopback or link-local address. This domain sets none, so the build refuses. A person confirms `allow` for a forge on the host's own network.
-
-## Open questions
-
-- 2026-10-29, human:noelmcloughlin: refresh against sources.

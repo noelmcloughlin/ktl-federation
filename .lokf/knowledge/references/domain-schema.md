@@ -3,7 +3,7 @@ type: Reference
 id: https://w3id.org/ktl/federation/knowledge/references/domain-schema
 genre: reference
 title: The domain schema
-description: The LinkML schema in .lokf/domain.yaml that adds Domain, MemberBundle, MemberDomain and ReleaseDistribution over LOKF core, so lokf validate checks a member's namespace, release and checksum. Its namespace is KTL's, and a host that needs more classes imports it.
+description: The LinkML schema in .lokf/domain.yaml that adds Domain, MemberBundle, MemberDomain, ReleaseDistribution and ReleaseChecksum over LOKF core, so lokf validate checks a member's namespace, release and checksum. Its namespace is KTL's, and a host that needs more classes imports it.
 resource: .lokf/domain.yaml
 relatedTo:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
@@ -12,20 +12,24 @@ sources:
   - resource: docs/architecture.md
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T18:11:40Z"
+  at: "2026-10-29T11:44:32Z"
 status: draft
+verified:
+  - by: process:ktl-librarian
+    at: "2026-10-29T11:52:21Z"
 ---
 
 # Overview
 
 `.lokf/domain.yaml` is this host's domain schema, a LinkML file that `lokf validate` reads beside LOKF core. The `schema := "domain.yaml"` line of `.lokf/justfile` names it. ktl-sidecar lays it down on a host whose bundle is a domain, beside a pinned copy of `lokf.yaml`.
 
-## The four classes
+## The five classes
 
 - `Domain` is a `Dataset` that is a `dcat:Catalog` of bundles. It carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`, the settings the federation build reads. [The domain concept](../domains/ktl-federation.md) says what each one means and what this domain sets.
 - `MemberBundle` is a `Dataset` that names one released bundle. It requires a `base_iri` and a `distribution`, and carries the `release` page and a `sensitivity`.
 - `MemberDomain` is a `MemberBundle` whose bundle is itself a domain, so a `dcat:Catalog` in turn.
-- `ReleaseDistribution` is LOKF's `Distribution` plus the required `checksum` of the file it names: `sha256:` and 64 lowercase hexadecimal digits.
+- `ReleaseDistribution` is LOKF's `Distribution` with its `checksum` required, so each further distribution, a schema or a workspace, carries a checksum of its own.
+- `ReleaseChecksum` is LOKF's `Checksum`, an `spdx:Checksum`, with sha256 as its only algorithm, since the build stores each file it fetches under its sha256 digest. A member concept writes it as `checksum: {algorithm: sha256, checksum_value: <64 hex digits>}`.
 
 So `lokf validate` checks a member's namespace, release and checksum.
 

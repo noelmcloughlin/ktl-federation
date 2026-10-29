@@ -12,12 +12,14 @@ distribution:
   - name: knowledge-v0.3.13-gist-linkml.zip
     access_url: https://github.com/lmodel/gist/releases/download/v0.3.13/knowledge-v0.3.13-gist-linkml.zip
     media_type: application/zip
-    checksum: sha256:68af621f2bb8ef76fc2e2ed139e1ebd7da31a99f7646acc5b515c3b9f442dcdc
+    checksum:
+      algorithm: sha256
+      checksum_value: 68af621f2bb8ef76fc2e2ed139e1ebd7da31a99f7646acc5b515c3b9f442dcdc
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: human:noelmcloughlin
-  at: "2026-10-26T17:10:01Z"
+  at: "2026-10-29T11:23:18Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T11:41:20Z"
@@ -25,6 +27,8 @@ verified:
     at: "2026-10-19T00:34:46Z"
   - by: human:noelmcloughlin
     at: "2026-10-26T17:10:01Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-29T11:23:18Z"
 stale_after: 2027-04-18
 ---
 

@@ -7,15 +7,16 @@ description: What admits a knowledge bundle to this domain, what a member adds, 
 resource: https://w3id.org/ktl/docs/federation
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T18:11:40Z"
+  at: "2026-10-29T11:44:32Z"
 sources:
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/knowledge/playbooks/domain-bundle
   - resource: https://w3id.org/ktl/docs/context-layer
   - resource: docs/architecture.md
+  - resource: .github/workflows/knowledge-release.yaml
 verified:
   - by: process:ktl-librarian
-    at: "2026-10-18T11:10:08Z"
+    at: "2026-10-29T11:52:21Z"
   - by: human:noelmcloughlin
     at: "2026-10-18T11:43:47Z"
   - by: human:noelmcloughlin
@@ -39,11 +40,11 @@ A knowledge bundle joins this domain when all four hold:
 
 The registry refuses a `base_iri` that nests inside another member's, so no two members' namespaces nest.
 
-A member concept names one release, the newest that carries a zip. A release whose bundle did not change carries no zip.
+A member concept names one release, the newest that carries a zip. A release whose bundle and domain schema are both unchanged carries no zip.
 
 ## What a member adds
 
-A bundle that meets the admission rule may join. Value is a stricter test: readers query across the member, or other members link into it. A domain whose members never link to one another has proved its mechanism, not its worth.
+A bundle that meets the admission rule may join. Value is a stricter test: readers query across the member, or other members link into it. A federation whose members never link to one another has proved its mechanism, not its worth. No member of this domain links into another yet.
 
 ## The gate
 
@@ -51,7 +52,7 @@ The build resolves every typed relation whose target lies outside the asserting 
 
 ## The diamond rule
 
-A member may be a domain in turn, and the build then follows that domain's members into the same workspace. So two domains in one workspace may name the same bundle. When both name the same release, the bundle joins the workspace once, and the lock records both domains. When they name different releases, the build stops, because one named graph holds one release. It stays stopped until the two owners agree on one release and both pin it. A shared model, such as the gist upper ontology, is the ordinary case: every domain whose members link to its terms names it.
+A member may be a domain in turn, and the build then follows that domain's members into the same workspace. So two domains in one workspace may name the same bundle. When both name the same release, the bundle joins the workspace once, and the lock records both domains. When they name different releases, the build stops, because one named graph holds one release. It stays stopped until the two owners agree on one release and both pin it. A shared model, such as the gist upper ontology, is the ordinary case: every sub-domain that links to its terms names it.
 
 ## What a confirmation means
 
@@ -64,9 +65,5 @@ A confirmation is the curator's ordinary confirm, recorded as a `verified` event
 KTL's federation page lists the [decisions an adopter must make](https://w3id.org/ktl/docs/federation/#decisions-an-adopter-must-make). Beside the admission rule and the value test above, this domain's answers are:
 
 - **Pin.** Each member concept names one release, and a person confirms each move. A domain that names this one adds a pin of its own. So a member's release reaches that domain's workspace only after a confirmation and a release here, then a confirmation and a release there.
-- **Who arbitrates.** This domain's owner arbitrates a claim across bundles, by a confirmed concept in this bundle, never by a rewrite of a member.
+- **Who arbitrates.** This domain's owner arbitrates a claim across bundles, by a confirmed concept in this bundle, never by a rewrite of a member. There is no cross-bundle claim yet.
 - **Permissions.** Every member is a public repository. A bundle that must not be seen whole does not join.
-
-## Open questions
-
-- 2026-10-27, human:noelmcloughlin: review against sources.

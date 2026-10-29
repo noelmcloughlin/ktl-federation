@@ -12,12 +12,14 @@ distribution:
   - name: knowledge-v0.4.10-ai-linkmo.zip
     access_url: https://github.com/noelmcloughlin/ai-linkmo/releases/download/v0.4.10/knowledge-v0.4.10-ai-linkmo.zip
     media_type: application/zip
-    checksum: sha256:da995aec2ca1ceda7e4b9390c31023ee6f087d0e7baf8393acd58df61b7ceb14
+    checksum:
+      algorithm: sha256
+      checksum_value: da995aec2ca1ceda7e4b9390c31023ee6f087d0e7baf8393acd58df61b7ceb14
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: process:knowledge-federate
-  at: "2026-10-19T00:16:54Z"
+  at: "2026-10-29T11:13:47Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-16T13:37:53Z"
@@ -25,6 +27,9 @@ verified:
     at: "2026-10-18T11:40:28Z"
   - by: human:noelmcloughlin
     at: "2026-10-19T00:34:01Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-29T11:27:44Z"
+    revision: 'W/"8dc951765d3beab090836e2a42542f52"'
 stale_after: 2027-04-18
 ---
 

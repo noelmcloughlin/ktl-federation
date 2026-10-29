@@ -6,6 +6,12 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The `.lokf` toolkit floor is lokf 0.9.0, and `.lokf/lokf.yaml` is its schema.** Knowledge Trust Ladder's recipes from v0.60.0 pass `--schema` to convert and serve and `--check-excerpts` to check-refs, which lokf 0.8.0 lacks. lokf 0.9.0 reads a bare-date `stale_after` as a datetime, which the 0.8.0 copy rejected.
+- **A member names its checksum as LOKF core's `Checksum`, `{algorithm: sha256, checksum_value: <hex>}`, with the same digest.** The domain schema's own string `checksum` clashed with lokf 0.9.0's, so `lokf convert --schema` failed and a core export wrote each digest as an IRI; `.lokf/domain.yaml` and `knowledge-federate.py` come from Knowledge Trust Ladder's `fix/domain-host-lokf-0-9-0` ahead of its release, the schema takes sha256 alone, and the script reads both forms.
+- **The federation check runs on a pull request that changes `.lokf/lokf.yaml` or `.lokf/justfile`.** It validates against the schema the justfile names, which imports that copy of LOKF core.
+
 ## [0.14.2] - 2026-10-29
 
 ### Security

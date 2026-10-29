@@ -12,17 +12,22 @@ distribution:
   - name: knowledge-1.7.10-obsidian-ktl-registrar.zip
     access_url: https://github.com/noelmcloughlin/obsidian-ktl-registrar/releases/download/1.7.10/knowledge-1.7.10-obsidian-ktl-registrar.zip
     media_type: application/zip
-    checksum: sha256:6dccf45295461345fcaf9986d41618c775d4e64af03cdfd4d7944c7475da0ab7
+    checksum:
+      algorithm: sha256
+      checksum_value: 6dccf45295461345fcaf9986d41618c775d4e64af03cdfd4d7944c7475da0ab7
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: process:knowledge-federate
-  at: "2026-10-26T17:44:28Z"
+  at: "2026-10-29T11:13:47Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T13:29:43Z"
   - by: human:noelmcloughlin
     at: "2026-10-26T18:29:04Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-29T11:30:07Z"
+    revision: 'W/"eb7961186bb678bcc7a94e9a1f6e3557"'
 stale_after: 2027-04-26
 ---
 

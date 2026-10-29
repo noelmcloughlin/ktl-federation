@@ -12,12 +12,14 @@ distribution:
   - name: knowledge-v0.56.1-knowledge-trust-ladder.zip
     access_url: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/download/v0.56.1/knowledge-v0.56.1-knowledge-trust-ladder.zip
     media_type: application/zip
-    checksum: sha256:f9df53cecc84f1a7a6fc4a7456386403052c02b22ed40451e0599f24824a76e3
+    checksum:
+      algorithm: sha256
+      checksum_value: f9df53cecc84f1a7a6fc4a7456386403052c02b22ed40451e0599f24824a76e3
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: human:noelmcloughlin
-  at: "2026-10-26T18:36:03Z"
+  at: "2026-10-29T11:24:14Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T11:42:33Z"
@@ -31,6 +33,8 @@ verified:
     at: "2026-10-26T17:11:28Z"
   - by: human:noelmcloughlin
     at: "2026-10-26T18:36:03Z"
+  - by: human:noelmcloughlin
+    at: "2026-10-29T11:24:14Z"
 stale_after: 2027-04-26
 ---
 

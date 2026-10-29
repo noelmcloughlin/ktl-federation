@@ -244,15 +244,18 @@ EXTERNAL_OK = {"definedBy", "source"}
 # file in the cache, so a checksum of any other form is refused before it
 # is used, or a path in it could reach outside the cache.
 CHECKSUM = re.compile(r"^sha256:[0-9a-fA-F]{64}$")
+GITHUB_RELEASE = re.compile(
+    r"^https://github\.com/(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)/releases/download/(?P<tag>[^/]+)/(?P<asset>[^/]+)$"
+)
 
 
 def named_digest(checksum) -> str:
     """The sha256 digest a distribution's checksum names, lowercase, or "" when it names none.
 
     LOKF 0.9.0 writes a checksum as {algorithm: sha256, checksum_value:
-    <hex>}. A member domain released before then still names the string
-    sha256:<hex> in its member concepts, which the build follows, so both
-    forms are read.
+    <hex>}. A member domain released before then names the string
+    sha256:<hex> in its member concepts. The build still follows those
+    concepts, so it reads both forms.
     """
     if isinstance(checksum, dict):
         checksum = f"{checksum.get('algorithm')}:{checksum.get('checksum_value')}"
@@ -263,9 +266,6 @@ def named_digest(checksum) -> str:
 def sha256_checksum(sha: str) -> dict:
     """A distribution's checksum as LOKF 0.9.0 writes it."""
     return {"algorithm": "sha256", "checksum_value": sha}
-GITHUB_RELEASE = re.compile(
-    r"^https://github\.com/(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)/releases/download/(?P<tag>[^/]+)/(?P<asset>[^/]+)$"
-)
 
 
 class Failed(Exception):
@@ -423,7 +423,7 @@ class Member:
             self.repo = None
 
     def further_digest(self, dist: dict, what: str, name: str) -> str:
-        """The sha256 digest a further distribution's checksum gives, which must name one as the zip's does."""
+        """The sha256 digest a further distribution's checksum names. Like the zip's checksum, it must name one."""
         sha = named_digest(dist.get("checksum"))
         if not sha:
             raise Failed(f"{self.concept_path}: the {what} distribution {name} needs a checksum naming a sha256 digest of 64 hex digits, not {dist.get('checksum')!r}")

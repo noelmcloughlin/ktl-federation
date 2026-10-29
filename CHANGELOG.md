@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.14.3] - 2026-10-29
+
 ### Changed
 
 - **The `.lokf` toolkit floor is lokf 0.9.0, and `.lokf/lokf.yaml` is its schema.** Knowledge Trust Ladder's recipes from v0.60.0 pass `--schema` to convert and serve and `--check-excerpts` to check-refs, which lokf 0.8.0 lacks. lokf 0.9.0 reads a bare-date `stale_after` as a datetime, which the 0.8.0 copy rejected.

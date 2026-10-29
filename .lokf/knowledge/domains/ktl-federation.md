@@ -17,7 +17,7 @@ sources:
   - resource: https://w3id.org/ktl/docs/federation
 verified:
   - by: process:ktl-librarian
-    at: "2026-10-18T11:10:08Z"
+    at: "2026-10-29T11:52:21Z"
   - by: human:noelmcloughlin
     at: "2026-10-18T11:43:05Z"
   - by: human:noelmcloughlin

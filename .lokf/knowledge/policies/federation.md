@@ -16,7 +16,7 @@ sources:
   - resource: .github/workflows/knowledge-release.yaml
 verified:
   - by: process:ktl-librarian
-    at: "2026-10-18T11:10:08Z"
+    at: "2026-10-29T11:52:21Z"
   - by: human:noelmcloughlin
     at: "2026-10-18T11:43:47Z"
   - by: human:noelmcloughlin

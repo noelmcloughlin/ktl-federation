@@ -2,6 +2,7 @@
 
 ## 2026-10-29
 
+* **Curation**: human:noelmcloughlin corrected 2 concepts (the gist and Knowledge Trust Ladder members, whose checksums now take LOKF core's `Checksum` form with the same digests), and the corrections confirm both.
 * **Changed**: AI-LinkMO knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Changed**: linkml-sidecar Knowledge Bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Changed**: KTL Curator knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.

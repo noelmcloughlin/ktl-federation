@@ -12,12 +12,14 @@ distribution:
   - name: knowledge-1.6.9-obsidian-ktl-curator.zip
     access_url: https://github.com/noelmcloughlin/obsidian-ktl-curator/releases/download/1.6.9/knowledge-1.6.9-obsidian-ktl-curator.zip
     media_type: application/zip
-    checksum: sha256:055e785e3d4af81df4742559c4241baf2e640161d2d5158f60860299c73067c4
+    checksum:
+      algorithm: sha256
+      checksum_value: 055e785e3d4af81df4742559c4241baf2e640161d2d5158f60860299c73067c4
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: process:knowledge-federate
-  at: "2026-10-26T17:44:28Z"
+  at: "2026-10-29T11:13:47Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-18T13:28:22Z"

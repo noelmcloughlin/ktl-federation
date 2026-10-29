@@ -1,5 +1,12 @@
 # Change Log
 
+## 2026-10-29
+
+* **Changed**: AI-LinkMO knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Changed**: linkml-sidecar Knowledge Bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Changed**: KTL Curator knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Changed**: KTL Registrar knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.
+
 ## 2026-10-27
 
 * **Curation**: human:noelmcloughlin corrected 1 concept (the domain, without a new confirmation) and sent 1 back (the federation policy, to review against its sources).

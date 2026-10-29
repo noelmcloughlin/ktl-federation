@@ -2,6 +2,9 @@
 
 ## 2026-10-29
 
+* **Changed**: The domain schema names five classes, since `.lokf/domain.yaml` adds `ReleaseChecksum`, LOKF core's checksum with sha256 as its only algorithm, in place of the `sha256:<hex>` string.
+* **Changed**: The KTL federation domain, refreshed against its sources as a person asked: a member's checksum is its zip's SHA-256 checksum, and KTL's federation page adds that a domain at the last tier stops the build and that a domain may not name itself or one above it. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Changed**: Federation policy, reviewed against its sources as a person asked: a release carries no zip only when both its bundle and its domain schema are unchanged, as the release workflow says since v0.59.0; no member links into another yet; there is no cross-bundle claim yet; and the diamond rule's wording follows KTL's federation page. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Curation**: human:noelmcloughlin sent 1 concept back (the domain, to refresh against its sources, with its text released to the librarian) and left 1 for later (the federation policy, still a draft).
 * **Curation**: human:noelmcloughlin confirmed 4 concepts (the AI-LinkMO, linkml-sidecar, KTL Curator and KTL Registrar members, whose checksums the pen moved to LOKF core's `Checksum` form with the same digests).
 * **Curation**: human:noelmcloughlin corrected 2 concepts (the gist and Knowledge Trust Ladder members, whose checksums now take LOKF core's `Checksum` form with the same digests), and the corrections confirm both.

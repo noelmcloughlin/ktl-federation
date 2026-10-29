@@ -2,6 +2,7 @@
 
 ## 2026-10-29
 
+* **Curation**: human:noelmcloughlin sent 1 concept back (the domain, to refresh against its sources, with its text released to the librarian) and left 1 for later (the federation policy, still a draft).
 * **Curation**: human:noelmcloughlin confirmed 4 concepts (the AI-LinkMO, linkml-sidecar, KTL Curator and KTL Registrar members, whose checksums the pen moved to LOKF core's `Checksum` form with the same digests).
 * **Curation**: human:noelmcloughlin corrected 2 concepts (the gist and Knowledge Trust Ladder members, whose checksums now take LOKF core's `Checksum` form with the same digests), and the corrections confirm both.
 * **Changed**: AI-LinkMO knowledge bundle names its checksum as LOKF core's `Checksum`; the digest is the same. Edited since a person confirmed it; the label says so until the curator looks again.

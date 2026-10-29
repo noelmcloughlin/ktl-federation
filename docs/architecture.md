@@ -6,7 +6,7 @@ This page says what this repository holds, how its domain stays current, and how
 
 KTL sets out the design on two pages. [The curated context layer](https://w3id.org/ktl/docs/context-layer/) says what a context layer is, why one bundle is already one repository's layer, and why KTL federates bundles through domains. [A federation of bundles](https://w3id.org/ktl/docs/federation/) says how a domain names bundles and other domains, how the workspace is built and kept current, and what an adopter decides. Section 11 of [the LOKF specification](https://lokf.nolan-nichols.com/specification/), "Federation: registries of bundles", supplies the registry and the routing.
 
-This repository is the first domain host. Its members are KTL's bundle, the bundles of the KTL Curator and KTL Registrar plugins for Obsidian, the bundle of KTL's reference host ai-linkmo, and the bundle of lmodel's gist.
+This repository is the first domain host. Its members are KTL's bundle, the bundles of the KTL Curator and KTL Registrar plugins for Obsidian, the bundle of KTL's reference host ai-linkmo, the bundle of lmodel's gist, and the bundle of the linkml-sidecar skills.
 
 The figure reads from the bottom up. Each member releases its bundle from its own repository. This domain names one release of each, and its builds turn those releases into the workspace, the domain's context layer, which readers query.
 
@@ -31,7 +31,7 @@ A person's confirmation of a member attests two things only: that the member bel
 
 The domain's `base_iri` is `https://w3id.org/ktl/federation/knowledge/`. It sits beside KTL's own namespace, never above it, since the registry refuses a `base_iri` nested inside another and routes an IRI to its owner by the longest matching namespace. `https://w3id.org/ktl/federation/` itself is the site, with the workspace under it.
 
-`.lokf/domain.yaml` is the domain schema. It declares four classes over LOKF core: `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`; `MemberBundle`; `MemberDomain`; and `ReleaseDistribution`, which carries the zip's checksum. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
+`.lokf/domain.yaml` is the domain schema. It declares five classes over LOKF core: `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`; `MemberBundle`; `MemberDomain`; `ReleaseDistribution`, which requires the checksum of the file it names; and `ReleaseChecksum`, LOKF core's checksum with sha256 as its only algorithm. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
 
 ## What is here
 

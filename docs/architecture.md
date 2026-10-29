@@ -13,7 +13,7 @@ The figure reads from the bottom up. Each member releases its bundle from its ow
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="../.assets/ktl-federation-context-layer-dark.svg">
-    <img src="../.assets/ktl-federation-context-layer.svg" alt="Drawn bottom to top: five member bundles, Knowledge Trust Ladder, KTL Curator, KTL Registrar, AI-LinkMO and gist, each on its own trust ladder and released to GitHub Releases as a zip with its checksum and attestation; the domain, this repository's bundle, whose members/ concepts name one release each, whose domains/ktl-federation is where the build starts, and whose policies/federation says what admits a bundle, what a member adds and the diamond rule; the workspace, one named graph per member, built on each release of the domain; and, at the top, the readers." width="720" />
+    <img src="../.assets/ktl-federation-context-layer.svg" alt="Drawn bottom to top: six member bundles, Knowledge Trust Ladder, KTL Curator, KTL Registrar, AI-LinkMO, gist and linkml-sidecar, each on its own trust ladder and released to GitHub Releases as a zip with its checksum and attestation; the domain, this repository's bundle, whose members/ concepts name one release each, whose domains/ktl-federation is where the build starts, and whose policies/federation says what admits a bundle, what a member adds and the diamond rule; the workspace, one named graph per member, built on each release of the domain; and, at the top, the readers." width="720" />
   </picture>
 </p>
 

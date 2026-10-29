@@ -7,13 +7,13 @@
     "quality_profile": "showcase",
     "locale": "en",
     "translations": {
-      "diagram.description.architecture": "Bottom to top. Five member bundles, each on its own trust ladder, release from their own repositories to GitHub Releases. The domain, this repository's bundle, names one release of each in members/, beside domains/ktl-federation and policies/federation. Each release of the domain builds the workspace, one named graph per member, with no agent, and readers start from its index.md."
+      "diagram.description.architecture": "Bottom to top. Six member bundles, each on its own trust ladder, release from their own repositories to GitHub Releases. The domain, this repository's bundle, names one release of each in members/, beside domains/ktl-federation and policies/federation. Each release of the domain builds the workspace, one named graph per member, with no agent, and readers start from its index.md."
     },
     "repository": {
       "url": "https://github.com/noelmcloughlin/ktl-federation.git",
       "provider": "github",
       "link_mode": "web",
-      "revision": "7059e8d1658a4685355642f16cf799a60256fd3d"
+      "revision": "0922578401564e928a54afbb1dcc9feff06ff4c0"
     },
     "legend": {
       "entries": {
@@ -28,33 +28,33 @@
   "components": [
     { "id": "readers", "type": "frontend", "label": "Readers", "sublabel": "agents through MCP, SPARQL clients, people on the site", "pos": [40, 40], "size": [690, 60],
       "sources": [
-        { "path": "docs/architecture.md", "line": 78, "label": "serve and the lokf-registry MCP server" },
-        { "path": "docs/architecture.md", "line": 64, "label": "the site serves the workspace" }
+        { "path": "docs/architecture.md", "line": 80, "label": "serve and the lokf-registry MCP server" },
+        { "path": "docs/architecture.md", "line": 66, "label": "the site serves the workspace" }
       ] },
     { "id": "workspace", "type": "security", "label": "The workspace", "sublabel": "one named graph per member, plus the lock", "tag": "no agent", "pos": [40, 180], "size": [690, 64],
       "sources": [
-        { "path": "docs/architecture.md", "line": 55, "end_line": 62, "label": "resolve, verify, register, load, gate, swap" },
-        { "path": ".github/workflows/knowledge-federation.yaml", "line": 3, "end_line": 9, "label": "builds it; runs no agent" }
+        { "path": "docs/architecture.md", "line": 57, "end_line": 64, "label": "resolve, verify, register, load, gate, swap" },
+        { "path": ".github/workflows/knowledge-federation.yaml", "line": 3, "end_line": 10, "label": "builds it; runs no agent" }
       ] },
     { "id": "members_dir", "type": "external", "label": "members/", "sublabel": "one release per member", "pos": [40, 360], "size": [170, 64],
       "sources": [
-        { "path": "docs/architecture.md", "line": 25, "label": "one concept per member" },
+        { "path": "docs/architecture.md", "line": 27, "label": "one concept per member" },
         { "path": ".lokf/knowledge/members/knowledge-trust-ladder.md", "line": 9, "end_line": 15, "label": "a release, its zip and checksum" }
       ] },
     { "id": "domain", "type": "external", "label": "domains/ktl-federation", "sublabel": "where this build starts", "pos": [300, 360], "size": [170, 64],
       "sources": [
         { "path": ".lokf/knowledge/domains/ktl-federation.md", "line": 5, "end_line": 8, "label": "the domain; unowned_targets: fail" },
-        { "path": "docs/architecture.md", "line": 24, "label": "no max_depth set, so three tiers" }
+        { "path": "docs/architecture.md", "line": 26, "label": "no max_depth set, so three tiers" }
       ] },
     { "id": "policy", "type": "external", "label": "policies/federation", "sublabel": "what admits a bundle", "pos": [560, 360], "size": [170, 64],
       "sources": [
         { "path": ".lokf/knowledge/policies/federation.md", "line": 5, "end_line": 6, "label": "the federation policy" },
-        { "path": "docs/architecture.md", "line": 26, "label": "admission, value, release, gate" }
+        { "path": "docs/architecture.md", "line": 28, "label": "admission, value, release, gate" }
       ] },
     { "id": "releases", "type": "cloud", "label": "GitHub Releases", "sublabel": "a zip, its .sha256 and an attestation", "pos": [40, 520], "size": [690, 64],
       "sources": [
         { "path": "docs/architecture.md", "line": 11, "label": "each member releases from its repository" },
-        { "path": "docs/architecture.md", "line": 58, "label": "checksum and attestation verified" }
+        { "path": "docs/architecture.md", "line": 60, "label": "checksum and attestation verified" }
       ] },
     { "id": "m_ktl", "type": "backend", "label": "Knowledge Trust Ladder", "sublabel": "w3id.org/ktl/knowledge/", "pos": [40, 680], "size": [170, 64],
       "sources": [ { "path": ".lokf/knowledge/members/knowledge-trust-ladder.md", "line": 5, "end_line": 8, "label": "the member concept" } ] },
@@ -62,10 +62,12 @@
       "sources": [ { "path": ".lokf/knowledge/members/obsidian-ktl-curator.md", "line": 5, "end_line": 8, "label": "the member concept" } ] },
     { "id": "m_registrar", "type": "backend", "label": "KTL Registrar", "sublabel": "w3id.org/ktl/registrar/knowledge/", "pos": [560, 680], "size": [170, 64],
       "sources": [ { "path": ".lokf/knowledge/members/obsidian-ktl-registrar.md", "line": 5, "end_line": 8, "label": "the member concept" } ] },
-    { "id": "m_linkmo", "type": "backend", "label": "AI-LinkMO", "sublabel": "operational AI governance", "pos": [170, 820], "size": [170, 64],
+    { "id": "m_linkmo", "type": "backend", "label": "AI-LinkMO", "sublabel": "operational AI governance", "pos": [40, 820], "size": [170, 64],
       "sources": [ { "path": ".lokf/knowledge/members/ai-linkmo.md", "line": 5, "end_line": 8, "label": "the member concept" } ] },
-    { "id": "m_gist", "type": "backend", "label": "gist", "sublabel": "w3id.org/lmodel/gist/knowledge/", "pos": [430, 820], "size": [170, 64],
-      "sources": [ { "path": ".lokf/knowledge/members/gist.md", "line": 5, "end_line": 8, "label": "the member concept" } ] }
+    { "id": "m_gist", "type": "backend", "label": "gist", "sublabel": "w3id.org/lmodel/gist/knowledge/", "pos": [300, 820], "size": [170, 64],
+      "sources": [ { "path": ".lokf/knowledge/members/gist.md", "line": 5, "end_line": 8, "label": "the member concept" } ] },
+    { "id": "m_linkml_sidecar", "type": "backend", "label": "linkml-sidecar", "sublabel": "w3id.org/ktl/linkml-sidecar/knowledge/", "pos": [560, 820], "size": [170, 64],
+      "sources": [ { "path": ".lokf/knowledge/members/linkml-sidecar.md", "line": 5, "end_line": 8, "label": "the member concept" } ] }
   ],
   "boundaries": [
     { "kind": "region", "label": "The domain: this repository's bundle", "wraps": ["members_dir", "domain", "policy"] }
@@ -76,6 +78,7 @@
     { "id": "registrar-release", "from": "m_registrar", "to": "releases" },
     { "id": "linkmo-release", "from": "m_linkmo", "to": "releases" },
     { "id": "gist-release", "from": "m_gist", "to": "releases" },
+    { "id": "linkml-sidecar-release", "from": "m_linkml_sidecar", "to": "releases" },
     { "id": "releases-members", "from": "releases", "to": "members_dir", "label": "named by checksum" },
     { "id": "members-domain", "from": "members_dir", "to": "domain", "label": "isPartOf" },
     { "id": "domain-policy", "from": "domain", "to": "policy", "label": "relatedTo" },

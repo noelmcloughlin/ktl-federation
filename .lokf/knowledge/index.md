@@ -27,11 +27,11 @@ This bundle is the domain of the Knowledge Trust Ladder (KTL) federation. Its co
 # Members
 
 * [Knowledge Trust Ladder knowledge bundle](members/knowledge-trust-ladder.md) - The bundle of the knowledge-trust-ladder repository, which publishes the KTL skills, as released at v0.56.1 on 2026-10-26.
-* [AI-LinkMO knowledge bundle](members/ai-linkmo.md) - The bundle of the ai-linkmo repository, a reference implementation of operational AI governance over open AI-governance data, as released at v0.4.10 on 2026-10-19.
+* [AI-LinkMO knowledge bundle](members/ai-linkmo.md) - The bundle of the ai-linkmo repository, a reference implementation of operational AI governance over open AI-governance data, as released at v0.6.0 on 2026-10-27.
 * [gist knowledge bundle](members/gist.md) - The bundle of the lmodel/gist repository, a LinkML rendering of Semantic Arts' gist upper ontology, as released at v0.3.13 on 2026-10-23 under the name gist-linkml.
 * [KTL Curator knowledge bundle](members/obsidian-ktl-curator.md) - The bundle of the noelmcloughlin/obsidian-ktl-curator repository as released at 1.6.9 on 2026-10-26.
 * [KTL Registrar knowledge bundle](members/obsidian-ktl-registrar.md) - The bundle of the noelmcloughlin/obsidian-ktl-registrar repository as released at 1.7.10 on 2026-10-26.
-* [linkml-sidecar Knowledge Bundle](members/linkml-sidecar.md) - The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.3.2 on 2026-10-26.
+* [linkml-sidecar Knowledge Bundle](members/linkml-sidecar.md) - The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.4.0 on 2026-11-01.
 
 # Playbooks
 

@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The `.lokf` toolkit pins just 1.59.0, up from 1.47.0.** `just lokf-validate` and `just lokf-check-refs` pass under it.
+
 ## [0.15.0] - 2026-11-07
 
 ### Changed

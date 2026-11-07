@@ -3,23 +3,23 @@ type: MemberBundle
 id: https://w3id.org/ktl/federation/knowledge/members/linkml-sidecar
 genre: reference
 title: linkml-sidecar Knowledge Bundle
-description: The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.3.2 on 2026-10-26.
-resource: https://github.com/noelmcloughlin/linkml-sidecar/releases/tag/v0.3.2
+description: The bundle of the noelmcloughlin/linkml-sidecar repository as released at v0.4.0 on 2026-11-01.
+resource: https://github.com/noelmcloughlin/linkml-sidecar/releases/tag/v0.4.0
 base_iri: https://w3id.org/ktl/linkml-sidecar/knowledge/
-version: v0.3.2
-release: https://github.com/noelmcloughlin/linkml-sidecar/releases/tag/v0.3.2
+version: v0.4.0
+release: https://github.com/noelmcloughlin/linkml-sidecar/releases/tag/v0.4.0
 distribution:
-  - name: knowledge-v0.3.2-linkml-sidecar.zip
-    access_url: https://github.com/noelmcloughlin/linkml-sidecar/releases/download/v0.3.2/knowledge-v0.3.2-linkml-sidecar.zip
+  - name: knowledge-v0.4.0-linkml-sidecar.zip
+    access_url: https://github.com/noelmcloughlin/linkml-sidecar/releases/download/v0.4.0/knowledge-v0.4.0-linkml-sidecar.zip
     media_type: application/zip
     checksum:
       algorithm: sha256
-      checksum_value: c74a1b4baae9997e1a61c5293e7380df435dee13ee9015e9724d7e70549996b5
+      checksum_value: 486605dfcc4adf9f5e47a55930215c0ddfdb96beb0088b57e1eef81b8975af9a
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
   by: process:knowledge-federate
-  at: "2026-10-29T11:13:47Z"
+  at: "2026-11-02T13:17:06Z"
 verified:
   - by: human:noelmcloughlin
     at: "2026-10-21T23:19:11Z"
@@ -29,10 +29,15 @@ verified:
     at: "2026-10-26T18:29:04Z"
   - by: human:noelmcloughlin
     at: "2026-10-29T11:28:13Z"
-    revision: 'W/"86d3df74bb848e94e2e134f7de08a0a3"'
+    revision: W/"86d3df74bb848e94e2e134f7de08a0a3"
 stale_after: 2027-04-26
+status: draft
 ---
 
 # Overview
 
-This member is the knowledge bundle of [noelmcloughlin/linkml-sidecar](https://github.com/noelmcloughlin/linkml-sidecar). The description in its own index reads "Two Agent Skills that give a code repository a LinkML data model as a sidecar: linkml-sidecar installs a hidden .linkml/ project from linkml-project-copier without touching the host's build, and linkml-author turns its dummy schema into the real model and keeps it generated, documented and tested." It was released at v0.3.2 on 2026-10-26, and the release workflow attached the bundle as `knowledge-v0.3.2-linkml-sidecar.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/linkml-sidecar/knowledge/`.
+This member is the knowledge bundle of [noelmcloughlin/linkml-sidecar](https://github.com/noelmcloughlin/linkml-sidecar). The description in its own index reads "Two Agent Skills that give a code repository a LinkML data model as a sidecar: linkml-sidecar installs a hidden .linkml/ project from linkml-project-copier without touching the host's build, and linkml-author turns its dummy schema into the real model and keeps it generated, documented and tested." It was released at v0.4.0 on 2026-11-01, and the release workflow attached the bundle as `knowledge-v0.4.0-linkml-sidecar.zip`, with a `.sha256` file and a build attestation. Its concepts are in the namespace `https://w3id.org/ktl/linkml-sidecar/knowledge/`.
+
+## Open questions
+
+- 2026-11-02, process:knowledge-federate: noelmcloughlin/linkml-sidecar released v0.4.0 after the confirmed v0.3.2; does this member move to it?

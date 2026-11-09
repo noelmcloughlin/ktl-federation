@@ -46,3 +46,4 @@ This member is the knowledge bundle of [knowledge-trust-ladder](https://github.c
 ## Open questions
 
 - 2026-11-02, process:knowledge-federate: noelmcloughlin/knowledge-trust-ladder released v0.60.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+- 2026-11-09, process:knowledge-federate: noelmcloughlin/knowledge-trust-ladder released v0.61.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.

@@ -23,7 +23,7 @@ concurrency:
 jobs:
   lint-scripts:
     name: Lint shell scripts
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.KNOWLEDGE_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
     steps:
@@ -40,7 +40,7 @@ jobs:
 
   lint-workflows:
     name: Lint GitHub Actions workflows
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.KNOWLEDGE_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
     steps:
@@ -59,7 +59,7 @@ jobs:
 
   validate-markdown:
     name: Lint Markdown & check links
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.KNOWLEDGE_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
     steps:
@@ -74,7 +74,25 @@ jobs:
         with:
           globs: '**/*.md'
           config: .markdownlint-cli2.jsonc
+      # lychee retries a timeout or a 429, never a failed connection, so a
+      # minute in which the runner reaches no network fails every link it
+      # was checking. A failed first pass waits a minute and checks every
+      # link again; only the second pass fails the job, so a dead link still
+      # does.
       - name: Check links
+        id: links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress "**/*.md"
+          fail: false
+          jobSummary: false
+
+      - name: Wait before checking the links again
+        if: steps.links.outputs.exit_code != '0'
+        run: sleep 60
+
+      - name: Check links again
+        if: steps.links.outputs.exit_code != '0'
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           args: --no-progress "**/*.md"

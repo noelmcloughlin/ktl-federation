@@ -1,3 +1,17 @@
+# A failed request is retried with a wait that grows each time, so a
+# host that answers a burst with 503 (github.com, below) has time to
+# recover before the link is declared dead. A failed connection is not
+# retried here; lint-and-docs.yaml checks the links a second time instead.
+max_retries = 3
+retry_wait_time = 5
+
+# A copy of this repository in a private organisation adds that
+# organisation's addresses to this list, such as
+# '^https://github\.com/<org>/' and '^https://raw\.githubusercontent\.com/<org>/'.
+# GitHub answers 404 to a link checker for every private page, and the
+# workflow's token reads this repository alone. A page that a proxy
+# answers with 403 or a sign-in page goes here too, by its host, rather
+# than as an accepted status, which would pass a block page as a link.
 exclude = [
   # LOKF's published JSON-LD context; upstream's identifier, not this
   # repository's, currently 404s. Drop once the w3id.org redirect is registered.
@@ -17,7 +31,7 @@ exclude = [
 # while raw.githubusercontent.com serves the same files. A missing file still
 # answers 404 there, so the check stays real.
 remap = [
-  '^https://github\.com/([^/]+)/([^/]+)/blob/(.+)$ https://raw.githubusercontent.com/$1/$2/$3',
+  '^https://github\.com/([^/]+/[^/]+)/blob/([^?#]+)([?#].*)?$ https://raw.githubusercontent.com/$1/$2',
 ]
 
 exclude_path = [
@@ -30,3 +44,10 @@ exclude_path = [
   # federation workflow builds it afresh from the members' releases.
   "^snapshot/",
 ]
+
+# The rest of github.com answers a burst of requests from one runner with
+# 503. Pace the requests to it rather than exclude it, so a moved or
+# deleted page still fails.
+[hosts."github.com"]
+concurrency = 2
+request_interval = "250ms"

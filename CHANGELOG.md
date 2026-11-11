@@ -6,6 +6,12 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Fixed
+
+- **The link check tries again before it fails.** It retries a request, paces github.com and checks the links a second time a minute later, as Knowledge Trust Ladder's does, and `lychee.toml` says where a private organisation excludes its own addresses.
+- **semantic-release installs from a lockfile, with the Conventional Commits preset.** `.github/release/package-lock.json` pins every package, and a `!` now marks a breaking change, as the release check already read it.
+- **`KNOWLEDGE_RUNNER` names the runner the lint and release jobs run on**, `ubuntu-latest` unless set.
+
 ## [0.16.0] - 2026-11-07
 
 ### Changed

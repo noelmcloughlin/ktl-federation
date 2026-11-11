@@ -30,3 +30,14 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: "development"
+
+  # The release tools semantic-release.yml installs with npm ci.
+  - package-ecosystem: "npm"
+    directory: "/.github/release"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(release-tools)"
+    groups:
+      release-tools:
+        patterns: ["*"]

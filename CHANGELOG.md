@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-12
+
 ### Changed
 
 - **The linkml-sidecar member names its v0.5.1 bundle release, and the Knowledge Trust Ladder member asks whether it moves past v0.56.1 to v0.61.0.** The zip's checksum and attestation were verified, and a person's confirmation admits the move.

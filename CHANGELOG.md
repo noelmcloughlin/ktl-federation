@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The linkml-sidecar member names its v0.5.1 bundle release, and the Knowledge Trust Ladder member asks whether it moves past v0.56.1 to v0.61.0.** The zip's checksum and attestation were verified, and a person's confirmation admits the move.
+
 ### Fixed
 
 - **The link check tries again before it fails.** It retries a request, paces github.com and checks the links a second time a minute later, as Knowledge Trust Ladder's does, and `lychee.toml` says where a private organisation excludes its own addresses.

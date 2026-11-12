@@ -1,5 +1,11 @@
 # Change Log
 
+## 2026-11-09
+
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.61.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+* **Changed**: linkml-sidecar Knowledge Bundle moved from v0.4.0 to v0.5.1; the release carries `knowledge-v0.5.1-linkml-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: linkml-sidecar Knowledge Bundle: noelmcloughlin/linkml-sidecar released v0.5.1 after v0.4.0; does this member move to it?
+
 ## 2026-11-02
 
 * **Changed**: AI-LinkMO knowledge bundle moved from v0.4.10 to v0.6.0; the release carries `knowledge-v0.6.0-ai-linkmo.zip`. Edited since a person confirmed it; the label says so until the curator looks again.

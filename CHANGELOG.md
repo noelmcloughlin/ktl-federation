@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Security
+
+- **The sidecar copies and the skills pin are at Knowledge Trust Ladder [v0.64.0](https://github.com/noelmcloughlin/knowledge-trust-ladder/compare/v0.61.0...v0.64.0).** The release changed `.lokf/scripts/knowledge-librarian.sh`, `.lokf/scripts/knowledge-conventions.sh`, `.lokf/scripts/knowledge-conventions.py`, `.lokf/scripts/knowledge-preflight.sh`, `.lokf/scripts/knowledge-provenance.sh`, `.lokf/scripts/knowledge-feedback.sh`, `.lokf/scripts/knowledge-apply.sh`, `.lokf/scripts/knowledge-apply.py`, `.lokf/scripts/knowledge-report.sh`, `.lokf/scripts/knowledge-federate.py`, `.lokf/scripts/knowledge-sync.sh`, `.lokf/schema/domain.yaml`, `.lokf/m365/knowledge-m365.sh`, `.lokf/m365/ktl-docent-m365.md`, `.lokf/.gitignore` and `.lokf/justfile` here. The sync also wrote the template over a local edit of `.github/workflows/knowledge-registrar.yaml`, `.github/workflows/knowledge-librarian.yaml`, `.github/workflows/knowledge-release.yaml`, `.github/workflows/knowledge-federation.yaml` and `.github/workflows/knowledge-sync.yaml`.
+
 ## [0.17.1] - 2026-11-15
 
 ### Changed

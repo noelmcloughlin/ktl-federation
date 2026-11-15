@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The gist and Knowledge Trust Ladder members name their v0.7.2 and v0.65.0 bundle releases.** Each zip's checksum and attestation were verified, and a person's confirmation admits each move.
+
 ## [0.17.4] - 2026-11-15
 
 ### Security

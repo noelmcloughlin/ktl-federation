@@ -6,9 +6,23 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-11-15
+
+### Changed
+
+- **The gist and Knowledge Trust Ladder members name their v0.7.2 and v0.65.0 bundle releases.** Each zip's checksum and attestation were verified, and a person's confirmation admits each move.
+
+## [0.17.4] - 2026-11-15
+
 ### Security
 
 - **The sidecar copies and the skills pin are at Knowledge Trust Ladder [v0.65.0](https://github.com/noelmcloughlin/knowledge-trust-ladder/compare/v0.64.0...v0.65.0).** The release changed `.github/workflows/knowledge-librarian.yaml`, `.github/workflows/knowledge-release.yaml`, `.github/workflows/knowledge-federation.yaml`, `.github/workflows/knowledge-sync.yaml`, `.github/PULL_REQUEST_TEMPLATE/knowledge-sync.md`, `.lokf/scripts/knowledge-preflight.sh`, `.lokf/scripts/knowledge-federate.py` and `.lokf/scripts/knowledge-sync.sh` here.
+
+## [0.17.3] - 2026-11-15
+
+### Fixed
+
+- **The site at `https://w3id.org/ktl/federation/` is back, rebuilt with Hugo from the ktl-website templates.** Since the v0.64.0 sync the federation workflow builds only a Hugo site, so it deployed the workspace with no pages; `website/site.toml` now holds the old Astro site's address, title and description.
 
 ## [0.17.2] - 2026-11-15
 

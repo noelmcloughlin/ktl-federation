@@ -2,6 +2,10 @@
 
 ## 2026-11-15
 
+* **Curation**: 2 confirmed by a person (gist knowledge bundle at v0.7.2, Knowledge Trust Ladder knowledge bundle at v0.65.0), 0 sent back, 0 corrected, 0 retired; review dates set to 2027-05-15.
+* **Changed**: gist knowledge bundle moved from v0.3.13 to v0.7.2; the release carries `knowledge-v0.7.2-gist-linkml.zip`.
+* **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.56.1 to v0.65.0; the release carries `knowledge-v0.65.0-knowledge-trust-ladder.zip`. Its open questions on v0.60.0 and v0.61.0 are cleared.
+* **Changed**: The knowledge website playbook and the knowledge sources describe the Hugo site that replaced the Astro one in `website/`, set by `website/site.toml`.
 * **Changed**: linkml-sidecar Knowledge Bundle moved from v0.5.1 to v0.6.0; the release carries `knowledge-v0.6.0-schema-sidecar.zip`. Its namespace moved to `https://w3id.org/lmodel/schema-sidecar/knowledge/`. Edited since a person confirmed it; the label says so until the curator looks again.
 * **Open question**: schema-sidecar Knowledge Bundle: lmodel/schema-sidecar released v0.6.0 after v0.5.1; does this member move to it? Its namespace moves from <https://w3id.org/ktl/linkml-sidecar/knowledge/> to <https://w3id.org/lmodel/schema-sidecar/knowledge/>, so each of its concepts has a new IRI, and the gate counts a link into the old one as unowned. Before confirming, check that the new namespace belongs to this member.
 * **Changed**: The domain schema, the domain and the knowledge sources cite `.lokf/schema/domain.yaml`, where the schema now sits beside its copy of LOKF core.

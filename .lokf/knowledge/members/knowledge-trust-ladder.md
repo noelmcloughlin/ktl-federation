@@ -3,18 +3,18 @@ type: MemberBundle
 id: https://w3id.org/ktl/federation/knowledge/members/knowledge-trust-ladder
 genre: reference
 title: Knowledge Trust Ladder knowledge bundle
-description: The bundle of the knowledge-trust-ladder repository, which publishes the KTL skills, as released at v0.56.1 on 2026-10-26.
-resource: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/tag/v0.56.1
+description: The bundle of the knowledge-trust-ladder repository, which publishes the KTL skills, as released at v0.65.0 on 2026-11-15.
+resource: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/tag/v0.65.0
 base_iri: https://w3id.org/ktl/knowledge/
-version: v0.56.1
-release: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/tag/v0.56.1
+version: v0.65.0
+release: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/tag/v0.65.0
 distribution:
-  - name: knowledge-v0.56.1-knowledge-trust-ladder.zip
-    access_url: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/download/v0.56.1/knowledge-v0.56.1-knowledge-trust-ladder.zip
+  - name: knowledge-v0.65.0-knowledge-trust-ladder.zip
+    access_url: https://github.com/noelmcloughlin/knowledge-trust-ladder/releases/download/v0.65.0/knowledge-v0.65.0-knowledge-trust-ladder.zip
     media_type: application/zip
     checksum:
       algorithm: sha256
-      checksum_value: f9df53cecc84f1a7a6fc4a7456386403052c02b22ed40451e0599f24824a76e3
+      checksum_value: e0b7627ee10bec40abbacea22235294b0e1c295ec7ce018530ea4ffbfdb02199
 isPartOf:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 generated:
@@ -35,15 +35,12 @@ verified:
     at: "2026-10-26T18:36:03Z"
   - by: human:noelmcloughlin
     at: "2026-10-29T11:24:14Z"
-stale_after: 2027-04-26
-status: draft
+  - by: human:noelmcloughlin
+    at: "2026-11-15T01:32:21Z"
+    revision: 'W/"3a8e41b5b7a175814a50874d9133c0ec"'
+stale_after: 2027-05-15
 ---
 
 # Overview
 
-This member is the knowledge bundle of [knowledge-trust-ladder](https://github.com/noelmcloughlin/knowledge-trust-ladder), the repository that publishes the KTL skills, as released at v0.56.1 on 2026-10-26. The release workflow attached the bundle as `knowledge-v0.56.1-knowledge-trust-ladder.zip` with a `.sha256` file and a build attestation that `gh attestation verify` checks. Its concepts are in the namespace `https://w3id.org/ktl/knowledge/`, and the workspace loads them into a named graph with that IRI.
-
-## Open questions
-
-- 2026-11-02, process:knowledge-federate: noelmcloughlin/knowledge-trust-ladder released v0.60.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
-- 2026-11-09, process:knowledge-federate: noelmcloughlin/knowledge-trust-ladder released v0.61.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+This member is the knowledge bundle of [knowledge-trust-ladder](https://github.com/noelmcloughlin/knowledge-trust-ladder), the repository that publishes the KTL skills, as released at v0.65.0 on 2026-11-15. The release workflow attached the bundle as `knowledge-v0.65.0-knowledge-trust-ladder.zip` with a `.sha256` file and a build attestation that `gh attestation verify` checks. Its concepts are in the namespace `https://w3id.org/ktl/knowledge/`, and the workspace loads them into a named graph with that IRI.

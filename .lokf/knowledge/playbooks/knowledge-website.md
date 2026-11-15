@@ -9,13 +9,13 @@ references:
   - https://w3id.org/ktl/federation/knowledge/datasets/workspace
 sources:
   - resource: website/README.md
-  - resource: website/site.config.mjs
+  - resource: website/site.toml
   - resource: .github/workflows/knowledge-website.yaml
   - resource: .github/workflows/knowledge-federation.yaml
   - resource: SECURITY.md
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T18:19:07Z"
+  at: "2026-11-15T01:15:09Z"
 status: draft
 verified:
   - by: process:ktl-librarian
@@ -24,7 +24,7 @@ verified:
 
 # Overview
 
-The site is the Astro project in `website/`, copied from the ktl-website templates. `website/site.config.mjs` sets its address, `https://noelmcloughlin.github.io/ktl-federation/`. Every page comes from a file the repository already holds, so a change to the site is a change to that file.
+The site is the Hugo project in `website/`, copied from the ktl-website templates. `website/site.toml` sets its address, `https://noelmcloughlin.github.io/ktl-federation/`. Every page comes from a file the repository already holds, so a change to the site is a change to that file.
 
 ## What each page comes from
 
@@ -33,28 +33,27 @@ The site is the Astro project in `website/`, copied from the ktl-website templat
 - The README becomes the home page, each page under `docs/` becomes a page under `docs/`, and `CHANGELOG.md` becomes a page per release under `changelog/`.
 - The home page and each docs page are served as Markdown too, at the page's path with `.md` added.
 
-`site.config.mjs` sets `SCHEMA` to `auto`, so the site shows a LinkML schema's pages only when the repository has a project whose justfile has a `gen-doc` recipe. It sets `BROWSE` to `null`, so the site serves no data.
+The repository holds no LinkML schema project of its own, so the site's Schema part shows LOKF core, the schema the bundle is written in. `site.toml` leaves `browse` unset, so the site serves no data.
 
 ## Preview it
 
-You need Node.js 22.12 or later and [uv](https://docs.astral.sh/uv/).
+You need bash, git and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 cd website
-npm ci
-npm run dev        # http://localhost:4321/ktl-federation/
-npm run build      # dist/, then checks every link between its pages
+scripts/build.sh          # dist/, with the search index, then checks every link between its pages
+scripts/build.sh serve    # http://localhost:1313/ktl-federation/, rebuilt as you edit
 ```
 
-Both commands run `npm run sync` first. It runs `lokf export` from the sidecar's own environment in `.lokf/`, and writes the generated pages. Nothing it writes is committed.
+Both run `scripts/prepare.sh` first. It runs `lokf export` from the sidecar's own environment in `.lokf/`, and writes the generated pages. Nothing it writes is committed. Hugo and Pagefind come from PyPI, at the versions `website/uv.lock` holds.
 
 ## What to edit
 
 - A page's words: the file the page comes from. Change a concept through the librarian and the curator, like any other change to the bundle.
-- The site's values and options: `site.config.mjs`, which is this repository's own. A comment above each option says what it takes.
-- The site's look: `src/styles/custom.css`, which is this repository's own and loads last. `theme.css` and `catalogue.css` are the house style.
+- The site's values: `site.toml`, which is this repository's own. A comment above each value says what it takes.
+- The site's look: `assets/css/custom.css`, which is this repository's own and loads last. The colours and the trust tones are custom properties at the top of `assets/css/site.css`.
 
-The README's "What to edit" list names the component for each other part: a concept page, the health page, a link preview, a link rewrite and a diagram.
+Every other file in `website/` is a copy of the ktl-website template, so change one of those in KTL, never here.
 
 ## Who deploys it
 

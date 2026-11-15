@@ -6,6 +6,14 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The bundle's sidecar and the website's tools require Python 3.11 or later**, as KTL's templates do.
+
+### Security
+
+- **The sidecar copies are at Knowledge Trust Ladder [v0.66.0](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/v0.66.0/CHANGELOG.md), and `.lokf/pyproject.toml` pins `ktl==0.66.0`**, which the librarian installs its skill from.
+
 ## [0.18.1] - 2026-11-15
 
 ### Added

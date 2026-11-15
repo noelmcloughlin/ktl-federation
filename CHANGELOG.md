@@ -6,6 +6,16 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Added
+
+- **`scorecard.yml` publishes this repository's OpenSSF Scorecard.**
+- **The README shows the CI, licence, OpenSSF Scorecard and KTL scorecard badges.**
+- **`codeql.yml` scans the Python, the JavaScript and the workflows with CodeQL.**
+
+### Security
+
+- **The sidecar copies are at Knowledge Trust Ladder [v0.65.0](https://github.com/noelmcloughlin/knowledge-trust-ladder/blob/v0.65.0/CHANGELOG.md), and `.lokf/pyproject.toml` pins `ktl==0.65.0`**, which the librarian installs its skill from. The Python scripts carry no `exclude-newer` date.
+
 ## [0.18.0] - 2026-11-15
 
 ### Changed

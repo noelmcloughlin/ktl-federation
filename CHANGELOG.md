@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-11-15
+
 ### Changed
 
 - **The schema-sidecar member names its v0.6.0 bundle release at lmodel/schema-sidecar, in the namespace `https://w3id.org/lmodel/schema-sidecar/knowledge/`.** The zip's checksum and attestation were verified, and a person's confirmation admits the move.

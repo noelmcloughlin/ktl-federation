@@ -1,50 +1,21 @@
 #!/usr/bin/env python3
-# The federation build: the job that turns a domain bundle into a workspace.
-# A domain is a thin LOKF bundle whose concepts are other bundles. Each is a
-# `MemberBundle`, or a `MemberDomain` when that bundle is a domain in turn,
-# and names one released zip and that zip's checksum. The schema is
-# .lokf/domain.yaml, laid down by ktl-sidecar for a domain host.
-# A bundle that releases no zip names instead the concepts.jsonld its site
-# serves, with that file's checksum. Section 11.1 of the LOKF specification
-# has a producer publish that file. The build writes it out as the bundle it
-# was exported from and builds it as it builds a zip's.
+# The federation build of a domain host. It builds the workspace from the
+# domain bundle, proposes moving the domain's members to newer releases, and
+# reads the workspace. A domain is a thin LOKF bundle whose concepts are
+# other bundles. Each is a `MemberBundle`, or a `MemberDomain` when that
+# bundle is a domain in turn, and names one released zip and its checksum.
+# For a bundle that releases no zip, the concept names the concepts.jsonld
+# that the bundle's site serves, with that file's checksum. The schema is
+# .lokf/schema/domain.yaml, and the design is at
+# https://w3id.org/ktl/docs/federation/.
 #
-# This script reads those concepts and builds the workspace the KTL context
-# layer page describes. It resolves the members into a lock, fetches and
-# verifies each zip, registers and exports each bundle with the lokf
-# toolkit, loads one named graph per bundle, gates the links that cross
-# bundles, and swaps the result in whole. It runs no agent, and it never
-# writes to the bundle.
-#
-# A concept a curator retired (`status: deprecated`) takes no part: a
-# retired Domain concept is no top, and a retired member is not built.
-# A member joins only as a person confirmed it. One moved since, by a merged
-# pull request no person has confirmed, is built at the newest release its
-# default branch held confirmed. That release is read from the first-parent
-# history of the concept's own path, with its own id, while that person's
-# event still stands. A confirmation withdrawn later counts for no earlier
-# text either. One no person confirmed is left out. The lock lists both
-# under `waiting`, and index.md under "Waiting for a person". The top Domain
-# concept's `unowned_targets` and `max_depth` count only as a person
-# confirmed them too, and the defaults stand in when no person has.
-#
-# A member domain's zip has no history. There a member a person confirmed
-# as it stands joins as it stands. One that waits joins at the release that
-# domain's own build took, as the lock in the workspace it released
-# records. That needs the MemberDomain concept to name the
-# `workspace-<tag>.zip` and its checksum as a further distribution. The
-# person who confirms the concept confirms that checksum, as they do the
-# bundle zip's. With no workspace named, or no entry for the member in its
-# lock, the member is left out.
-#
-# A member whose zip is itself a domain is followed, tier by tier, as deep
-# as the top Domain concept's `max_depth` allows (3 unless it says
-# otherwise). Its members join the same workspace, and the lock says which
-# domain named each. A bundle two domains name at one release joins once,
-# named by both (the diamond rule). Named at two releases, it stops the
-# build, because a named graph holds one release. The domain a build starts
-# from is that build's top, and may itself be a member of another domain:
-# every domain bounds a workspace of its own.
+# The build resolves the members into a lock, and fetches and verifies each
+# file. It registers and exports each bundle with the lokf toolkit, loads one
+# named graph per bundle, gates the links between bundles, and swaps the new
+# workspace for the old. It takes each member, and the top Domain concept's
+# settings, as a person last confirmed them. It follows a member that is a
+# domain in turn as deep as the top Domain concept's `max_depth` allows. It
+# runs no agent, and it never writes to the bundle.
 #
 # Run it from the host's sidecar environment, so it uses the lokf and
 # pyoxigraph the host's lock names and installs nothing of its own:
@@ -57,113 +28,41 @@
 #   uv run --project .lokf .lokf/scripts/knowledge-federate.py mcp
 #   uv run --project .lokf .lokf/scripts/knowledge-federate.py diff OLD NEW
 #
-# `build` writes snapshot.new/ and renames it to snapshot/ in one step, so a
-# reader never sees half a federation; a failed build leaves the previous
-# snapshot in place. Given `--previous`, the workspace the release before
-# built, a member whose confirmed bytes cannot be fetched (its address does
-# not answer, or serves other bytes now) is held as that workspace holds it.
-# This follows section 11.5, which has an unreachable member degrade to its
-# last good state. The lock, the registry's status and the index say so. A
-# release zip that serves other bytes is held only at the release a build
-# fetched before, since its checksum is then wrong or its asset replaced. A
-# member that workspace did not hold has no last good state, so it is left
-# out and named until a build can fetch it. A file that fails a check once
-# fetched still stops the build.
+# `build` writes snapshot.new/. Once the gate passes, it moves snapshot/
+# aside and renames snapshot.new/ to snapshot/. A reader never sees half a
+# workspace: one that opens it between the two renames finds none and must
+# try again. A failed build leaves the previous snapshot in place. Given
+# `--previous`, the workspace the release before built, the build holds a
+# member whose confirmed file cannot be fetched as that workspace holds it.
+# A pull request's check runs `--verify-only`, which takes the member
+# concepts as they stand, runs every step up to the gate in a temporary
+# folder, and writes nothing.
 #
-# `--verify-only` runs every step up to the gate in a temporary folder and
-# writes nothing. A pull request that changes the domain bundle runs it, with
-# `--previous` too, so it holds a member as the next release build would. It
-# takes this domain's member concepts as they stand, since those are what
-# the pull request asks a person to confirm. It never holds or leaves out a
-# member the pull request proposes, one no person has confirmed as it
-# stands. It takes a member domain's members as the build does, since that
-# domain's own person confirms them.
+# `members` is the domain's librarian, a script and not a model. It proposes
+# moving each member to its newest release or served file, as operations in
+# .lokf/patch.yaml for the pen (knowledge-apply.sh), so that the sidecar's
+# librarian workflow can run it as AGENT_CLI. `members --add owner/repo`
+# drafts a member concept from a repository's newest bundle release, and
+# `members --add <address>` from the concepts.jsonld a site serves.
 #
-# `members` is the domain's librarian: a script, not a model, that lists
-# each member's releases, picks the newest that carries a bundle zip, and
-# verifies it. It writes the change as operations in .lokf/patch.yaml for the
-# pen (knowledge-apply.sh) to apply, so the sidecar's librarian workflow can
-# run it as AGENT_CLI.
+# `serve`, `query` and `mcp` read the workspace that `--snapshot` names: a
+# folder, a workspace-<tag>.zip, or the site that serves it. `--member`
+# limits a reader to some bundles. `serve` and `query` use the toolkit's
+# store and server, and `mcp` is the `lokf-registry` server of section 11.4
+# of the LOKF specification. `diff` says what changed between two
+# workspaces, for a release's notes.
 #
-# The change moves the old release's tag, zip name and day in the concept's
-# description and body as well as its frontmatter, so the text never
-# contradicts `version`. When the new release names another namespace, the
-# change moves `base_iri` too, and the question says so. For a member domain
-# it also names the workspace that release carries, and proposes it on its
-# own when the release attached it after the member moved.
+# The snapshot holds index.md, llms.txt, workspace.lock.yaml,
+# lokf-registry.yaml, registry.jsonld, graph.nq, graph.json (for a site's
+# graph page), gate-report.md and queries/*.rq. Under export/<slug>/ it
+# holds the four files lokf export writes. Under
+# bundles/<slug>/.lokf/knowledge/ it holds each release, unpacked or written
+# out, and read-only.
 #
-# For a member its site serves, it asks for the file and proposes the new
-# checksum, with the day the file changed as the version. Once the concept
-# names the file the script saw at the last look, the script asks with the
-# validators it kept from that look.
-#
-# `members --add owner/repo` drafts a member concept from a repository's
-# newest bundle release, as a `create` for the pen, so admitting a bundle is
-# the same verified step as moving one. `members --add <address>` drafts one
-# from the concepts.jsonld a site serves. A release that carries the
-# bundle's own schema beside the zip (`schema-<tag>-<name>.yaml`, which
-# knowledge-release.yaml attaches when the host's justfile names one) is
-# named as a second distribution. The build then validates that bundle
-# against it instead of LOKF core alone.
-#
-# `serve` and `query` read the snapshot through the toolkit's own store and
-# server, with the union of the named graphs as the default graph.
-#
-# `mcp` is the `lokf-registry` server the LOKF specification's section 11.4
-# describes, over the same snapshot: resolve_iri, neighbors, subgraph,
-# federated_sparql and read_document, each bounded in depth and size. The
-# workspace index is the server's instructions, so an agent reads it before
-# anything else. It loads a member's graph when a walk first reaches its
-# namespace, from where the lock says that graph lies in graph.nq, checked
-# against the digest the lock gives. It loads every graph that names that
-# namespace with it, so a link into the member is there too. When the walk
-# steps to an IRI no bundle owns, it loads the graphs that share that IRI. A
-# document is read from the workspace's copy of the release, else its
-# concepts.jsonld, else its source, live, the chain section 11.4 gives.
-#
-# Each reader takes `--snapshot` as a folder, a workspace-<tag>.zip read in
-# place, or the address of the site that serves the workspace, which it
-# reads a graph at a time by range request. Each also takes `--member`, to
-# read those bundles alone.
-#
-# `diff` says what changed between two workspaces, each a lock, a folder, a
-# zip or a site: the members that joined, moved, left, are held or are left
-# out, and the links between them. The federation workflow adds its output
-# to the notes of each release.
-#
-# What the snapshot holds:
-#   - index.md: the members, their versions, licences and health lines, each
-#     member's own index first.
-#   - llms.txt, workspace.lock.yaml, lokf-registry.yaml, registry.jsonld and
-#     graph.nq.
-#   - graph.json: every bundle's concepts and the links between bundles, for
-#     a site's graph page.
-#   - bundles/<slug>/.lokf/knowledge/: each release, unpacked or written out,
-#     and read-only, with a served member's file in bundles/<slug>/.lokf/
-#     beside it.
-#   - export/<slug>/: the four files lokf export writes.
-#   - queries/*.rq and gate-report.md.
-#
-# Why each check is here:
-#   - The checksum ties the bytes to what a person confirmed.
-#   - The attestation (gh attestation verify, when gh is present and the zip
-#     came from a GitHub release) ties them to the workflow that built them.
-#   - A zip is refused when it holds a symlink, a path outside its root, or
-#     more bytes than --max-bytes, before anything in it is read.
-#   - The unpacked index.md must name the base_iri the member concept
-#     declared, a check the toolkit's own registry cannot make.
-#   - The lock in a member domain's workspace must name that domain and its
-#     base_iri, so one domain's workspace never stands in for another's.
-#   - Blank nodes are given canonical labels before the graph is written,
-#     because lokf export labels them at random and the same releases must
-#     give the same bytes.
-#
-# gh needs a credential to verify an attestation. The sidecar's librarian
-# wrapper strips every token from the agent's environment, and passes one
-# back only under a name gh does not read. So a domain host sets the
-# variables AGENT_USE_JOB_TOKEN to true and AGENT_API_KEY_ENV to
-# KNOWLEDGE_FEDERATE_TOKEN. The refresh job's read-only token then arrives
-# under that name, and this script hands it to gh alone, as GH_TOKEN.
+# gh verifies attestations, and fetches a member in a private or internal
+# GitHub repository, which answers 404 to a request without a credential.
+# This script gives gh the token in KNOWLEDGE_FEDERATE_TOKEN, as GH_TOKEN,
+# and sends no credential in a request of its own.
 """The federation build, the domain's librarian, and a reader over the snapshot."""
 
 from __future__ import annotations
@@ -187,10 +86,12 @@ import subprocess
 import sys
 import tempfile
 import time
+import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
+import zlib
 
 import yaml
 
@@ -205,19 +106,33 @@ MAX_ENTRIES = 100_000
 # A distribution's name becomes a file name in the workspace, so it is one
 # plain segment: no folder, no leading dot, nothing a shell or a path reads.
 PLAIN_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+-]*")
-# Files a browser runs when the workspace's site serves them. A bundle is
-# Markdown; one of these in a member's zip would run on the host's site.
-ACTIVE_SUFFIXES = {".html", ".htm", ".xhtml", ".shtml", ".svg", ".svgz", ".js", ".mjs", ".xml", ".xsl", ".xslt"}
-# The librarian wrapper refuses to pass a credential under a name gh reads,
-# so the job's token arrives under this one. It leaves this process's
-# environment here and reaches gh alone, never lokf or anything else run.
+# Files a browser runs when the workspace's site serves them, which a
+# member's zip may not hold. The whole XML family is listed, because a
+# browser runs an XHTML script element in any file served as XML.
+ACTIVE_SUFFIXES = {
+    ".html", ".htm", ".xhtml", ".xht", ".shtml", ".svg", ".svgz", ".js", ".mjs",
+    ".xml", ".xsl", ".xslt", ".rdf", ".xsd", ".mml", ".mathml", ".rss", ".atom", ".wsdl", ".xbl", ".rng",
+}
+
+
+def plain(text, limit: int = 200) -> str:
+    """Text from a member's files as one line a reader sees: each run of white space one space, no control or format character, at most `limit` characters. A member's index title and licence go into the workspace index, which the MCP server gives a reader as its instructions, so neither may add a line."""
+    seen = "".join(ch for ch in str(text or "") if unicodedata.category(ch) not in ("Cc", "Cf", "Zl", "Zp") or ch in "\t\n\r ")
+    return " ".join(seen.split())[:limit]
+
+
+def cell(text) -> str:
+    """`plain` text for a cell of a Markdown table or the words of a link: a pipe, a bracket and a backtick lose their meaning."""
+    return re.sub(r"([|\[\]`<>\\])", r"\\\1", plain(text))
+# The librarian wrapper passes no credential under a name gh reads, so the
+# job's token arrives under this one. It is removed from this process's
+# environment here, and only gh is given it, never lokf or another command.
 JOB_TOKEN = os.environ.pop("KNOWLEDGE_FEDERATE_TOKEN", "")
-# Where a member may be fetched from. A member concept names its address, and
-# a check fetches one a pull request proposes before any person has read it,
-# so by default only http and https to a public address. A person can build
-# from local files and a local server with --allow-local, and a confirmed
-# `private_addresses: allow` on the top Domain concept lets the build reach
-# a forge on the host's own network.
+# Where a member may be fetched from: by default only http and https to a
+# public address, since a check fetches the address a pull request proposes
+# before any person has read it. --allow-local adds local paths and private
+# addresses, and a confirmed `private_addresses: allow` on the top Domain
+# concept adds private addresses.
 ALLOW_LOCAL = False
 ALLOW_PRIVATE = False
 # How many tiers of members a build follows unless the top Domain concept's
@@ -247,6 +162,11 @@ CHECKSUM = re.compile(r"^sha256:[0-9a-fA-F]{64}$")
 GITHUB_RELEASE = re.compile(
     r"^https://github\.com/(?P<owner>[A-Za-z0-9_.-]+)/(?P<repo>[A-Za-z0-9_.-]+)/releases/download/(?P<tag>[^/]+)/(?P<asset>[^/]+)$"
 )
+# An owner and a repository as gh is given them. GITHUB_RELEASE takes a
+# dot in an owner and the names . and .. for a repository, and either
+# would make a path of the GitHub API name another resource.
+GITHUB_OWNER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]*")
+GITHUB_REPO = re.compile(r"(?!\.{1,2}$)[A-Za-z0-9_.-]+")
 
 
 def named_digest(checksum) -> str:
@@ -254,8 +174,7 @@ def named_digest(checksum) -> str:
 
     LOKF 0.9.0 writes a checksum as {algorithm: sha256, checksum_value:
     <hex>}. A member domain released before then names the string
-    sha256:<hex> in its member concepts. The build still follows those
-    concepts, so it reads both forms.
+    sha256:<hex> in its member concepts, so the build reads both forms.
     """
     if isinstance(checksum, dict):
         checksum = f"{checksum.get('algorithm')}:{checksum.get('checksum_value')}"
@@ -276,16 +195,15 @@ class Unobtainable(Failed):
     """The bytes a person confirmed are not where the member concept says: the address does not answer, or serves other bytes now.
 
     Only this failure lets the build hold a member at its last good state.
-    A file that breaks a rule once fetched (a cached copy that no longer
-    matches, a zip that reaches outside its root, a failed attestation)
-    stops the build as any other finding does. `other_bytes` is true when
-    the address answered with bytes other than the ones a person confirmed,
-    and false when it did not answer.
+    `other_bytes` is true when the address served other bytes, and `access`
+    when it refused the request or served a page in place of the file, so
+    that a credential might get the file.
     """
 
-    def __init__(self, msg: str, other_bytes: bool = False):
+    def __init__(self, msg: str, other_bytes: bool = False, access: bool = False):
         super().__init__(msg)
         self.other_bytes = other_bytes
+        self.access = access
 
 
 def say(msg: str) -> None:
@@ -327,19 +245,17 @@ class Member:
         self.concept_path = concept_path
         self.slug = concept_path.stem
         self.data = data
-        # `parents` holds the domain concepts that name this bundle: one, or
-        # more when two domains name it at one release. `concepts` holds the
-        # member concepts that name it, one for each, and the lock records
-        # them so that a domain above can find each by its IRI. `ancestors`
-        # holds the base_iris of the domains above it, the build's own
-        # first, so that a domain that names one of them is told so.
+        # `parents` holds the domain concepts that name this bundle, and
+        # `concepts` the member concepts, which the lock records so that a
+        # domain above can find each by its IRI. `ancestors` holds the
+        # base_iris of the domains above, the build's first, so that a
+        # domain that names one of them is refused.
         self.parents = [parent_iri]
         self.concepts = [concept_iri] if concept_iri else []
         self.ancestors = tuple(ancestors)
         self.tier = tier
-        # A MemberDomain says the zip is a domain; a MemberBundle whose zip
-        # turns out to hold one is followed all the same, and is_domain then
-        # says so in the lock.
+        # A MemberDomain says the zip is a domain. A MemberBundle whose zip
+        # holds one is followed too, and is_domain then says so in the lock.
         self.declared_domain = str(data.get("type") or "") == "MemberDomain"
         self.is_domain = self.declared_domain
         self.base_iri = str(data.get("base_iri") or "")
@@ -361,10 +277,9 @@ class Member:
         if not PLAIN_NAME.fullmatch(self.zip_name):
             raise Failed(f"{concept_path}: distribution.name must be one plain file name, not {self.zip_name!r}")
         # The first distribution is what the build fetches: the release's
-        # zip, or, for a bundle that releases none, the concepts.jsonld its
-        # site serves, the file section 11.1 of the LOKF specification has a
-        # producer publish. The build writes that file out as the bundle it
-        # was exported from, so the rest of the build reads it as a zip's.
+        # zip, or the concepts.jsonld a site serves (section 11.1 of the LOKF
+        # specification). The build writes that file out as the bundle it was
+        # exported from, so the rest of the build reads it as a zip's.
         self.served = self.zip_name.endswith(".jsonld") or str(dist.get("media_type") or "") == SERVED_TYPE
         # Why the build holds the member as the previous workspace held it,
         # when the bytes a person confirmed could not be fetched; empty
@@ -382,12 +297,11 @@ class Member:
             raise Failed(f"{concept_path}: distribution.checksum must name a sha256 digest of 64 hex digits, not {dist.get('checksum')!r}")
         if not self.base_iri or not self.zip_url:
             raise Failed(f"{concept_path}: base_iri and distribution.access_url are required")
-        # A further distribution ending .yaml is the bundle's own schema, as
-        # knowledge-release.yaml attaches it beside the zip. The build
-        # validates the bundle against it instead of LOKF core alone. A
-        # further distribution named workspace-*.zip is the workspace a
-        # member domain built for that release, which knowledge-federation.yaml
-        # attaches. Its lock says which release of each member that domain took.
+        # A further distribution ending .yaml is the bundle's schema, which
+        # knowledge-release.yaml attaches beside the zip. The build validates
+        # the bundle against it instead of LOKF core alone. One named
+        # workspace-*.zip is the workspace a member domain built for that
+        # release, whose lock says which release of each member it took.
         self.schema_url = self.schema_name = self.schema_sha256 = ""
         self.workspace_url = self.workspace_name = self.workspace_sha256 = ""
         for extra in dists[1:]:
@@ -417,8 +331,8 @@ class Member:
                                  f"and the zip from {tag} of {owner}/{repo}; a member names the files of one release")
         else:
             # A served bundle's site serves each concept's Markdown beside
-            # the file, as a KTL site does; a release elsewhere has no
-            # public copy of its sources.
+            # the file, as a KTL site does. A release elsewhere has no public
+            # copy of its sources.
             self.source_base = self.zip_url.rsplit("/", 1)[0] if self.served and self.zip_url.startswith(("http://", "https://")) else ""
             self.repo = None
 
@@ -520,20 +434,15 @@ def confirming_events(data: dict) -> list[tuple[str, str, dt.datetime | None]]:
 def confirmed_text(concept, iri: str, path_iri: str, history: bool) -> tuple[dict | None, str]:
     """The concept as a person last confirmed it, or None, with a line that says how it was found or why not.
 
-    The text as it stands serves when a person confirmed it. Otherwise, with
-    `history`, the newest committed text that serves is the one a person
-    confirmed on the default branch, read from the first-parent history of
-    this path, so a text that only ever stood on a side branch never counts.
-    It must have the concept's own IRI, `id` or else the path's (`path_iri`),
-    because a confirmation belongs to the concept it names. And one of the
-    events that confirmed it must still stand in the text as it is now: a
-    person who removed their event withdrew that confirmation, which then
-    counts for no earlier text either.
-
-    The walk ends where the path held another concept, held none, or held it
-    retired, since a person's confirmation is what brings back a member that
-    left. A concept read from a member domain's zip has no history, so there
-    only the text as it stands can serve.
+    When no person confirmed the text as it stands, `history` allows the
+    newest text a person confirmed in the first-parent history of this path,
+    so a text that stood only on a side branch never counts. That text must
+    have the concept's IRI (`id`, else `path_iri`), since a confirmation
+    belongs to the concept it names. One of its confirming events must still
+    stand now: a person who removed their event withdrew it from every
+    earlier text. The walk stops where the path held another concept, none,
+    or a retired one, since only a person's confirmation brings back a
+    member that left.
     """
     if confirmed_by_person(concept.data):
         return concept.data, ""
@@ -575,13 +484,10 @@ def confirmed_text(concept, iri: str, path_iri: str, history: bool) -> tuple[dic
 
 
 def as_built(released: tuple[dict, str] | None, iri: str, concept: dict) -> tuple[dict | None, str]:
-    """A member domain's member as that domain's own build took it, from the lock in the workspace it released, or None.
+    """A member domain's member as that domain's build took it, from the lock in the workspace it released, or None.
 
-    `released` is that lock and the workspace's file name. This finds the
-    entry by the member concept's IRI, which the lock records from format 3
-    on. It turns the entry into the frontmatter a member concept at that
-    release would hold, so the build fetches and checks that release as it
-    does any member's.
+    `released` is that lock and the workspace's file name. The entry is
+    found by the member concept's IRI, which a lock records from format 3 on.
     """
     if released is None:
         return None, "no person has confirmed it in that domain's release, whose zip holds no history to find an earlier confirmation"
@@ -614,11 +520,10 @@ def entry_data(entry: dict, title) -> dict:
 def take_confirmed(bundle, concepts, history: bool, waiting: list[dict], released: tuple[dict, str] | None = None) -> list[tuple[pathlib.Path, dict, str, str]]:
     """Each member concept as a person last confirmed it, and a line in `waiting` for each one that is not, or not as it stands.
 
-    Each comes with the version its concept names now when it is built at an
-    earlier one, so an error about that earlier release can say what waits,
-    and with the concept's IRI. Without `history` (a member domain's zip),
-    one that waits is taken as that domain's released lock says, when
-    `released` holds it.
+    Each comes with its IRI, and with the version its concept names now when
+    it is built at an earlier one, so an error can say what waits. Without
+    `history` (a member domain's zip), one that waits is taken from the lock
+    in `released`, when that lock records it.
     """
     taken = []
     for c in concepts:
@@ -659,12 +564,11 @@ def sensitivity_refusal(member, clearance: str, visibility) -> str:
     """Why a member may not join this workspace for its sensitivity, or nothing when it may.
 
     Section 11.5 of the LOKF specification has a registry refuse a member its
-    owner has not cleared, because metadata each cleared on its own can
-    identify someone when aggregated. Here the clearance is the top Domain
+    owner has not cleared, because metadata cleared piece by piece can
+    identify someone when aggregated. The clearance is the top Domain
     concept's `sensitivity`, as a person confirmed it. A confidential bundle
-    joins no workspace, and an internal one joins only a workspace built in a
-    private or internal repository, since the release it is attached to is
-    then no more public than the bundle. `visibility` is asked only then.
+    joins no workspace, and an internal one only a workspace built in a
+    private or internal repository.
     """
     s = member.sensitivity
     if s not in SENSITIVITY:
@@ -734,9 +638,8 @@ def connect_public(address, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_addre
 
     refuse_private checks a member's host before the request, and the
     connection resolves the name again. A name whose answer changes between
-    the two (DNS rebinding) would pass the first and reach the second, so
-    the name is resolved once, here, and the socket connects to the address
-    that was checked.
+    the two (DNS rebinding) would pass the check, so this resolves the name
+    once and connects to the address it checked.
     """
     if ALLOW_PRIVATE:
         return socket.create_connection(address, timeout, source_address)
@@ -820,10 +723,9 @@ def refuse_private(url: str) -> None:
 class Redirects(urllib.request.HTTPRedirectHandler):
     """The redirects a download follows: five at most, each to http or https, never from https to http, and never from a public address to a private one.
 
-    A release URL redirects to the host that stores its asset, so redirects
-    are followed. A member concept a pull request proposes is fetched by its
-    check before any person has confirmed it, so a redirect may not take
-    that request into the runner's own network.
+    A release URL redirects to the host that stores its asset. A check
+    fetches the address a pull request proposes before any person has
+    confirmed it, so a redirect may not lead into the runner's network.
     """
 
     max_redirections = 5
@@ -839,7 +741,7 @@ class Redirects(urllib.request.HTTPRedirectHandler):
 
 OPENER = urllib.request.build_opener(Redirects())
 # A member's address, which refuse_private checked, is checked again at the
-# connection. A reader's own workspace may be on the reader's own network.
+# connection. A workspace that a reader names may be on the reader's network.
 MEMBER_OPENER = urllib.request.build_opener(Redirects(), PublicHTTPHandler(), PublicHTTPSHandler())
 
 
@@ -872,8 +774,12 @@ def http_get(url: str, accept: str | None = None, timeout: int = 60, max_bytes: 
     return http_fetch(url, accept=accept, timeout=timeout, max_bytes=max_bytes, member=member)[2]
 
 
-def fetch(url: str, dest: pathlib.Path, max_bytes: int = DEFAULT_MAX_BYTES) -> None:
-    """Copy a local path or file:// URL, or download an http(s) URL, to dest, refusing one of more than max_bytes before it is all read."""
+def fetch(url: str, dest: pathlib.Path, max_bytes: int = DEFAULT_MAX_BYTES) -> tuple[str, str]:
+    """Copy a local path or file:// URL, or download an http(s) URL, to dest, refusing one of more than max_bytes before it is all read.
+
+    Returns the address that answered, after any redirect, and the media
+    type it gave, each empty for a local file.
+    """
     parsed = urllib.parse.urlparse(url)
     if parsed.scheme in ("", "file"):
         if not ALLOW_LOCAL:
@@ -884,7 +790,7 @@ def fetch(url: str, dest: pathlib.Path, max_bytes: int = DEFAULT_MAX_BYTES) -> N
         if src.stat().st_size > max_bytes:
             raise Failed(f"{url}: more than {max_bytes} bytes, which --max-bytes refuses")
         shutil.copyfile(src, dest)
-        return
+        return "", ""
     if parsed.scheme not in ("http", "https"):
         raise Failed(f"{url}: only http(s), file:// and local paths are fetched")
     refuse_private(url)
@@ -895,11 +801,14 @@ def fetch(url: str, dest: pathlib.Path, max_bytes: int = DEFAULT_MAX_BYTES) -> N
     last: Exception | None = None
     for attempt in range(3):
         try:
-            dest.write_bytes(http_get(url, max_bytes=max_bytes, member=True))
-            return
+            _, headers, body = http_fetch(url, max_bytes=max_bytes, member=True)
+            dest.write_bytes(body)
+            return str(headers.get(":url") or url), str(headers.get("content-type") or "")
         except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                raise Unobtainable(f"{url}: could not be fetched, because access was refused ({e})", access=True) from e
             if e.code < 500 and e.code != 429:
-                raise Unobtainable(f"{url}: could not be fetched ({e})") from e
+                raise Unobtainable(f"{url}: could not be fetched ({e})", access=e.code == 404) from e
             last = e
         except (OSError, http.client.HTTPException) as e:  # URLError, a timeout and a dropped connection are each an OSError
             last = e
@@ -953,8 +862,8 @@ def gh_has_credential(gh: str) -> bool:
 
 # The workflows that sign what a build fetches: a bundle's zip and schema
 # are attested by its release workflow, a domain's workspace by its
-# federation workflow. gh checks the signer by these paths, so an
-# attestation made by any other workflow in the repository does not count.
+# federation workflow. An attestation made by any other workflow in the
+# repository does not count, because gh checks the signer by these paths.
 RELEASE_WORKFLOW = ".github/workflows/knowledge-release.yaml"
 FEDERATION_WORKFLOW = ".github/workflows/knowledge-federation.yaml"
 # gh matches --signer-workflow exactly from 2.102.0; before it, as a prefix
@@ -987,9 +896,206 @@ def verify_attestation(path: pathlib.Path, owner: str, repo: str, workflow: str 
     done = subprocess.run([gh, "attestation", "verify", str(path), "--repo", f"{owner}/{repo}", "--signer-workflow", signer],
                           capture_output=True, text=True, env=gh_env())
     if done.returncode != 0:
-        raise Failed(f"{path.name}: gh attestation verify failed for {signer}: {(done.stderr or done.stdout).strip()[:300]}")
+        # A private repository's release workflow attests nothing unless it is told to.
+        private = (f". The release of {owner}/{repo} was read through gh, as a private repository's is, and such a repository's release workflow attests "
+                   "only where its variable KNOWLEDGE_ATTEST_PRIVATE is true, which needs GitHub Enterprise Cloud") if (owner, repo) in THROUGH_GH else ""
+        raise Failed(f"{path.name}: gh attestation verify failed for {signer}: {(done.stderr or done.stdout).strip()[:300]}{private}")
     loose = "" if version >= GH_EXACT_SIGNER else f", matched loosely by gh {'.'.join(map(str, version))}; 2.102.0 matches it exactly"
     return f"attested by {workflow.rsplit('/', 1)[-1]} of {owner}/{repo}{loose}"
+
+
+# ---------------------------------------------------------------------------
+# a release asset of a private repository, through gh
+# ---------------------------------------------------------------------------
+# The status gh api ends a refusal with, as in "gh: Not Found (HTTP 404)".
+GH_STATUS = re.compile(r"\(HTTP (\d{3})\)\s*$")
+# The repositories whose release gh had to fetch in this run. Their other
+# files are asked of gh at once, since the address a member concept names
+# answers the same way for every file of one repository.
+THROUGH_GH: set[tuple[str, str]] = set()
+# What a host does for a member in a private or internal repository.
+PRIVATE_HINT = ("a member in a private or internal repository is read through gh, with a credential that can read that repository: run gh auth login, "
+                "or in a workflow store such a token as the secret KNOWLEDGE_FEDERATE_TOKEN, since the job's own token reads its own repository alone")
+
+
+def release_asset(url: str) -> tuple[str, str, str, str] | None:
+    """The owner, repository, tag and asset a GitHub release download address names, or None for any other address.
+
+    The four make a path of the GitHub API, which gh asks with a credential.
+    So an address is no release address when its parts could name another
+    resource there: a query or a fragment, an owner or a repository GitHub
+    would not name, or a tag of dots or with a slash.
+    """
+    m = GITHUB_RELEASE.match(url)
+    if not m or "?" in url or "#" in url:
+        return None
+    owner, repo = m.group("owner"), m.group("repo")
+    tag, asset = urllib.parse.unquote(m.group("tag")), urllib.parse.unquote(m.group("asset"))
+    if not GITHUB_OWNER.fullmatch(owner) or not GITHUB_REPO.fullmatch(repo):
+        return None
+    if tag in (".", "..") or "/" in tag or "/" in asset or not tag.isprintable() or not asset.isprintable():
+        return None
+    return owner, repo, tag, asset
+
+
+def gh_ready() -> str | None:
+    """gh, when it is installed and holds a credential, else None."""
+    gh = shutil.which("gh")
+    return gh if gh and gh_has_credential(gh) else None
+
+
+def gh_api(gh: str, endpoint: str, accept: str, dest: pathlib.Path | None = None, timeout: int = 60) -> tuple[int, bytes, str]:
+    """One request to the GitHub API through gh: the status, the answer, and what gh said of a refusal.
+
+    Only gh holds the credential. It is told the host by name, so the
+    credential goes to github.com whatever host gh asks by default, and to
+    no host a redirect leads to. The status is 0 when gh gave none: it could
+    not connect, or it ran out of time.
+    """
+    args = [gh, "api", endpoint, "--hostname", "github.com", "-H", f"Accept: {accept}"]
+    try:
+        if dest is None:
+            done = subprocess.run(args, capture_output=True, env=gh_env(), timeout=timeout)
+        else:
+            with dest.open("wb") as out:
+                done = subprocess.run(args, stdout=out, stderr=subprocess.PIPE, env=gh_env(), timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return 0, b"", f"gh gave no answer in {timeout} seconds"
+    if done.returncode == 0:
+        return 200, done.stdout or b"", ""
+    said = " ".join((done.stderr or b"").decode("utf-8", "replace").split())[:300]
+    m = GH_STATUS.search(said)
+    return (int(m.group(1)) if m else 0), b"", said or "gh said nothing"
+
+
+def gh_api_patient(gh: str, endpoint: str, accept: str, dest: pathlib.Path | None = None, timeout: int = 60) -> tuple[int, bytes, str]:
+    """gh_api, tried again twice after a server error, a rate limit or no answer, as fetch tries a download again."""
+    answer = 0, b"", ""
+    for attempt in range(3):
+        answer = gh_api(gh, endpoint, accept, dest, timeout)
+        if answer[0] and answer[0] < 500 and answer[0] != 429:
+            break
+        if attempt < 2:
+            time.sleep(1 << attempt)
+    return answer
+
+
+@functools.cache
+def gh_release(gh: str, owner: str, repo: str, tag: str) -> tuple[int, dict, str]:
+    """A release as the GitHub API gives it, asked through gh once in a run: the status, the release, and what gh said of a refusal."""
+    status, body, said = gh_api_patient(gh, f"repos/{owner}/{repo}/releases/tags/{urllib.parse.quote(tag, safe='')}", "application/vnd.github+json")
+    if status != 200:
+        return status, {}, said
+    try:
+        release = json.loads(body)
+    except ValueError:
+        release = None
+    if not isinstance(release, dict):
+        return 0, {}, "the answer is no release"
+    return 200, release, ""
+
+
+def refused_credential(what: str, owner: str, repo: str, said: str) -> Failed:
+    """The finding for a credential GitHub refused. It stops the build, since no member that needs the credential can be fetched until the host renews it."""
+    return Failed(f"{what}: GitHub refused the credential gh holds, asked for {owner}/{repo} ({said}); renew the token the build is given as "
+                  "KNOWLEDGE_FEDERATE_TOKEN, or run gh auth login")
+
+
+def fetch_through_gh(gh: str, url: str, asset: tuple[str, str, str, str], sha256: str, dest: pathlib.Path, max_bytes: int, what: str, first: str) -> None:
+    """Fetch a GitHub release asset through gh to dest and check it against sha256.
+
+    `first` says what the address itself answered, for the finding. The
+    release's record is read before the file, so an asset larger than
+    max_bytes, or one whose recorded digest is not the one named, is refused
+    with nothing downloaded.
+    """
+    owner, repo, tag, name = asset
+    before = f"{first}; " if first else f"{url}: "
+    status, release, said = gh_release(gh, owner, repo, tag)
+    if status == 401:
+        raise refused_credential(what, owner, repo, said)
+    if status != 200:
+        hint = ""
+        if status == 404:
+            hint = f". GitHub answers 404 both for a release that is not there and for a repository the credential may not read, and {PRIVATE_HINT}"
+        raise Unobtainable(f"{before}gh could not read release {tag} of {owner}/{repo} ({said}){hint}")
+    found = next((a for a in release.get("assets") or [] if isinstance(a, dict) and a.get("name") == name), None)
+    if found is None or not isinstance(found.get("id"), int):
+        raise Unobtainable(f"{before}release {tag} of {owner}/{repo} carries no file named {name}")
+    if isinstance(found.get("size"), int) and found["size"] > max_bytes:
+        raise Failed(f"{url}: more than {max_bytes} bytes, which --max-bytes refuses")
+    recorded = named_digest(found.get("digest"))
+    if recorded and recorded != sha256:
+        raise Unobtainable(f"{what}: {url} has sha256 {recorded} in GitHub's record of the release, not the {sha256} the member concept names", other_bytes=True)
+    status, _, said = gh_api_patient(gh, f"repos/{owner}/{repo}/releases/assets/{found['id']}", "application/octet-stream", dest, timeout=600)
+    if status == 401:
+        raise refused_credential(what, owner, repo, said)
+    if status != 200:
+        raise Unobtainable(f"{before}gh could not fetch {name} from release {tag} of {owner}/{repo} ({said})")
+    if dest.stat().st_size > max_bytes:
+        raise Failed(f"{url}: more than {max_bytes} bytes, which --max-bytes refuses")
+    got = digest(dest)
+    if got != sha256:
+        raise Unobtainable(f"{what}: {url} has sha256 {got}, not the {sha256} the member concept names", other_bytes=True)
+    THROUGH_GH.add((owner, repo))
+
+
+def other_file(url: str, dest: pathlib.Path, got: str, sha256: str, answered: tuple[str, str], what: str, zipped: bool) -> Unobtainable:
+    """The finding for a file whose digest is not the one named.
+
+    An address that answers with a page, where a sign-in, a proxy or an
+    error stands in for the file, did not give the file, and the finding
+    says so instead of reporting a wrong checksum or a replaced asset.
+    """
+    final, media = answered
+    with dest.open("rb") as f:
+        start = f.read(4)
+    page = media.split(";", 1)[0].strip().lower() in ("text/html", "application/xhtml+xml")
+    if page or (zipped and start not in (b"PK\x03\x04", b"PK\x05\x06")):
+        where = f" from {final}" if final and final != url else ""
+        return Unobtainable(f"{what}: {url} answered with {media or 'no media type'}{where}, which is not the {'zip' if zipped else 'file'} the member concept names: "
+                            "a sign-in, proxy or error page stands in for it", access=True)
+    return Unobtainable(f"{what}: {url} has sha256 {got}, not the {sha256} the member concept names", other_bytes=True)
+
+
+def fetch_checked(url: str, sha256: str, dest: pathlib.Path, max_bytes: int, what: str, zipped: bool) -> None:
+    """Fetch a file a member concept names to dest, and check it against the checksum the concept names.
+
+    The address is asked first, with no credential, as any reader asks it.
+    A private or internal GitHub repository gives no release asset there, so
+    when the address does not give the confirmed file, gh fetches a GitHub
+    release asset from the API, if it holds a credential. The checksum
+    decides on both paths, and a public member never meets the credential.
+    """
+    asset = release_asset(url)
+    try:
+        first: Unobtainable | None = None
+        if asset is None or asset[:2] not in THROUGH_GH:
+            try:
+                answered = fetch(url, dest, max_bytes)
+                got = digest(dest)
+                if got == sha256:
+                    return
+                first = other_file(url, dest, got, sha256, answered, what, zipped)
+            except Unobtainable as e:
+                first = e
+        gh = gh_ready() if asset else None
+        if gh:
+            fetch_through_gh(gh, url, asset, sha256, dest, max_bytes, what, str(first or ""))
+            return
+        if asset and first is not None and first.access:
+            raise Unobtainable(f"{first}. If {asset[0]}/{asset[1]} is private or internal: {PRIVATE_HINT}") from first
+        raise first if first is not None else Unobtainable(f"{url}: could not be fetched")
+    except Failed:
+        dest.unlink(missing_ok=True)
+        raise
+
+
+def part_file(cache: pathlib.Path, sha256: str) -> pathlib.Path:
+    """A new file in the cache for one download, so that two runs sharing the cache never write the same one. The finished file is renamed into place."""
+    fd, name = tempfile.mkstemp(dir=cache, prefix=f"{sha256}.", suffix=".part")
+    os.close(fd)
+    return pathlib.Path(name)
 
 
 def obtain(member: Member, cache: pathlib.Path, max_bytes: int, attest: bool) -> tuple[pathlib.Path, str]:
@@ -997,17 +1103,12 @@ def obtain(member: Member, cache: pathlib.Path, max_bytes: int, attest: bool) ->
     cache.mkdir(parents=True, exist_ok=True)
     cached = cache / f"{member.sha256}{'.jsonld' if member.served else '.zip'}"
     if not cached.is_file():
-        tmp = cache / f"{member.sha256}.part"
+        tmp = part_file(cache, member.sha256)
         try:
-            fetch(member.zip_url, tmp, max_bytes)
-        except Failed:
+            fetch_checked(member.zip_url, member.sha256, tmp, max_bytes, member.slug, zipped=not member.served)
+            tmp.replace(cached)
+        finally:
             tmp.unlink(missing_ok=True)
-            raise
-        got = digest(tmp)
-        if got != member.sha256:
-            tmp.unlink(missing_ok=True)
-            raise Unobtainable(f"{member.slug}: {member.zip_url} has sha256 {got}, not the {member.sha256} the member concept names", other_bytes=True)
-        tmp.replace(cached)
     elif digest(cached) != member.sha256:
         cached.unlink()
         raise Failed(f"{member.slug}: the cached copy no longer matches its digest; removed, run again")
@@ -1025,6 +1126,12 @@ def obtain(member: Member, cache: pathlib.Path, max_bytes: int, attest: bool) ->
     return cached, verdict
 
 
+# What unpacking a zip that passed check_zip may still raise: a corrupt or
+# cut entry, a compression method or an encryption Python cannot read, or a
+# disk that is full or refuses a name.
+UNREADABLE_ZIP = (zipfile.BadZipFile, zipfile.LargeZipFile, zlib.error, EOFError, NotImplementedError, RuntimeError, ValueError, OSError)
+
+
 def unpack(zip_path: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
     """Unpack knowledge/ to into/.lokf/knowledge, the layout the sidecar's scripts read, and return that folder."""
     target = into / ".lokf"
@@ -1032,8 +1139,8 @@ def unpack(zip_path: pathlib.Path, into: pathlib.Path) -> pathlib.Path:
     try:
         with zipfile.ZipFile(zip_path) as zf:
             zf.extractall(target)
-    except zipfile.BadZipFile as e:
-        raise Failed(f"{zip_path.name}: could not be unpacked ({e})") from e
+    except UNREADABLE_ZIP as e:
+        raise Failed(f"{zip_path.name}: could not be unpacked ({type(e).__name__}: {e})") from e
     knowledge = target / "knowledge"
     if not (knowledge / "index.md").is_file():
         raise Failed(f"{zip_path.name}: no knowledge/index.md inside")
@@ -1048,12 +1155,10 @@ SERVED_ID = re.compile(r"^[^\x00-\x1f\x7f\\:*?\"<>|]+$")
 def write_out(served: pathlib.Path, into: pathlib.Path, member: Member) -> pathlib.Path:
     """A served concepts.jsonld written out as the bundle lokf export read: each concept as Markdown under into/.lokf/knowledge, with an index.md naming its base_iri.
 
-    lokf export writes every concept's frontmatter and body under one
-    @context whose @base is the bundle's base_iri, each concept with its IRI
-    as `id`. A concept's path is its IRI less that base, so a concept whose
-    IRI lies outside it names no path, and that bundle joins by a release
-    zip instead. The file itself is kept beside the folder, so that a later
-    build can hold the member at this state with the digest checked.
+    A concept's path is its IRI less the @base of the file's @context, the
+    bundle's base_iri. A concept outside that base names no path, so its
+    bundle joins by a release zip instead. The file is kept beside the
+    folder, so that a later build can hold the member at this state.
     """
     name = member.zip_name
     try:
@@ -1102,10 +1207,10 @@ def open_previous(where: str, domain_base: str, release_base: str, attest: bool,
     """The workspace the release before built, and its lock, for a member whose confirmed bytes cannot be fetched now.
 
     It must be this domain's workspace. A workspace-<tag>.zip from a GitHub
-    release of a public repository must carry that repository's attestation
-    too, since the build takes a member from it unchecked by the member's
-    own checksum. When it cannot be read or checked, the build goes on
-    without it, and a member that cannot be fetched stops it, as before.
+    release of a public repository must also carry that repository's
+    attestation, since a zip member is taken from it without its checksum.
+    Without a workspace that passes, a member that cannot be fetched stops
+    the build.
     """
     if where.startswith(("http://", "https://")):
         # A site lists no files, so a zip member could not be taken from it.
@@ -1137,15 +1242,13 @@ def previous_entry(lock: dict, base_iri: str) -> dict | None:
 
 
 def hold(member: Member, source, entry: dict, into: pathlib.Path, why: str, waiting: list[dict]) -> Member | None:
-    """The member as the previous workspace held it, from that workspace's lock entry, when the bytes a person confirmed cannot be fetched; None when that workspace lacks its files.
+    """The member as the previous workspace held it, from that workspace's lock entry; None when that workspace lacks its files.
 
-    The previous workspace holds only releases a person confirmed, each as
-    its build fetched and checked them. When it holds this release, the
-    member joins with those bytes. When it holds an earlier one, the member
-    joins at that release, and the reason it is held names the release its
-    concept names now. A served member's file is kept in the workspace beside
-    its folder, so its digest is checked again here; a zip member's unpacked
-    folder is taken whole, as the attested workspace carries it.
+    That workspace holds only releases a person confirmed, so the member
+    joins at the one it holds. When that is an earlier one, the reason names
+    the release the concept names now. A served member's file is checked
+    again against its digest, and a zip member's unpacked folder is taken
+    whole, as the attested workspace carries it.
     """
     if entry.get("sha256") == member.sha256:
         held = member
@@ -1185,17 +1288,12 @@ def obtain_file(url: str, sha256: str, cache: pathlib.Path, what: str, max_bytes
     cached = cache / f"{sha256}{suffix}"
     if cached.is_file() and digest(cached) == sha256:
         return cached
-    tmp = cache / f"{sha256}.part"
+    tmp = part_file(cache, sha256)
     try:
-        fetch(url, tmp, max_bytes)
-    except Failed:
+        fetch_checked(url, sha256, tmp, max_bytes, what, zipped=suffix == ".zip")
+        tmp.replace(cached)
+    finally:
         tmp.unlink(missing_ok=True)
-        raise
-    got = digest(tmp)
-    if got != sha256:
-        tmp.unlink(missing_ok=True)
-        raise Unobtainable(f"{what}: {url} has sha256 {got}, not the {sha256} the member concept names", other_bytes=True)
-    tmp.replace(cached)
     return cached
 
 
@@ -1213,8 +1311,8 @@ def member_schema_file(member: Member, cache: pathlib.Path, attest: bool, bundle
     """The schema released with a member's bundle, verified and placed beside the unpacked bundle with the toolkit's lokf.yaml, or None.
 
     A host's schema imports `lokf` by that name and keeps a pinned copy
-    beside it (the librarian's domain-schema recipe), so the released schema
-    is given the same neighbour here and validates as it does at home.
+    beside it (the librarian's domain-vocabulary.md), so the released schema
+    is given the same neighbour here and validates as in its repository.
     """
     if not member.schema_url:
         return None
@@ -1236,12 +1334,11 @@ WORKSPACE_LOCK = "workspace/workspace.lock.yaml"
 def released_lock(member: Member, domain_iri: str | None, cache: pathlib.Path, max_bytes: int, attest: bool) -> tuple[dict, str] | None:
     """The lock in the workspace a member domain released, checked, with the workspace's file name; None when its concept names none.
 
-    This checks the zip against the checksum the member concept names and
-    against its attestation, as the build checks a bundle zip. It reads the
-    lock alone and never unpacks the zip. The lock must belong to the
-    member's base_iri and, when `domain_iri` is given, to that Domain
-    concept, the one the member's own zip holds. The members script does
-    not unpack the zip on a move, so it checks the base_iri alone.
+    The zip is checked against its checksum and attestation, as a bundle zip
+    is, and only its lock is read. The lock must name the member's base_iri
+    and, when `domain_iri` is given, that Domain concept from the member's
+    zip, so that one domain's workspace never stands in for another's. The
+    members script unpacks no zip on a move, so it checks only the base_iri.
     """
     if not member.workspace_url:
         return None
@@ -1268,16 +1365,12 @@ def released_lock(member: Member, domain_iri: str | None, cache: pathlib.Path, m
 # the build
 # ---------------------------------------------------------------------------
 def run_lokf(args: list[str], cwd: pathlib.Path | None = None) -> subprocess.CompletedProcess:
-    """One lokf command, run in this process through lokf's own command line.
+    """One lokf command, run in this process through lokf's command line.
 
-    The build exports and validates every bundle. As a new process each time,
-    lokf and LinkML were imported again for every bundle, which took most of
-    a build's time. Run here, they are imported once, and each command keeps
-    its own arguments, output and exit status. This script imports lokf's
-    modules for its other steps already, so nothing new runs in it. A command
-    that fails in an unexpected way reads as a failed command, as a process
-    that died would. `cwd` stands in for the directory a process would start
-    in, which `--schema` resolves a schema's imports against.
+    A new process for each bundle would import lokf and LinkML again, which
+    takes most of a build. This script imports lokf already, so nothing new
+    runs in it. `cwd` stands in for the directory a process would start in,
+    which `--schema` resolves a schema's imports against.
     """
     import contextlib
     import io
@@ -1311,10 +1404,82 @@ def run_lokf(args: list[str], cwd: pathlib.Path | None = None) -> subprocess.Com
     return subprocess.CompletedProcess(["lokf", *args], code, out.getvalue(), err.getvalue())
 
 
+def relabel_with_rdfc(g):
+    """Copy a graph with canonical blank-node labels, preserving its triples.
+
+    The labels come from pyoxigraph's RDFC-1.0, which resolves ties that
+    refinement alone cannot (long paths and symmetric cycles) and runs in
+    near-linear time, where rdflib's ``to_canonical_graph`` is quadratic in
+    blank nodes. ``GraphStore.from_registry`` uses the same algorithm, so a
+    member exported here is already in the form the registry gives it.
+    """
+    import pyoxigraph as ox
+    from rdflib import BNode, Graph, URIRef
+    from rdflib.graph import DATASET_DEFAULT_GRAPH_ID
+
+    blanks: dict = {}
+    terms: dict = {}  # pyoxigraph term -> the rdflib term it came from
+
+    def to_ox(term):
+        if isinstance(term, BNode):
+            return blanks.setdefault(term, ox.BlankNode())
+        if isinstance(term, URIRef):
+            node = ox.NamedNode(str(term))
+        else:
+            datatype = None if term.language or term.datatype is None else ox.NamedNode(str(term.datatype))
+            node = ox.Literal(str(term), language=term.language, datatype=datatype)
+        terms.setdefault(node, term)
+        return node
+
+    def to_rdflib(term):
+        return BNode(term.value) if isinstance(term, ox.BlankNode) else terms[term]
+
+    dataset = ox.Dataset(ox.Quad(to_ox(s), to_ox(p), to_ox(o)) for s, p, o in g)
+    dataset.canonicalize(ox.CanonicalizationAlgorithm.RDFC_1_0)
+
+    out = Graph(identifier=DATASET_DEFAULT_GRAPH_ID)
+    for prefix, ns in g.namespaces():
+        out.bind(prefix, ns)
+    for quad in dataset:
+        out.add((to_rdflib(quad.subject), to_rdflib(quad.predicate), to_rdflib(quad.object)))
+    return out
+
+
+def label_blank_nodes_fast() -> bool:
+    """Have lokf export label blank nodes with relabel_with_rdfc, while the toolkit labels them with rdflib's canonicaliser.
+
+    The toolkit's `lokf.rdf.relabel_bnodes` calls rdflib's
+    `to_canonical_graph`, which is quadratic in blank nodes. relabel_with_rdfc
+    is the function lokf pull request 187 proposes, word for word. The
+    export runs in this process (run_lokf), and `serialize_graph` looks the
+    function up by name, so setting the name here is enough. Once the lock
+    pins a lokf whose function no longer names `to_canonical_graph`, both
+    can go.
+    """
+    import lokf.rdf
+
+    stock = getattr(lokf.rdf, "relabel_bnodes", None)
+    if "to_canonical_graph" not in getattr(getattr(stock, "__code__", None), "co_names", ()):
+        return False
+    lokf.rdf.relabel_bnodes = relabel_with_rdfc
+    return True
+
+
 def public_url(root: pathlib.Path, given: str | None) -> str:
-    """Where the snapshot is served: --public-url, else the website's SITE + BASE + /workspace, else nothing."""
+    """Where the snapshot is served: --public-url, else the website's address + /workspace, else nothing.
+
+    The address is `baseURL` in the site.toml of website/, or of ktl-website/
+    where website/ was another site's. A site not yet moved from Astro has
+    it as SITE and BASE in website/site.config.mjs.
+    """
     if given is not None:
         return given.rstrip("/")
+    for folder in ("website", "ktl-website"):
+        cfg = root / folder / "site.toml"
+        if cfg.is_file():
+            address = re.search(r'^baseURL = "([^"]*)"', cfg.read_text(encoding="utf-8"), re.M)
+            if address:
+                return f"{address.group(1).rstrip('/')}/workspace"
     cfg = root / "website" / "site.config.mjs"
     if cfg.is_file():
         text = cfg.read_text(encoding="utf-8")
@@ -1326,7 +1491,7 @@ def public_url(root: pathlib.Path, given: str | None) -> str:
 
 
 def host_schema(root: pathlib.Path) -> pathlib.Path | None:
-    """The domain schema the host's justfile names on its `schema :=` line, as a path, or None."""
+    """The domain vocabulary the host's justfile names on its `schema :=` line, as a path, or None."""
     justfile = root / ".lokf" / "justfile"
     if not justfile.is_file():
         return None
@@ -1338,7 +1503,7 @@ def host_schema(root: pathlib.Path) -> pathlib.Path | None:
 
 
 def health_line(root: pathlib.Path, bundle_root: pathlib.Path) -> str:
-    """The member's health line from the sidecar's own report script, or why there is none."""
+    """The member's health line from the sidecar's report script, or why there is none."""
     script = root / ".lokf" / "scripts" / "knowledge-report.sh"
     if not script.is_file():
         return "no knowledge-report.sh in this host"
@@ -1351,7 +1516,7 @@ def health_line(root: pathlib.Path, bundle_root: pathlib.Path) -> str:
 
 
 def canonical_quads(nt_path: pathlib.Path, graph_iri: str):
-    """The triples of one graph.nt as quads in the named graph, blank nodes relabelled canonically."""
+    """The triples of one graph.nt as quads in the named graph, blank nodes relabelled canonically so that the same releases give the same bytes."""
     import pyoxigraph as ox
 
     graph = ox.NamedNode(graph_iri)
@@ -1374,11 +1539,11 @@ def canonical_quads(nt_path: pathlib.Path, graph_iri: str):
 def graph_terms(ds, graph_iri: str, registry) -> tuple[list[str], set[str], set[str]]:
     """What one graph's quads hold as subject or object, for a reader that loads graph by graph.
 
-    That is the namespaces of the other bundles whose IRIs it holds, each
-    routed by the registry; the IRIs no bundle owns that it holds; and of
-    those, the ones a walk can step to from this graph. A walk steps along
-    a quad that joins two IRIs by a predicate other than rdf:type, since it
-    follows no blank node and never steps to a class.
+    It gives the namespaces of other bundles whose IRIs the graph holds, as
+    the registry routes them, the IRIs it holds that no bundle owns, and
+    those of them a walk can step to. A walk steps along a quad that joins
+    two IRIs by a predicate other than rdf:type: it follows no blank node
+    and never steps to a class.
     """
     import pyoxigraph as ox
 
@@ -1520,10 +1685,10 @@ def cross_links(bundles: dict, registry, vocab) -> tuple[list[dict], list[dict]]
     """The typed relations each bundle names into another's namespace: links, whose target is a concept there, and dangling targets, which name none.
 
     `bundles` maps each base_iri to its loaded bundle. A target in a
-    bundle's own namespace is for that bundle's own --check-refs to judge,
-    and one no bundle owns is for the gate's pass over the graph. Between
-    the two lies the rule --check-refs applies inside one bundle, here
-    applied across bundles: a target in a namespace must be a concept there.
+    bundle's namespace is for that bundle's --check-refs to judge, and one
+    no bundle owns is for the gate's pass over the graph. This applies the
+    rule of --check-refs across bundles: a target in a namespace must be a
+    concept there.
     """
     links, dangling = [], []
     for base, b in bundles.items():
@@ -1553,9 +1718,8 @@ def union_elements(loaded: dict, records: list[dict], links: list[dict], vocab) 
     A node also names its bundle by slug, and `meta.bundles` gives each
     bundle's title, namespace, version and source. A node carries a
     concept's review date, `stale_after`, instead of the export's `stale`,
-    so a page that draws the graph judges staleness on the day it draws it.
-    The toolkit gives it as a date up to lokf 0.8.0 and as a datetime from
-    0.9.0, and the page reads its first ten characters either way.
+    so a page judges staleness on the day it draws the graph. The page reads
+    its first ten characters, since the toolkit gives a date or a datetime.
     """
     from lokf.export import to_cytoscape
 
@@ -1596,18 +1760,33 @@ def link_counts(links: list[dict]) -> list[dict]:
 
 QUERIES = {
     "labels.rq": """# Each concept's trust label, with the bundle that asserted it (GRAPH ?g binds its base_iri).
-# The same rules as knowledge-report.sh, against the clock at the moment of the query.
+# The same rules as knowledge-report.sh, against the clock at the moment of the query:
+# the latest confirmation by a person counts, a retired concept reads as retired,
+# a draft says so, and a review date of today or earlier is named. One row per concept.
+# Two times are compared as times, so one written with an offset sorts by its
+# moment. Where an engine cannot compare them, the spellings are compared.
+# Open questions and a reader's disputes are body text and feedback, not graph
+# data, so a reopened draft reads only as reopened, and a dispute does not show.
 PREFIX lokf: <https://w3id.org/lokf/>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX schema: <http://schema.org/>
 SELECT ?g ?c ?title ?label WHERE {
-  GRAPH ?g { ?c schema:name ?title . }
-  OPTIONAL { GRAPH ?g { ?c lokf:verified ?h . ?h prov:wasAssociatedWith ?by ; prov:endedAtTime ?at . FILTER(STRSTARTS(STR(?by), "human:")) } }
-  OPTIONAL { GRAPH ?g { ?c lokf:verified ?any . } }
-  OPTIONAL { GRAPH ?g { ?c prov:wasGeneratedBy ?gen . ?gen prov:endedAtTime ?edited . } }
-  BIND(IF(BOUND(?at) && BOUND(?edited) && STR(?edited) > STR(?at), "edited since a person confirmed it",
-       IF(BOUND(?at), "confirmed by a person",
-       IF(BOUND(?any), "checked by automation only", "nobody has checked this yet"))) AS ?label)
+  { SELECT ?g ?c (SAMPLE(?name) AS ?title) WHERE { GRAPH ?g { ?c schema:name ?name . } } GROUP BY ?g ?c }
+  OPTIONAL { SELECT ?g ?c (MAX(?at) AS ?confirmed) WHERE {
+    GRAPH ?g { ?c lokf:verified ?h . ?h prov:wasAssociatedWith ?by ; prov:endedAtTime ?at . FILTER(STRSTARTS(STR(?by), "human:")) }
+  } GROUP BY ?g ?c }
+  OPTIONAL { SELECT ?g ?c (MAX(?at) AS ?edited) WHERE { GRAPH ?g { ?c prov:wasGeneratedBy ?gen . ?gen prov:endedAtTime ?at . } } GROUP BY ?g ?c }
+  OPTIONAL { SELECT ?g ?c (MIN(SUBSTR(STR(?due), 1, 10)) AS ?review) WHERE { GRAPH ?g { ?c schema:expires ?due . } } GROUP BY ?g ?c }
+  OPTIONAL { SELECT ?g ?c (SAMPLE(STR(?s)) AS ?status) WHERE { GRAPH ?g { ?c schema:creativeWorkStatus ?s . } } GROUP BY ?g ?c }
+  BIND(EXISTS { GRAPH ?g { ?c lokf:verified ?any . } } AS ?checked)
+  BIND(COALESCE(?status, "") AS ?state)
+  BIND(COALESCE(BOUND(?confirmed) && BOUND(?edited) && COALESCE(?edited > ?confirmed, STR(?edited) > STR(?confirmed)), false) AS ?changed)
+  BIND(IF(?state = "deprecated", "retired", CONCAT(
+         IF(?changed, CONCAT("edited since a person last confirmed it (confirmed ", SUBSTR(STR(?confirmed), 1, 10), ", edited ", SUBSTR(STR(?edited), 1, 10), ")"),
+         IF(BOUND(?confirmed), CONCAT("confirmed by a person, ", SUBSTR(STR(?confirmed), 1, 10)),
+         IF(?checked, "checked by automation only", "nobody has checked this yet"))),
+         IF(?state = "draft", IF(BOUND(?confirmed), ", reopened", ", still a draft"), ""),
+         IF(COALESCE(?review <= SUBSTR(STR(NOW()), 1, 10), false), CONCAT(", past its review date (", ?review, ")"), ""))) AS ?label)
 }
 ORDER BY ?g ?c
 """,
@@ -1625,7 +1804,7 @@ SELECT ?member ?title ?edited (MAX(?at) AS ?lastConfirmed) WHERE {
   }
 }
 GROUP BY ?member ?title ?edited
-HAVING (!BOUND(?lastConfirmed) || STR(?edited) > STR(MAX(?at)))
+HAVING (!BOUND(?lastConfirmed) || COALESCE(?edited > MAX(?at), STR(?edited) > STR(MAX(?at))))
 ORDER BY ?member
 """,
     "unowned.rq": """# Typed-relation targets that lie in no member's namespace: the first half of the gate, as SPARQL over the lock graph's void:uriSpace list.
@@ -1714,7 +1893,6 @@ def downloads(args, tmp: pathlib.Path) -> pathlib.Path:
 
 def _build(args, tmp: pathlib.Path, note_new) -> int:
     import pyoxigraph as ox
-    from lokf.model import load_bundle
     from lokf.registry import REGISTRY_VERSION, Registry, entry_for_bundle
     # lokf 0.8.0 has no allow_foreign_ids parameter, and indexes such ids anyway.
     foreign_ids = {"allow_foreign_ids": True} if "allow_foreign_ids" in inspect.signature(entry_for_bundle).parameters else {}
@@ -1767,7 +1945,7 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     # the workspace the next release build would make.
     previous = open_previous(args.previous, domain_base, args.release_base, not args.no_attestation, visibility) if args.previous else None
 
-    # 1. Resolve: follow the members, and a member that is itself a domain, into a lock.
+    # 1. Resolve: follow the members, and a member that is a domain in turn, into a lock.
     # --verify-only builds in the run's temporary folder, so a check meets
     # the gate as the build does and leaves the snapshot alone.
     if args.verify_only:
@@ -1782,12 +1960,11 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     work.mkdir(parents=True, exist_ok=True)
     # A build takes each member as a person last confirmed it. --verify-only
     # checks every member concept as it stands, which is what a pull request
-    # asks a person to confirm. Its gate then judges the workspace the next
-    # release build would make. It reads from the same history which members
-    # that build would take, and a link into the namespace of one it would
-    # leave out fails the check now, with the member named. On a pull
-    # request the checkout is the branch merged into its base, whose
-    # first-parent history is the base's, as the release build's will be.
+    # asks a person to confirm. It reads from the same history which members
+    # the next release build would take, so its gate judges that build's
+    # workspace. On a pull request the checkout is the branch merged into
+    # its base, whose first-parent history is the base's, as the release
+    # build's will be.
     waiting: list[dict] = []
     unfetched: list[dict] = []  # members no previous workspace held, whose file cannot be fetched
     if args.verify_only:
@@ -1809,16 +1986,19 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     seen: dict[str, Member] = {}  # base_iri -> the member it joined as
     slugs = {"domain"}  # the folder names under bundles/ and export/; "domain" is this bundle's own
     resolved: list[tuple[Member, int | None, pathlib.Path, str]] = []  # member, the size of its file, knowledge dir, verdict
+    # Each bundle as read here, by its folder, so the links between bundles
+    # are found without reading it again.
+    parsed: dict = {}
     while queue:
         member, depth = queue.pop(0)
         if member.base_iri in member.ancestors:
             raise Failed(f"{member.slug}: base_iri {member.base_iri} is already in the federation as a domain above this one; a domain may not name itself or its ancestors")
         if member.base_iri in seen:
             # The diamond rule: two domains that name one bundle at one
-            # release name the same bytes, so it joins once, under both; at
+            # release name the same bytes, so it joins once, under both. At
             # two releases the build stops, because a named graph holds one.
-            # A member held at an earlier release still stands for the
-            # release its concept names, which this naming may name too.
+            # A member held at an earlier release also matches the release
+            # its concept names.
             earlier = seen[member.base_iri]
             if member.sha256 not in (earlier.sha256, earlier.named_sha256):
                 raise Failed(f"{member.slug}: base_iri {member.base_iri} is already in the federation as {earlier.slug} at {earlier.version}, named by <{earlier.parents[0]}>, and this concept names it at {member.version} under <{member.parents[0]}>; a bundle joins once, at one release, so two domains that name it must pin the same zip{waits_note(earlier) or waits_note(member)}")
@@ -1856,12 +2036,11 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
         except Unobtainable as e:
             # Section 11.5 of the LOKF specification has an unreachable
             # member degrade to its last good state rather than fail. A check
-            # holds no member the pull request proposes, since it is there to
-            # fetch what a person is asked to confirm. A release zip that
+            # holds no member its pull request proposes. A release zip that
             # answers with other bytes means a wrong checksum or a replaced
             # asset, so it is held only at the release a build fetched
-            # before. A served file changes whenever its site does, so it may
-            # be held at an earlier file too.
+            # before. A served file changes with its site, so it may be held
+            # at an earlier file too.
             if member.proposed:
                 raise Failed(f"{e}; a check holds no member the pull request proposes{waits_note(member)}") from e
             if previous is None:
@@ -1898,6 +2077,9 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
         else:
             kdir = write_out(zip_path, bundle_dir, member) if member.served else unpack(zip_path, bundle_dir)
         sub_bundle, sub_domains, sub_members = read_domain(kdir)
+        parsed[kdir] = sub_bundle
+        # The unpacked index.md must name the base_iri the member concept
+        # declares, a check the toolkit's registry cannot make.
         if sub_bundle.base_iri != member.base_iri:
             raise Failed(f"{member.slug}: the {'served file' if member.served else 'zip'}'s index.md says base_iri {sub_bundle.base_iri!r}, the member concept says {member.base_iri!r}")
         say(f"{member.slug}: {member.version} {verdict}; base_iri checked")
@@ -1954,7 +2136,9 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
         lock["unfetched"] = sorted(unfetched, key=lambda u: u["base_iri"])
     # The lock is written after the gate, which adds the links between members.
 
-    # 2. Register and export each bundle, the domain's own first.
+    # 2. Register and export each bundle, the domain's among them, in base_iri order.
+    if label_blank_nodes_fast():
+        say("blank nodes in each export are labelled by pyoxigraph's RDFC-1.0, not by the toolkit's slower rdflib canonicaliser")
     export_root = new / "export"
     export_root.mkdir()
     public = public_url(root, args.public_url)
@@ -1970,20 +2154,20 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     fit: list[str] = []
     domain_copy = work / "domain" / ".lokf" / "knowledge"
     shutil.copytree(knowledge, domain_copy, ignore=shutil.ignore_patterns(".obsidian"))
+    parsed[domain_copy] = bundle
     bundles = [("domain", domain_copy, None)] + [(m.slug, kdir, m) for m, _, kdir, _ in resolved]
     for slug, kdir, member in sorted(bundles, key=lambda b: b[2].base_iri if b[2] else domain_base):
         source_base = member.source_base if member else ""
-        # From lokf 0.9.0 the registry refuses an explicit id outside a
-        # member's base_iri unless the registrant allows it (SPEC 11.3, rule
-        # 3). A person's confirmation admits each member, so the build allows
-        # such ids, as lokf 0.8.0 did. lokf still refuses one in another
-        # member's namespace or LOKF's own.
+        # The registry refuses an explicit id outside a member's base_iri
+        # unless the registrant allows it (SPEC 11.3, rule 3). A person's
+        # confirmation admits each member, so the build allows such ids, and
+        # lokf still refuses one in another member's namespace or in LOKF's.
         entry = entry_for_bundle(kdir, source_base or None, **foreign_ids)
         entry.path = None
         # Section 11.2's harvest status: a member held at its last good state says so.
         entry.status = "last-good" if member and member.held else "ok"
         if not source_base:
-            # The toolkit fills source_base with the runner's own path, which
+            # The toolkit fills source_base with the runner's path, which
             # no reader can follow; the public copy of the unpacked release is
             # the next best, and nothing when there is no public address.
             entry.source_base = (domain_source if member is None else "") or (f"{public}/bundles/{slug}/.lokf/knowledge" if public else "")
@@ -2004,16 +2188,16 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
         schema = host_schema(root) if member is None else member_schema_file(member, cache, not args.no_attestation, kdir.parent.parent, args.max_bytes)
         if schema:
             check = run_lokf(["validate", "--schema", schema.name, str(kdir)], cwd=schema.parent)
-            whose = "its domain schema" if member is None else "the schema released with it,"
+            whose = "its domain vocabulary" if member is None else "the vocabulary released with it,"
             fit.append(f"- `{slug}`: " + (f"validates against {whose} `{schema.name}`" if check.returncode == 0 else f"does not validate against `{schema.name}`: " + (check.stderr or check.stdout).strip().splitlines()[-1][:200]))
         else:
             check = run_lokf(["validate", str(kdir)])
-            fit.append(f"- `{slug}`: " + ("validates against LOKF core" if check.returncode == 0 else "does not validate against LOKF core alone (a schema of its own, or a vocabulary outside LOKF): " + (check.stderr or check.stdout).strip().splitlines()[-1][:200]))
+            fit.append(f"- `{slug}`: " + ("validates against LOKF core" if check.returncode == 0 else "does not validate against LOKF core alone (a domain vocabulary of its own, or types outside LOKF): " + (check.stderr or check.stdout).strip().splitlines()[-1][:200]))
         meta = read_frontmatter(kdir / "index.md") if (kdir / "index.md").read_text(encoding="utf-8").startswith("---") else {}
         pub = meta.get("publisher") or {}
         records.append({
-            "slug": slug, "base_iri": entry.base_iri, "title": entry.title, "version": member.version if member else tag,
-            "license": meta.get("license"), "publisher": pub.get("id") if isinstance(pub, dict) else None,
+            "slug": slug, "base_iri": entry.base_iri, "title": plain(entry.title) or slug, "version": member.version if member else tag,
+            "license": plain(meta.get("license")) or None, "publisher": pub.get("id") if isinstance(pub, dict) else None,
             "member_of": sorted(member.parents) if member else [], "kind": "domain" if member is None or member.is_domain else "bundle",
             "triples": entry.void.get("triples", 0),
             "zip": member.zip_url if member else None, "sha256": member.sha256 if member else None,
@@ -2022,7 +2206,7 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
             "health": "" if args.verify_only else health_line(root, kdir.parent.parent), "kdir": kdir,
         })
         graphs.append((entry.base_iri, out_dir / "graph.nt"))
-        loaded[entry.base_iri] = load_bundle(kdir)
+        loaded[entry.base_iri] = parsed[kdir]
         say(f"{slug}: registered {entry.base_iri} ({entry.void.get('triples', 0)} triples) and exported")
     registry.save()
 
@@ -2033,14 +2217,17 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     terms: dict[str, tuple[list[str], set[str], set[str]]] = {}
     for graph_iri, ds in [*((b, canonical_quads(nt, b)) for b, nt in graphs), (snapshot_iri, lock_graph(snapshot_iri, domain_iri, domain_title, records))]:
         store.extend(ds)
-        per_graph[graph_iri] = sorted(set(ox.serialize(ds, format=ox.RdfFormat.N_QUADS).decode("utf-8").splitlines()))
+        # Split only at the line feed. N-Quads writes a line separator such
+        # as U+2028 raw inside a literal, and str.splitlines would cut the
+        # quad in two there, leaving a file no reader can load.
+        per_graph[graph_iri] = sorted({line for line in ox.serialize(ds, format=ox.RdfFormat.N_QUADS).decode("utf-8").split("\n") if line})
         terms[graph_iri] = graph_terms(ds, graph_iri, registry)
     # The lock's `graphs` says where each graph's quads lie in graph.nq, with
     # their digest, and which other bundles' namespaces they name, so a
-    # reader loads a graph only when a walk reaches a namespace it names. An
-    # IRI no bundle owns that two graphs hold, and that a walk can step to,
-    # is listed under `shares` in each, so a walk that reaches it in one
-    # graph loads the others that hold it, and no more.
+    # reader loads a graph only when a walk reaches a namespace it names.
+    # `shares` lists each IRI no bundle owns that a walk can step to and
+    # another graph holds too, so a walk that reaches it loads only the
+    # graphs that hold it.
     holders: dict[str, int] = {}
     for _, unowned, _ in terms.values():
         for iri in unowned:
@@ -2061,12 +2248,10 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     (new / "graph.nq").write_bytes(b"".join(chunks))
 
     # 4. Gate: every typed-relation target outside its graph's namespace, resolved against the registry.
-    # A target in the namespace of a member left out because it waits is
-    # unowned all the same, as it was before that member was proposed; the
-    # report names the member, so the fix reads as a confirmation. A build
-    # never registers such a member. A check registers it as it stands, so
-    # here its namespace counts as unowned by name. So does the namespace of
-    # a member left out because its file could not be fetched.
+    # A target in the namespace of a member left out, because it waits for a
+    # person or its file could not be fetched, counts as unowned. The report
+    # names the member, so the fix reads as a confirmation. A check registers
+    # a member that waits as it stands, so left_out names its namespace.
     pending = [{**w, "kind": "waits", "why": "waits for a person's confirmation"} for w in waiting if w["built"] is None and w.get("base_iri")]
     pending += [{**u, "concept": u["concept"] or u["base_iri"], "kind": "unfetched", "why": "could not be fetched"} for u in unfetched]
     left_out = {w["base_iri"] for w in pending}
@@ -2103,10 +2288,9 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
 
     def beside(w: dict | None) -> str:
         return f", in the namespace of <{w['concept']}>, which {w['why']}" if w else ""
-    # A target in a member's namespace must name a concept of that member:
-    # the rule --check-refs applies inside one bundle, here across bundles.
-    # A link between two bundles is a target that does. Neither counts a
-    # member a build would leave out, whose namespace is unowned above.
+    # Neither the links between bundles nor the targets that name no concept
+    # (cross_links) count a member a build would leave out, whose namespace
+    # is unowned above.
     links, dangling = cross_links(loaded, registry, vocabulary())
     links = [x for x in links if x["from"] not in left_out and x["to"] not in left_out]
     dangling = [x for x in dangling if x["from"] not in left_out and x["to"] not in left_out]
@@ -2212,13 +2396,13 @@ def write_index(new: pathlib.Path, domain_title: str, domain_iri: str, snapshot_
             continue
         # A licence given as an address is linked; one given as text, such as MIT, is written as it is.
         licence = str(r.get("license") or "")
-        licence = f"<{licence}>" if licence.startswith(("http://", "https://")) else licence
-        title = r["title"] + (" (a domain)" if r.get("kind") == "domain" else "")
-        lines.append(f"| [{title}](bundles/{r['slug']}/.lokf/knowledge/index.md) | {r['version']} | `{r['base_iri']}` | {named_by(r)} | {licence} | {r['health']} |")
+        licence = f"<{licence}>" if re.fullmatch(r"https?://[^\s<>|]+", licence) else cell(licence)
+        title = cell(r["title"]) + (" (a domain)" if r.get("kind") == "domain" else "")
+        lines.append(f"| [{title}](bundles/{r['slug']}/.lokf/knowledge/index.md) | {cell(r['version'])} | `{r['base_iri']}` | {named_by(r)} | {licence} | {cell(r['health'])} |")
     dom = next((r for r in records if r["slug"] == "domain"), None)
     if dom:
-        lines += ["", f"The domain bundle itself: [{dom['title']}](bundles/domain/.lokf/knowledge/index.md) at `{dom['base_iri']}`, {dom['triples']} triples; its health line: {dom['health']}."]
-    titles = {r["base_iri"]: r["title"] for r in records}
+        lines += ["", f"The domain bundle itself: [{cell(dom['title'])}](bundles/domain/.lokf/knowledge/index.md) at `{dom['base_iri']}`, {dom['triples']} triples; its health line: {cell(dom['health'])}."]
+    titles = {r["base_iri"]: cell(r["title"]) for r in records}
     lines += ["", "## Links between members", ""]
     if links:
         lines += ["Typed relations in one bundle whose target is a concept of another, counted by slot. `queries/links.rq` counts them over the graph.", "",
@@ -2285,24 +2469,38 @@ def registry_jsonld(registry, records: list[dict]) -> dict:
 def github_releases(owner: str, repo: str) -> list[dict]:
     """A repository's releases, newest first, as the GitHub API lists them.
 
-    The API answers sixty requests an hour without a credential, a limit the
-    runners of a hosted CI service share. When it refuses one for that, gh
-    asks again with the job's token, which reaches gh alone.
+    Without a credential the API answers sixty requests an hour, a limit the
+    runners of a hosted CI service share, and answers 404 for a private or
+    internal repository. When it refuses a request for either reason, or a
+    proxy answers with no release list, gh asks again with its credential.
     """
+    if not GITHUB_OWNER.fullmatch(owner) or not GITHUB_REPO.fullmatch(repo):
+        raise Failed(f"{owner}/{repo}: not an owner and a repository as GitHub names them")
     path = f"repos/{owner}/{repo}/releases?per_page=100"
+    why = "the answer is no release list"
     try:
-        raw = http_get(f"https://api.github.com/{path}", accept="application/vnd.github+json")
+        listed = json.loads(http_get(f"https://api.github.com/{path}", accept="application/vnd.github+json"))
+        if isinstance(listed, list):
+            return listed
     except urllib.error.HTTPError as e:
-        gh = shutil.which("gh")
-        if e.code not in (403, 429) or not gh or not gh_has_credential(gh):
+        if e.code not in (403, 404, 429):
             raise Failed(f"{owner}/{repo}: the release list could not be read ({e})") from e
-        done = subprocess.run([gh, "api", path], capture_output=True, text=True, env=gh_env())
-        if done.returncode != 0:
-            raise Failed(f"{owner}/{repo}: the release list could not be read ({e}), nor with gh ({(done.stderr or done.stdout).strip()[:200]})") from e
-        raw = done.stdout.encode("utf-8")
+        why = str(e)
     except (urllib.error.URLError, TimeoutError) as e:
         raise Failed(f"{owner}/{repo}: the release list could not be read ({e})") from e
-    return json.loads(raw)
+    except ValueError:
+        pass
+    gh = gh_ready()
+    if not gh:
+        raise Failed(f"{owner}/{repo}: the release list could not be read ({why}). If {owner}/{repo} is private or internal: {PRIVATE_HINT}")
+    status, body, said = gh_api_patient(gh, path, "application/vnd.github+json")
+    try:
+        listed = json.loads(body) if status == 200 else None
+    except ValueError:
+        listed, said = None, "the answer is no release list"
+    if not isinstance(listed, list):
+        raise Failed(f"{owner}/{repo}: the release list could not be read ({why}), nor with gh ({said or 'the answer is no release list'})")
+    return listed
 
 
 def newest_bundle_release(releases: list[dict]) -> tuple[dict, dict, dict] | None:
@@ -2365,9 +2563,9 @@ def written_by_person(data: dict) -> bool:
     return isinstance(generated, dict) and str(generated.get("by", "")).startswith("human:")
 
 
-# The lines of a concept's body the pen never edits, and the lines it reads
-# as a person's event or note, with the same markers and patterns the pen
-# (knowledge-apply.py) uses, so no edit built here is one the pen refuses.
+# The markers of the body lines the pen never edits, and the pattern of a
+# line it reads as a person's event or note. They match the ones the pen
+# (knowledge-apply.py) uses, so the pen refuses no edit built here.
 RELATED_START, RELATED_END = "<!-- lokf:related -->", "<!-- /lokf:related -->"
 OPEN_Q = "## Open questions"
 PERSON_LINE = re.compile(r"^\s*-?\s*by:\s*human:|^\s*-\s*\d{4}-\d{2}-\d{2},\s*human:")
@@ -2423,14 +2621,13 @@ def protected_lines(lines: list[str]) -> set[int]:
 def body_edits(body: str, move) -> tuple[list[dict], int]:
     """The pen's edits that move the old release in a body, and how many lines naming it are left as they were.
 
-    Each edit replaces one whole line. The pen applies the edits in order
-    and refuses the whole patch when a target occurs other than exactly once
-    in the body as it then stands, so each target is counted in the body the
-    edits before it leave. A line that occurs more than once, or that reads
-    as a person's event or note, is left for a person and counted. Lines in
-    the lokf:related block and under ## Open questions are never edited and
-    are not counted, since an open question may name the old release on
-    purpose.
+    The pen applies the edits in order, and refuses the patch when a target
+    does not occur exactly once in the body as it then stands, so each
+    target is counted in the body the edits before it leave. A line that
+    occurs more than once, or reads as a person's event or note, is left and
+    counted. Lines in the lokf:related block and under ## Open questions are
+    neither edited nor counted, since an open question may name the old
+    release.
     """
     lines = body.split("\n")
     kept = protected_lines(lines)
@@ -2470,12 +2667,11 @@ def written_days(version: str, description: str, body: str | None) -> set[str]:
 def day_moves(version: str, listed: str, tag: str, day: str, description: str, body: str | None) -> tuple[dict[str, str], str]:
     """The pairs that move the old release's day to the new one's, and where the old day came from: "list", "text" or "".
 
-    The release list gives the old day when it still holds the old release,
-    and then that day moves wherever the text gives it. A release pruned from
-    the list, or past its first hundred, is not there. The day the text
-    writes right after the old tag is then taken instead, and it moves only
-    there, with the tag, since the same day elsewhere may date something
-    else.
+    When the release list holds the old release, its day moves wherever the
+    text gives it. A release pruned from the list, or past its first
+    hundred, is not there. Then the day the text writes right after the old
+    tag moves, and only there, since the same day elsewhere may date
+    something else.
     """
     if not day:
         return {}, ""
@@ -2494,10 +2690,9 @@ def check_namespace(what: str, base_iri: str, taken: dict[str, str], own: str = 
     """Stop when a release names a namespace the build would refuse.
 
     A namespace is an http or https IRI that ends in / or #, so that it holds
-    whole path segments. It nests with neither the domain's nor another
-    member's, since a bundle joins once, under a namespace of its own.
-    `taken` maps each namespace to who holds it, the domain's included, and
-    `own` names the member concept that may keep its own.
+    whole path segments, and it nests with neither the domain's nor another
+    member's. `taken` maps each namespace to who holds it, the domain's
+    included, and `own` names the member concept that may keep its own.
     """
     try:
         parsed = urllib.parse.urlparse(base_iri)
@@ -2562,11 +2757,41 @@ def served_base(path: pathlib.Path, url: str) -> str:
 
 
 def digest_of(sum_asset: dict, what: str) -> str:
-    """The digest a release's .sha256 asset starts with."""
-    text = http_get(sum_asset["browser_download_url"]).decode("utf-8", "replace").split()
-    if not text or not re.fullmatch(r"[0-9a-f]{64}", text[0]):
-        raise Failed(f"{what}: {sum_asset['name']} does not start with a sha256 digest")
-    return text[0]
+    """The digest a release's .sha256 asset starts with.
+
+    The asset's address is asked first. A private or internal repository
+    gives nothing there, so when the address refuses the request, or
+    answers with no digest, gh fetches the asset from the GitHub API, as
+    fetch_checked does for a member's zip.
+    """
+    url = str(sum_asset.get("browser_download_url") or "")
+
+    def leading(raw: bytes) -> str:
+        words = raw.decode("utf-8", "replace").split()
+        return words[0] if words and re.fullmatch(r"[0-9a-f]{64}", words[0]) else ""
+
+    why = "does not start with a sha256 digest"
+    try:
+        found = leading(http_get(url, max_bytes=1_000_000))
+    except urllib.error.HTTPError as e:
+        found, why = "", f"could not be read ({e})"
+    except (urllib.error.URLError, TimeoutError) as e:
+        raise Failed(f"{what}: {sum_asset['name']} could not be read ({e})") from e
+    if found:
+        return found
+    asset, gh = release_asset(url), gh_ready()
+    if asset and gh and isinstance(sum_asset.get("id"), int):
+        status, body, said = gh_api_patient(gh, f"repos/{asset[0]}/{asset[1]}/releases/assets/{sum_asset['id']}", "application/octet-stream")
+        if status == 401:
+            raise refused_credential(what, asset[0], asset[1], said)
+        found = leading(body) if status == 200 else ""
+        if not found:
+            why += f", nor with gh ({said})" if said else ", nor as gh fetched it"
+    elif asset and not gh:
+        why += f". If {asset[0]}/{asset[1]} is private or internal: {PRIVATE_HINT}"
+    if not found:
+        raise Failed(f"{what}: {sum_asset['name']} {why}")
+    return found
 
 
 def asset_pair(release: dict, prefix: str, suffixes: tuple[str, ...]) -> tuple[dict, dict] | None:
@@ -2619,9 +2844,8 @@ def verify_workspace(member: Member, cache: pathlib.Path, max_bytes: int, attest
 
 # What the members script last saw at each served address, kept in
 # .lokf/.cache/federation/ from one run to the next: the digest, the day,
-# and the validators a conditional request sends. It holds no file. A run
-# in a fresh checkout, such as the librarian workflow's, finds none and asks
-# for each file whole. The workflow keeps no cache of it, because its job
+# and the validators a conditional request sends. The librarian workflow
+# keeps no cache of it, so each of its runs reads every file whole. Its job
 # runs whatever AGENT_CLI names, and a record that job wrote could pair a
 # site's current ETag with the old digest, so the site's 304 would hide a
 # change.
@@ -2634,8 +2858,8 @@ def look_served(url: str, cache: pathlib.Path, book: pathlib.Path, max_bytes: in
     The request is conditional when the member concept names, as `named`,
     the digest the site served at the last look, as section 11.5 of the LOKF
     specification guards a harvest. An unchanged file then costs a 304 and
-    no download, and needs no copy, since the concept names it already: the
-    copy is None. The day is the file's Last-Modified date, else today's.
+    no download, and the copy is None. The day is the file's Last-Modified
+    date, else today's.
     """
     try:
         every = json.loads(book.read_text(encoding="utf-8")) if book.is_file() else {}
@@ -2802,13 +3026,12 @@ def move_member(c, cache: pathlib.Path, book: pathlib.Path, args, ops: list[dict
     # it holds and claims nothing more.
     confirmed = confirmed_by_person(c.data)
     if tag == member.version:
-        # A domain host attaches its workspace after its bundle zip, once
-        # its build has run, so a member domain moved in between names
-        # none. This proposes the workspace on its own once the release
-        # has it. A run of that workflow started by hand attaches the
-        # workspace again, and its index carries the day it was built,
-        # so the bytes change: then this proposes the new checksum, since
-        # the build refuses the old one.
+        # A domain host attaches its workspace after its bundle zip, so a
+        # member domain moved in between names none, and this proposes the
+        # workspace once the release has it. A run of that workflow started
+        # by hand attaches the workspace again with other bytes, since its
+        # index carries the day it was built, so this proposes the new
+        # checksum.
         workspace = further_distribution(release, "workspace-", (".zip",), "application/zip", member.slug) if member.declared_domain else None
         if workspace is None or named_digest(workspace["checksum"]) == member.workspace_sha256:
             current.append(f"{member.slug}: {tag} is current")
@@ -2832,7 +3055,7 @@ def move_member(c, cache: pathlib.Path, book: pathlib.Path, args, ops: list[dict
     distribution = release_distributions(release, zip_asset, sum_asset, member.slug, member.declared_domain)
     moved = Member(c.path, {**c.data, "version": tag, "distribution": distribution}, "", 1)
     zip_path, verdict = obtain(moved, cache, args.max_bytes, not args.no_attestation)
-    # The release's own index.md names the namespace its concepts are in
+    # The release's index.md names the namespace its concepts are in
     # now, and the build refuses a member concept that names another
     # namespace.
     base_iri = zip_base_iri(zip_path, f"{owner}/{repo} at {tag}")
@@ -2848,16 +3071,14 @@ def move_member(c, cache: pathlib.Path, book: pathlib.Path, args, ops: list[dict
              + namespace_move(member.base_iri, base_iri))
     if written_by_person(c.data):
         # The pen refuses any patch of a concept a person wrote, so the
-        # move goes to the curator as a question alone.
+        # move is only a question for the curator.
         ops.append({"op": "question", "path": path, "text": f"{asked} A person wrote this concept, so this patch leaves its text and frontmatter as they are."})
         handoff.append(f"{member.slug}: {member.version} -> {tag}; {verdict}; a person wrote the concept, so only a question was added.")
         return
-    # The move changes the text too: the old tag, zip name, day and
-    # namespace become the new ones in the description and in the body, so
-    # the concept no longer says one release in `version` and another in
-    # its prose. day_moves() says where the old day comes from. The
-    # namespace moves where the text gives it as code, as this script
-    # writes it.
+    # The move changes the old tag, zip name, day and namespace in the
+    # description and the body too, so the prose names the release that
+    # `version` names. The namespace moves only where the text gives it as
+    # code, as this script writes it.
     description = str(c.data.get("description") or "")
     body = concept_body(c.path)
     new_day = release_day(release)
@@ -2939,10 +3160,10 @@ def _members(args, tmp: pathlib.Path) -> int:
             move_member(c, cache, book, args, ops, handoff, current, taken)
         except Failed as e:
             failed.append(f"{c.concept_id}: could not be checked, so it stays as it is: {e}")
-    # A repository named with --add joins the same way a member moves: its
-    # newest bundle release is verified first, then its own index.md says what
-    # it is and where its namespace lies, and the pen creates the concept as
-    # a draft with a question, for a person to confirm.
+    # A repository named with --add joins as a member moves: its newest
+    # bundle release is verified first, and its index.md says what it is and
+    # where its namespace lies. The pen creates the concept as a draft with a
+    # question, for a person to confirm.
     added = 0
     for spec in args.add or []:
         if spec.startswith(("http://", "https://")):
@@ -2973,11 +3194,10 @@ def _members(args, tmp: pathlib.Path) -> int:
             raise Failed(f"{owner}/{repo}: the zip's index.md names no base_iri")
         check_namespace(f"{owner}/{repo}", base_iri, taken)
         taken[base_iri] = path[:-3]
-        # A release that holds a Domain concept is a domain in turn: the
-        # concept says so, and the build follows its members. The concept
-        # names the workspace the release carries too, once this checks it
-        # as the build does, so a member that waits there is built at the
-        # release that domain's own build took.
+        # A release that holds a Domain concept is a domain in turn, whose
+        # members the build follows. The concept also names the workspace the
+        # release carries, checked as the build checks it, so that a member
+        # that waits there is built at the release that domain's build took.
         sub_bundle, sub_domains, sub_members = read_domain(kdir)
         in_turn = ""
         if sub_domains:
@@ -2990,11 +3210,10 @@ def _members(args, tmp: pathlib.Path) -> int:
                 in_turn += f" The federation workflow attached its workspace as `{workspace['name']}`, whose lock says which release of each member that domain built."
         day = release_day(release)
         title = str(meta.get("title") or f"{repo} knowledge bundle")
-        # The member's own description is quoted, word for word, whatever
-        # its form: a noun phrase, an instruction or a sentence. One that
-        # ends a sentence keeps its own full stop inside the quotation
-        # marks, and one that does not is given a full stop after them. A
-        # double quotation mark inside it becomes a single one.
+        # The member's description is quoted word for word, whatever its
+        # form. One that ends a sentence keeps its full stop inside the
+        # quotation marks, and any other gets one after them. A double
+        # quotation mark inside it becomes a single one.
         about = " ".join(str(meta.get("description") or "").split()).replace('"', "'")
         quoted = ""
         if about:
@@ -3143,10 +3362,10 @@ def diff(args) -> int:
 class Snapshot:
     """A workspace to read, file by file: an unpacked folder, a workspace-<tag>.zip read in place, or the site that serves it.
 
-    A served workspace is read as a reader needs it: the lock, the registry
-    and the index at the start, a graph by a range request for the bytes
-    the lock says it lies in, and a document when one is asked for. A
-    server that answers a range request with the whole file is read once.
+    A served workspace is read as a reader needs it. The lock, the registry
+    and the index are read at the start, a graph by a range request for the
+    bytes the lock gives it, and a document when one is asked for. A server
+    that answers a range request with the whole file is read once.
     """
 
     def __init__(self, where: str, base: pathlib.Path | None = None, need: str = "graph.nq", max_bytes: int = DEFAULT_MAX_BYTES):
@@ -3351,10 +3570,9 @@ def query(args) -> int:
 # mcp: the lokf-registry server of the specification's section 11.4, over the snapshot
 # ---------------------------------------------------------------------------
 # Every answer is bounded: a neighbourhood stops at DEPTH_MAX hops and
-# LIMIT_MAX triples, a SELECT at ROWS_MAX rows, and each says when it was cut,
-# so a reader asks again from a narrower place instead of being handed the
-# graph. Nothing is written: the snapshot is read-only and the server holds
-# no state between calls but the graphs it has loaded.
+# LIMIT_MAX triples, a SELECT at ROWS_MAX rows, and each says when it was
+# cut, so a reader asks again from a narrower place. The server writes
+# nothing, and holds no state between calls but the graphs it has loaded.
 DEPTH_MAX, LIMIT_DEFAULT, LIMIT_MAX, ROWS_MAX = 3, 200, 2000, 1000
 STORED_QUERY = re.compile(r"^[A-Za-z0-9_-]+\.rq$")
 # The stored queries that read the lock graph, which a reader given
@@ -3374,19 +3592,16 @@ class Workspace:
     """A workspace opened for reading: the union store, the registry, the lock, the index, and each bundle's released documents.
 
     When the lock says where each graph lies in graph.nq, a lazy reader
-    starts with no graph loaded, and a graph loads when a walk first meets
-    an IRI it holds, as section 11.4 of the LOKF specification has members
-    load. An IRI a bundle owns needs that bundle's graph and every graph
-    that names its namespace, so a link into it is there too. An IRI no
-    bundle owns needs the graphs the lock lists as sharing it when the walk
-    stepped to it from a graph already loaded, and every graph when a walk
-    starts there. A SPARQL query loads every graph. Each graph's bytes are
-    checked against the digest the lock gives, and graph.nq loads whole
-    when they do not match, or when the lock predates that index.
+    loads a graph when a walk first meets an IRI it holds, as section 11.4
+    of the LOKF specification has members load. An IRI a bundle owns needs
+    that bundle's graph and each graph that names its namespace. One no
+    bundle owns needs the graphs that share it, or every graph when a walk
+    starts there. A SPARQL query loads every graph. The reader loads
+    graph.nq whole when a graph does not match the lock's digest.
 
-    A reader given members (--member) reads those bundles alone: their
-    graphs load and no other, the lock graph, which names every member,
-    stays out, and an IRI of another bundle reads as one no member owns.
+    A reader given --member reads only those bundles' graphs, without the
+    lock graph, which names every member. An IRI of another bundle reads as
+    one no member owns.
     """
 
     def __init__(self, source: Snapshot, lazy: bool = False, scope: list[str] | None = None):
@@ -3425,14 +3640,14 @@ class Workspace:
             self.load()
 
     def scoped_index(self) -> str:
-        """The index a reader given members serves: those bundles alone, since the workspace index names every member."""
+        """The index a reader given members serves: only those bundles, since the workspace index names every member."""
         first = self.index.splitlines()[0] if self.index.startswith("# ") else "# The workspace"
         lines = [first + ", as this reader reads it", "",
                  "This reader answers from these bundles alone, each in a named graph named by its base_iri; an IRI of any other bundle reads as one no member owns.", "",
                  "| Bundle | Version | Namespace |", "| --- | --- | --- |"]
         for b in sorted(self.members):
             m = self.members[b]
-            lines.append(f"| {m.get('title') or m.get('slug')} | {m.get('version') or ''} | `{b}` |")
+            lines.append(f"| {cell(m.get('title') or m.get('slug'))} | {cell(m.get('version') or '')} | `{b}` |")
         return "\n".join(lines) + "\n"
 
     def scope_note(self) -> str:
@@ -3682,8 +3897,8 @@ def mcp_server(args) -> int:
         ws.load()  # a query may reach any graph
         try:
             # Answers are read one at a time and no further than the limit,
-            # so a query that matches the whole workspace hands back a part
-            # of it and says so.
+            # so a query that matches the whole workspace returns a part of
+            # it and says so.
             form = query_form(query)
             if form in ("construct", "describe"):
                 triples = list(itertools.islice(ws.store.query(query), LIMIT_MAX + 1))
@@ -3736,7 +3951,7 @@ def main(argv=None) -> int:
     b.add_argument("--tag", default="", help="this domain release's tag, named in the lock graph")
     b.add_argument("--release-base", default="", help="the release page prefix, e.g. https://github.com/o/r/releases/tag; with --tag it names the snapshot")
     b.add_argument("--snapshot-iri", default="", help="the lock graph's IRI, when not derived from --release-base and --tag")
-    b.add_argument("--public-url", default=None, help="where the snapshot is served; default from website/site.config.mjs")
+    b.add_argument("--public-url", default=None, help="where the snapshot is served; default from the website's site.toml")
     b.add_argument("--cache", default=None, help=CACHE_HELP)
     b.add_argument("--max-bytes", type=int, default=DEFAULT_MAX_BYTES, help="refuse a zip that unpacks to more than this")
     b.add_argument("--no-attestation", action="store_true", help="skip gh attestation verify")
@@ -3778,8 +3993,8 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     global ALLOW_LOCAL, ALLOW_PRIVATE
     ALLOW_LOCAL = ALLOW_PRIVATE = bool(args.allow_local)
-    # The librarian wrapper hands its prompt to AGENT_CLI as `-p "<prompt>"`;
-    # argparse rejects it, so it is stripped before parsing above.
+    # The librarian wrapper passes its prompt to AGENT_CLI as `-p "<prompt>"`,
+    # which argparse rejects, so the __main__ block strips it before main().
     try:
         return args.func(args)
     except Failed as e:

@@ -1,5 +1,10 @@
 # KTL Federation
 
+[![Lint & docs](https://github.com/noelmcloughlin/ktl-federation/actions/workflows/lint-and-docs.yaml/badge.svg)](https://github.com/noelmcloughlin/ktl-federation/actions/workflows/lint-and-docs.yaml)
+[![Licence](https://img.shields.io/github/license/noelmcloughlin/ktl-federation?label=licence)](LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/noelmcloughlin/ktl-federation/badge)](https://scorecard.dev/viewer/?uri=github.com/noelmcloughlin/ktl-federation)
+[![KTL scorecard](https://img.shields.io/endpoint?url=https://noelmcloughlin.github.io/ktl-federation/badge.json)](https://noelmcloughlin.github.io/ktl-federation/health/)
+
 A museum that borrows for an exhibition never owns what it shows: each loan is named exactly, its condition recorded, and the lender's name kept on the label. KTL Federation does the same for knowledge bundles.
 
 [Knowledge Trust Ladder](https://w3id.org/ktl/) (KTL) keeps a repository's checked knowledge as a bundle: the repository's context layer, with trust in every claim left visible. [The design](https://w3id.org/ktl/docs/context-layer/) goes beyond one repository: a federation of many bundles, each kept and trusted where it lives, read as one graph. This repository is the domain of one such federation.

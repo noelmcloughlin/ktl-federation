@@ -11,7 +11,7 @@ This repository is the domain of the KTL federation: a thin [LOKF](https://lokf.
 | Path | Holds |
 | --- | --- |
 | `.lokf/knowledge/` | The domain bundle: `domains/`, `members/`, `policies/`, and the `playbooks/`, `datasets/` and `references/` that describe this repository. |
-| `.lokf/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
+| `.lokf/schema/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
 | `.lokf/scripts/`, `.github/workflows/` | Copies of the KTL sidecar's templates. Edit them upstream, never here. |
 | `website/` | The site, from the ktl-website templates; `site.config.mjs` is this repository's own. |
 | `.assets/` | The figure the docs show, light and dark, and `companions/`, its Archify flow diagram with the candidate it is drawn from. |
@@ -40,7 +40,7 @@ Where a company proxy or an internal npm registry blocks `npx`, the GitHub CLI i
 - **A confirmation is a person's own act.** Record it with ktl-curator, in a signed commit. The registrar's `provenance` job backs each `human:` event with that person's signature or approval, and off GitHub `knowledge-provenance.sh` checks the signature against `.lokf/curators/`. No agent writes a confirmation. [Confirming a member change](docs/curation.md) gives the steps on any forge.
 - **Nothing is copied from a member.** The domain names releases, and the workspace is built from them.
 - **Run the gate's two checks**: `cd .lokf && just lokf-check-refs` and `bash scripts/knowledge-conventions.sh knowledge`.
-- **Sidecar files are copies.** Each week `knowledge-sync.yaml` checks the newest skills release and, when this host is behind, opens one pull request that copies its templates over `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows. Change them in KTL, never here. The sync leaves `.lokf/lokf.yaml` alone: when the `lokf` toolkit's version changes, copy it again from the installed package in the same pull request.
+- **Sidecar files are copies.** Each week `knowledge-sync.yaml` checks the newest skills release and, when this host is behind, opens one pull request that copies its templates over `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows. Change them in KTL, never here. The sync leaves `.lokf/schema/lokf.yaml` alone: when the `lokf` toolkit's version changes, copy it again from the installed package in the same pull request.
 - **Lint as CI does**: [`lint-and-docs.yaml`](.github/workflows/lint-and-docs.yaml) runs markdownlint against `.markdownlint-cli2.jsonc`, lychee against `lychee.toml` and codespell over every `*.md`, and actionlint and ShellCheck over the workflows and scripts.
 - **If your change alters behaviour**, add an entry under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
 

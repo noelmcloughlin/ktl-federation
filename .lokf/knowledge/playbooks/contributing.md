@@ -42,7 +42,7 @@ Where a company proxy or an internal npm registry blocks `npx`, the GitHub CLI i
 - Copy nothing from a member. The domain names releases, and the workspace is built from them.
 - Run the gate's two checks from `.lokf/`: `just lokf-check-refs` and `bash scripts/knowledge-conventions.sh knowledge`.
 - Leave the sidecar's copies alone: `.lokf/scripts/`, `.lokf/m365/` and the `knowledge-*.yaml` workflows. Change them in KTL. Each week `knowledge-sync.yaml` checks the newest skills release. When this host is behind that release, the workflow opens one pull request that copies the release's templates over these files.
-- When the `lokf` toolkit's version changes, copy `.lokf/lokf.yaml` again from the installed package in the same pull request. The sync leaves that file alone.
+- When the `lokf` toolkit's version changes, copy `.lokf/schema/lokf.yaml` again from the installed package in the same pull request. The sync leaves that file alone.
 - Lint as CI does. `lint-and-docs.yaml` runs markdownlint against `.markdownlint-cli2.jsonc`, lychee against `lychee.toml` and codespell over every `*.md`. It runs actionlint and ShellCheck over the workflows and scripts.
 - Add an entry under `## [Unreleased]` in `CHANGELOG.md` when your change alters behaviour.
 

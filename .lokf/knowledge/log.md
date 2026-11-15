@@ -1,5 +1,9 @@
 # Change Log
 
+## 2026-11-15
+
+* **Changed**: The domain schema, the domain and the knowledge sources cite `.lokf/schema/domain.yaml`, where the schema now sits beside its copy of LOKF core.
+
 ## 2026-11-09
 
 * **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.61.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.

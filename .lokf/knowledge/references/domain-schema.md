@@ -3,12 +3,12 @@ type: Reference
 id: https://w3id.org/ktl/federation/knowledge/references/domain-schema
 genre: reference
 title: The domain schema
-description: The LinkML schema in .lokf/domain.yaml that adds Domain, MemberBundle, MemberDomain, ReleaseDistribution and ReleaseChecksum over LOKF core, so lokf validate checks a member's namespace, release and checksum. Its namespace is KTL's, and a host that needs more classes imports it.
-resource: .lokf/domain.yaml
+description: The LinkML schema in .lokf/schema/domain.yaml that adds Domain, MemberBundle, MemberDomain, ReleaseDistribution and ReleaseChecksum over LOKF core, so lokf validate checks a member's namespace, release and checksum. Its namespace is KTL's, and a host that needs more classes imports it.
+resource: .lokf/schema/domain.yaml
 relatedTo:
   - https://w3id.org/ktl/federation/knowledge/domains/ktl-federation
 sources:
-  - resource: .lokf/domain.yaml
+  - resource: .lokf/schema/domain.yaml
   - resource: docs/architecture.md
 generated:
   by: process:ktl-librarian
@@ -21,7 +21,7 @@ verified:
 
 # Overview
 
-`.lokf/domain.yaml` is this host's domain schema, a LinkML file that `lokf validate` reads beside LOKF core. The `schema := "domain.yaml"` line of `.lokf/justfile` names it. ktl-sidecar lays it down on a host whose bundle is a domain, beside a pinned copy of `lokf.yaml`.
+`.lokf/schema/domain.yaml` is this host's domain schema, a LinkML file that `lokf validate` reads beside LOKF core. The `schema := "schema/domain.yaml"` line of `.lokf/justfile` names it. ktl-sidecar lays it down on a host whose bundle is a domain, beside a pinned copy of `lokf.yaml`.
 
 ## The five classes
 

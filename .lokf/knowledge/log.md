@@ -2,6 +2,7 @@
 
 ## 2026-11-15
 
+* **Curation**: 2 confirmed by a person (gist knowledge bundle at v0.7.2, Knowledge Trust Ladder knowledge bundle at v0.65.0), 0 sent back, 0 corrected, 0 retired; review dates set to 2027-05-15.
 * **Changed**: gist knowledge bundle moved from v0.3.13 to v0.7.2; the release carries `knowledge-v0.7.2-gist-linkml.zip`.
 * **Changed**: Knowledge Trust Ladder knowledge bundle moved from v0.56.1 to v0.65.0; the release carries `knowledge-v0.65.0-knowledge-trust-ladder.zip`. Its open questions on v0.60.0 and v0.61.0 are cleared.
 * **Changed**: The knowledge website playbook and the knowledge sources describe the Hugo site that replaced the Astro one in `website/`, set by `website/site.toml`.

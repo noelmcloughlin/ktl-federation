@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.18.2] - 2026-11-15
+
 ### Changed
 
 - **The bundle's sidecar and the website's tools require Python 3.11 or later**, as KTL's templates do.

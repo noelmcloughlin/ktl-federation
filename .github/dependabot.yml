@@ -32,8 +32,9 @@ updates:
         patterns: ["*"]
 
   # The release tools semantic-release.yml installs with npm ci.
+  # Outside .github/, where Dependabot may change nothing but workflows.
   - package-ecosystem: "npm"
-    directory: "/.github/release"
+    directory: "/.release"
     schedule:
       interval: "weekly"
     commit-message:

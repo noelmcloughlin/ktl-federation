@@ -24,7 +24,7 @@ sources:
   - resource: website
   - resource: .assets
   - resource: scripts
-  - resource: .lokf/domain.yaml
+  - resource: .lokf/schema/domain.yaml
   - resource: https://w3id.org/ktl/docs/federation
   - resource: https://w3id.org/ktl/federation/workspace/index.md
 generated:
@@ -43,7 +43,7 @@ This map lists where the domain bundle's concepts come from, which concepts each
 | Source | Yields | Class(es) | Re-check by |
 | --- | --- | --- | --- |
 | each member's releases on its forge: the `knowledge-*.zip`, its `.sha256` and its build attestation | `members/` | `MemberBundle`, `MemberDomain` | running the members script, `knowledge-federate.py members`, which the librarian wrapper runs in place of an agent; a person confirms each change it proposes |
-| `.lokf/domain.yaml` | the domain schema, and the settings the domain concept states | `Reference` (`references/domain-schema.md`), `Domain` (`domains/ktl-federation.md`) | re-reading the header comment and the `Domain` class's slots |
+| `.lokf/schema/domain.yaml` | the domain schema, and the settings the domain concept states | `Reference` (`references/domain-schema.md`), `Domain` (`domains/ktl-federation.md`) | re-reading the header comment and the `Domain` class's slots |
 | `docs/architecture.md` | the domain, how it stays current, and the workspace | `Domain`, `Dataset` (`datasets/workspace.md`), `Reference` | re-reading "The domain", "How it stays current" and "The workspace" |
 | `docs/curation.md` | the steps a person takes to confirm a member change or a new member | `Playbook` (`playbooks/confirming-a-member-change.md`) | re-reading the numbered steps and the three check commands |
 | <https://w3id.org/ktl/docs/federation>, <https://w3id.org/ktl/docs/context-layer>, <https://w3id.org/ktl/knowledge/playbooks/domain-bundle> | admission, the gate, what a confirmation attests | `Policy` (`policies/federation.md`) | re-fetching each page for a changed admission rule or gate |

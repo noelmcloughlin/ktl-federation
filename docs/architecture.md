@@ -31,14 +31,14 @@ A person's confirmation of a member attests two things only: that the member bel
 
 The domain's `base_iri` is `https://w3id.org/ktl/federation/knowledge/`. It sits beside KTL's own namespace, never above it, since the registry refuses a `base_iri` nested inside another and routes an IRI to its owner by the longest matching namespace. `https://w3id.org/ktl/federation/` itself is the site, with the workspace under it.
 
-`.lokf/domain.yaml` is the domain schema. It declares five classes over LOKF core: `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`; `MemberBundle`; `MemberDomain`; `ReleaseDistribution`, which requires the checksum of the file it names; and `ReleaseChecksum`, LOKF core's checksum with sha256 as its only algorithm. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
+`.lokf/schema/domain.yaml` is the domain schema. It declares five classes over LOKF core: `Domain`, which carries `unowned_targets`, `max_depth`, `sensitivity` and `private_addresses`; `MemberBundle`; `MemberDomain`; `ReleaseDistribution`, which requires the checksum of the file it names; and `ReleaseChecksum`, LOKF core's checksum with sha256 as its only algorithm. So `lokf validate` checks a member's namespace, release and checksum. The schema's namespace is KTL's, so every domain host shares one meaning for those classes. A host that needs more extends it with a schema that imports this one. The curator's [domain bundle page](https://w3id.org/ktl/knowledge/playbooks/domain-bundle#the-four-concept-types) describes each class.
 
 ## What is here
 
 | Path | Holds |
 | --- | --- |
 | `.lokf/knowledge/` | The domain bundle, and the `index.md` a reader opens first. |
-| `.lokf/domain.yaml` | The domain schema, named by the `schema :=` line of `.lokf/justfile`. |
+| `.lokf/schema/domain.yaml` | The domain schema, named by the `schema :=` line of `.lokf/justfile`. |
 | `.lokf/scripts/`, `.github/workflows/` | The KTL sidecar's registrar gate, librarian wrapper, and its release, federation and sync workflows, as copies of its templates. `knowledge-sync.yaml` moves them to KTL's newest release. |
 | `.lokf/curators/` | The public keys the provenance check verifies a curator's signed commit against. |
 | `website/` | The site, from the ktl-website templates: a page per concept with its trust label, the bundle's health, and the four `lokf export` files under `/knowledge/`. |

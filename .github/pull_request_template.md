@@ -3,7 +3,7 @@
 ## What changed?
 
 - [ ] A member concept under `.lokf/knowledge/members/` (a bundle joins, leaves, or moves to a new release)
-- [ ] The domain, the policy or the schema (`.lokf/knowledge/domains/`, `policies/`, `.lokf/domain.yaml`)
+- [ ] The domain, the policy or the schema (`.lokf/knowledge/domains/`, `policies/`, `.lokf/schema/domain.yaml`)
 - [ ] Repository packaging only (CI, templates, docs)
 
 ## Checklist

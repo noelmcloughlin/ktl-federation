@@ -13,7 +13,7 @@ generated:
   at: "2026-10-29T11:44:32Z"
 sources:
   - resource: docs/architecture.md
-  - resource: .lokf/domain.yaml
+  - resource: .lokf/schema/domain.yaml
   - resource: https://w3id.org/ktl/docs/federation
 verified:
   - by: process:ktl-librarian

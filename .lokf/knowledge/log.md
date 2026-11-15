@@ -1,5 +1,11 @@
 # Change Log
 
+## 2026-11-15
+
+* **Changed**: linkml-sidecar Knowledge Bundle moved from v0.5.1 to v0.6.0; the release carries `knowledge-v0.6.0-schema-sidecar.zip`. Its namespace moved to `https://w3id.org/lmodel/schema-sidecar/knowledge/`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: schema-sidecar Knowledge Bundle: lmodel/schema-sidecar released v0.6.0 after v0.5.1; does this member move to it? Its namespace moves from <https://w3id.org/ktl/linkml-sidecar/knowledge/> to <https://w3id.org/lmodel/schema-sidecar/knowledge/>, so each of its concepts has a new IRI, and the gate counts a link into the old one as unowned. Before confirming, check that the new namespace belongs to this member.
+* **Changed**: The domain schema, the domain and the knowledge sources cite `.lokf/schema/domain.yaml`, where the schema now sits beside its copy of LOKF core.
+
 ## 2026-11-09
 
 * **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.61.0 after the confirmed v0.56.1; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.

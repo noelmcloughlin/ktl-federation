@@ -19,6 +19,9 @@ exclude = [
   # A member's namespace that does not yet resolve to its concepts, which
   # LOKF permits: an identifier, not a hyperlink.
   '^https://w3id\.org/lmodel/gist/knowledge/',
+  # This repository's own site, which a release deploys; it is down until
+  # the Hugo site is released. Drop once the site serves its pages again.
+  '^https://w3id\.org/ktl/federation/',
   # Development-only addresses.
   '^http://localhost',
   '^http://127\.0\.0\.1',
@@ -39,7 +42,7 @@ exclude_path = [
   # Step 2): the same files, which would be walked twice.
   "(^|/)knowledge_bundle/",
   # What the website's build writes; website/'s own link check covers them.
-  "(^|/)website/(dist|public|src/content|src/generated|node_modules)/",
+  "(^|/)website/(dist|generated|resources|\\.venv)/",
   # What a local knowledge-federate.py build writes, gitignored; the
   # federation workflow builds it afresh from the members' releases.
   "^snapshot/",

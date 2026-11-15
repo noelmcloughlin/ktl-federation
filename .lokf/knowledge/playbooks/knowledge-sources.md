@@ -29,7 +29,7 @@ sources:
   - resource: https://w3id.org/ktl/federation/workspace/index.md
 generated:
   by: process:ktl-librarian
-  at: "2026-10-26T18:19:07Z"
+  at: "2026-11-15T01:15:09Z"
 status: draft
 verified:
   - by: process:ktl-librarian
@@ -50,7 +50,7 @@ This map lists where the domain bundle's concepts come from, which concepts each
 | <https://w3id.org/ktl/federation/workspace/index.md>, `.github/workflows/knowledge-federation.yaml` | the workspace each release builds | `Dataset` (`datasets/workspace.md`) | re-reading the index after a release, and diffing the workflow's jobs against the concept |
 | `CONTRIBUTING.md`, `.github/pull_request_template.md`, `.github/workflows/lint-and-docs.yaml`, `AI_COVENANT.md` | setup, the checks before a pull request, and the rules for AI tools | `Playbook` (`playbooks/contributing.md`) | re-reading the checklist, and diffing the lint jobs against the concept |
 | `.github/workflows/semantic-release.yml`, `.releaserc.json`, `.github/scripts/changelog-release.mjs`, `.github/workflows/knowledge-release.yaml`, `SECURITY.md` | what releases this domain, the changelog rule, and what the release job dispatches | `Playbook` (`playbooks/releasing.md`) | reading the release rules and the dispatch step |
-| `website/README.md`, `website/site.config.mjs`, `.github/workflows/knowledge-website.yaml` | the knowledge website, and which workflow deploys it | `Playbook` (`playbooks/knowledge-website.md`) | re-reading the README's page list and "What to edit", and the `if:` conditions of each workflow's deploying job |
+| `website/README.md`, `website/site.toml`, `.github/workflows/knowledge-website.yaml` | the knowledge website, and which workflow deploys it | `Playbook` (`playbooks/knowledge-website.md`) | re-reading the README's page list and "What to edit", and the `if:` conditions of each workflow's deploying job |
 | `README.md`, `llms.txt` | the doorway: the members table and the note for agents | none of their own | checking the members table against `members/` |
 
 ## How to re-check

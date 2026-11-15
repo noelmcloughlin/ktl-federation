@@ -13,7 +13,7 @@ This repository is the domain of the KTL federation: a thin [LOKF](https://lokf.
 | `.lokf/knowledge/` | The domain bundle: `domains/`, `members/`, `policies/`, and the `playbooks/`, `datasets/` and `references/` that describe this repository. |
 | `.lokf/schema/domain.yaml` | The domain schema: `Domain`, `MemberBundle`, `MemberDomain`, `ReleaseDistribution` over LOKF core. |
 | `.lokf/scripts/`, `.github/workflows/` | Copies of the KTL sidecar's templates. Edit them upstream, never here. |
-| `website/` | The site, from the ktl-website templates; `site.config.mjs` is this repository's own. |
+| `website/` | The site, from the ktl-website templates; `site.toml`, `assets/css/custom.css` and `README.md` are this repository's own. |
 | `.assets/` | The figure the docs show, light and dark, and `companions/`, its Archify flow diagram with the candidate it is drawn from. |
 | `scripts/companion-diagrams.mjs` | This repository's own: draws the Archify companions in `.assets/companions/` again. A maintainer runs it by hand; no workflow does. |
 

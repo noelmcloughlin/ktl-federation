@@ -11,9 +11,9 @@
     // The workspace the federation build writes: other bundles' Markdown, lint-checked where it lives.
     "snapshot/**",
     "website/dist/**",
-    "website/public/**",
-    "website/src/content/**",
-    "website/src/generated/**"
+    "website/generated/**",
+    "website/resources/**",
+    "website/.venv/**"
   ],
   "config": {
     // LOKF concept prose is deliberately unwrapped.

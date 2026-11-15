@@ -19,17 +19,17 @@ updates:
     commit-message:
       prefix: "chore(lokf)"
 
-  # The website's toolchain. Dev dependencies are grouped so a routine week
-  # is one pull request.
-  - package-ecosystem: "npm"
+  # The website's build tools, Hugo and Pagefind (website/pyproject.toml and
+  # uv.lock). One weekly pull request for both.
+  - package-ecosystem: "uv"
     directory: "/website"
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "chore(website)"
     groups:
-      dev-dependencies:
-        dependency-type: "development"
+      website:
+        patterns: ["*"]
 
   # The release tools semantic-release.yml installs with npm ci.
   - package-ecosystem: "npm"

@@ -19,7 +19,7 @@ This repository is the domain of the KTL federation: a thin [LOKF](https://lokf.
 
 ## Development setup
 
-You need [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just), and Node.js 24 for the website.
+You need [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just).
 
 ```bash
 git clone https://github.com/noelmcloughlin/ktl-federation.git

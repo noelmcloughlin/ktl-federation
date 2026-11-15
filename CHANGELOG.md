@@ -6,6 +6,8 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+## [0.17.3] - 2026-11-15
+
 ### Fixed
 
 - **The site at `https://w3id.org/ktl/federation/` is back, rebuilt with Hugo from the ktl-website templates.** Since the v0.64.0 sync the federation workflow builds only a Hugo site, so it deployed the workspace with no pages; `website/site.toml` now holds the old Astro site's address, title and description.

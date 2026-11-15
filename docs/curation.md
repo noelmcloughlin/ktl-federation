@@ -2,13 +2,7 @@
 
 A member's new release changes nothing here until a person confirms the member concept that names it, and a new member joins only when a person confirms it. This page gives the steps. They work on GitHub, on another forge, and in a plain git clone. Where this page says pull request, GitLab says merge request.
 
-## What you need
-
-- ktl-curator in your agent, from the install lines in [CONTRIBUTING](../CONTRIBUTING.md#development-setup), or the KTL Curator plugin in Obsidian. In Obsidian, list `Domain`, `MemberBundle` and `MemberDomain` under *Settings → Type vocabulary → Known LOKF types* in both KTL Curator and KTL Registrar, the same list in each. They are the classes of this host's domain schema, `.lokf/schema/domain.yaml`, which neither plugin can read because it sits outside the `knowledge_bundle` vault.
-- Git set to sign your commits, and your public key in `.lokf/curators/` as `<login>.asc` (GPG) or `<login>.pub` (SSH), where `<login>` is your forge login. Add the key in a change of its own first: the provenance check refuses a change that adds a person's key together with that person's confirmation.
-- [uv](https://docs.astral.sh/uv/) and [just](https://github.com/casey/just), for the checks.
-
-ktl-curator records each answer under your forge login. [Its page in KTL's bundle](https://w3id.org/ktl/knowledge/playbooks/ktl-curator-skill) says where it reads that login on GitHub, GitLab and any other forge.
+Set up first, as the [quick start](install.md#quick-start) says.
 
 ## Confirm the change
 

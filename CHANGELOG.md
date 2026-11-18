@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The schema-sidecar member, formerly linkml-sidecar, names its v0.6.0 release in its new namespace under lmodel.** Its zip's checksum and attestation were verified, and a person's confirmation admits the move.
+
 ## [0.18.5] - 2026-11-18
 
 ### Fixed

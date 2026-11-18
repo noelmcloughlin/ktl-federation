@@ -2,7 +2,7 @@
 
 ## 2026-11-18
 
-* **Curation**: 1 confirmed by a person (schema-sidecar Knowledge Bundle at v0.6.0, in its new namespace `https://w3id.org/lmodel/schema-sidecar/knowledge/`), 0 sent back, 0 corrected, 0 retired; review date set to 2027-05-18.
+* **Curation**: 2 confirmed by a person (schema-sidecar Knowledge Bundle at v0.6.0, in its new namespace `https://w3id.org/lmodel/schema-sidecar/knowledge/`, and AI-LinkMO knowledge bundle at v0.6.0), 0 sent back, 0 corrected, 0 retired; review dates set to 2027-05-18.
 
 ## 2026-11-15
 

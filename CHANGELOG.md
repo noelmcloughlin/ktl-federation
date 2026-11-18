@@ -6,6 +6,10 @@ The `v0.1.0` tag is a baseline, not a release: it marks where versioning starts,
 
 ## [Unreleased]
 
+### Changed
+
+- **The AI-LinkMO member names its v0.6.0 bundle release.** Its zip's checksum and attestation were verified, and a person's confirmation admits the move.
+
 ## [0.19.1] - 2026-11-18
 
 ### Security

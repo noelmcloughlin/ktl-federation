@@ -30,14 +30,12 @@ verified:
   - by: human:noelmcloughlin
     at: "2026-10-29T11:27:44Z"
     revision: W/"8dc951765d3beab090836e2a42542f52"
-stale_after: 2027-04-18
-status: draft
+  - by: human:noelmcloughlin
+    at: "2026-11-18T23:19:09Z"
+    revision: 'W/"4eeff32ad1dd56d91deb7569ed6aa1fb"'
+stale_after: 2027-05-18
 ---
 
 # Overview
 
 The knowledge bundle of [ai-linkmo](https://github.com/noelmcloughlin/ai-linkmo), which its own index describes as a reference implementation of operational AI governance over open AI-governance data, as released at v0.6.0 on 2026-10-27. The release workflow attached the bundle as `knowledge-v0.6.0-ai-linkmo.zip` with a `.sha256` file and a build attestation. Its concepts sit under `https://noelmcloughlin.github.io/ai-linkmo/knowledge/`, the address its site serves them at.
-
-## Open questions
-
-- 2026-11-02, process:knowledge-federate: noelmcloughlin/ai-linkmo released v0.6.0 after the confirmed v0.4.10; does this member move to it?

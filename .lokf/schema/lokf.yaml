@@ -14,7 +14,7 @@ description: >-
   which the JSON-LD context, JSON Schema, SHACL shapes, and an OWL ontology
   are generated.
 license: https://creativecommons.org/licenses/by/4.0/
-version: 0.9.0
+version: 0.10.0
 
 # ---------------------------------------------------------------------------
 # Namespaces
@@ -1588,8 +1588,9 @@ slots:
         but generated Python needs the induced attribute aliased. LinkML
         currently generates `from_` without mapping the authored `from` key
         when loading dataclasses (https://github.com/linkml/linkml/pull/4083).
-        LOKF's build patches its own generated module; domain schemas importing
-        LOKF and generating their own dataclasses do not receive that patch.
+        LOKF's build patches its own generated module; domain vocabularies
+        importing LOKF and generating their own dataclasses do not receive that
+        patch.
         Keep the authored key `from`; after an upstream release fixes loading,
         update the LinkML minimum and remove the local workaround and expected
         failure in tests/test_keyword_dataclasses.py.

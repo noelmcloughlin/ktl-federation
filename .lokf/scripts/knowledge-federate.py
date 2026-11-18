@@ -105,14 +105,24 @@ DEFAULT_MAX_BYTES = 200 * 1024 * 1024
 MAX_ENTRIES = 100_000
 # A distribution's name becomes a file name in the workspace, so it is one
 # plain segment: no folder, no leading dot, nothing a shell or a path reads.
+# It ends .jsonld for a served file and .zip for a zip, since the workspace's
+# site serves the file under that name.
 PLAIN_NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+-]*")
-# Files a browser runs when the workspace's site serves them, which a
-# member's zip may not hold. The whole XML family is listed, because a
-# browser runs an XHTML script element in any file served as XML.
-ACTIVE_SUFFIXES = {
-    ".html", ".htm", ".xhtml", ".xht", ".shtml", ".svg", ".svgz", ".js", ".mjs",
-    ".xml", ".xsl", ".xslt", ".rdf", ".xsd", ".mml", ".mathml", ".rss", ".atom", ".wsdl", ".xbl", ".rng",
-}
+# A member's zip may hold concepts and the images they show, as the release
+# workflow packs them. Any other file is refused: the workspace's site would
+# serve it, and the toolkit loads the schema a pyproject.toml names.
+BUNDLE_SUFFIXES = (".md", ".gif", ".jpeg", ".jpg", ".png", ".webp")
+NO_BUNDLE_FILE = "is neither Markdown (.md) nor an image (.gif, .jpeg, .jpg, .png, .webp), the files a bundle zip holds"
+# A member's schema may import LOKF core, placed beside it, and LinkML's own
+# schemas. LinkML would fetch or read any other import with none of these
+# checks.
+SCHEMA_IMPORT = re.compile(r"lokf|linkml:[A-Za-z][A-Za-z0-9_]*")
+LINKML_PREFIX = "https://w3id.org/linkml/"
+
+
+def bundle_file(name: str) -> bool:
+    """Whether a path in a bundle is a file a member's zip may hold."""
+    return pathlib.PurePosixPath(name).suffix.lower() in BUNDLE_SUFFIXES
 
 
 def plain(text, limit: int = 200) -> str:
@@ -281,6 +291,10 @@ class Member:
         # specification). The build writes that file out as the bundle it was
         # exported from, so the rest of the build reads it as a zip's.
         self.served = self.zip_name.endswith(".jsonld") or str(dist.get("media_type") or "") == SERVED_TYPE
+        # The workspace's site serves the file under this name: x.html would
+        # be a page, whatever the media type says.
+        if not self.zip_name.endswith(".jsonld" if self.served else ".zip"):
+            raise Failed(f"{concept_path}: distribution.name must end {'.jsonld, as a served file' if self.served else '.zip, as a release zip'} does, not {self.zip_name!r}")
         # Why the build holds the member as the previous workspace held it,
         # when the bytes a person confirmed could not be fetched; empty
         # otherwise. `named_sha256` keeps the digest the concept names when
@@ -840,8 +854,9 @@ def check_zip(path: pathlib.Path, max_bytes: int) -> None:
                 raise Failed(f"{path.name}: entry {name!r} leaves the archive root")
             if any(part.startswith(".") for part in pathlib.PurePosixPath(name).parts):
                 raise Failed(f"{path.name}: entry {name!r} is hidden, which a bundle zip never carries (a .git folder there would be run by git)")
-            if pathlib.PurePosixPath(name).suffix.lower() in ACTIVE_SUFFIXES:
-                raise Failed(f"{path.name}: entry {name!r} is a file a browser runs, which the workspace's site would serve")
+            if not info.is_dir() and not bundle_file(name):
+                raise Failed(f"{path.name}: entry {name!r} {NO_BUNDLE_FILE}; "
+                             "the workspace's site would serve it, and the toolkit reads a pyproject.toml in a bundle")
             if not name.startswith("knowledge/"):
                 raise Failed(f"{path.name}: entry {name!r} is outside knowledge/, the root the release workflow packs")
             if (info.external_attr >> 16) & 0o170000 == 0o120000:
@@ -1271,6 +1286,10 @@ def hold(member: Member, source, entry: dict, into: pathlib.Path, why: str, wait
         if folder + "knowledge/index.md" not in files:
             return None
         for rel in files:
+            # The previous workspace may hold a file check_zip refuses, when
+            # a script that took any file built it.
+            if rel.startswith(folder + "knowledge/") and not bundle_file(rel):
+                raise Failed(f"{member.slug}: the previous workspace holds {rel}, which {NO_BUNDLE_FILE}, so the member is not held")
             target = into / ".lokf" / Snapshot.inside(rel[len(folder):])
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(source.read(rel) or b"")
@@ -1307,22 +1326,81 @@ def toolkit_schema() -> pathlib.Path:
     return found
 
 
+def schema_prefixes(prefixes) -> list[tuple[str, str]] | None:
+    """Each prefix a schema declares with the namespace it stands for, in either form LinkML reads; None when `prefixes` has neither form."""
+    if prefixes is None:
+        return []
+    if isinstance(prefixes, dict):
+        entries = list(prefixes.items())
+    elif isinstance(prefixes, list) and all(isinstance(value, dict) for value in prefixes):
+        entries = [(value.get("prefix_prefix"), value) for value in prefixes]
+    else:
+        return None
+    pairs: list[tuple[str, str]] = []
+    for key, value in entries:
+        names, reference = [key], value
+        if isinstance(value, dict):
+            names, reference = [key, value.get("prefix_prefix", key)], value.get("prefix_reference")
+        pairs.extend((str(name), str(reference)) for name in names)
+    return pairs
+
+
+def check_member_schema(schema: pathlib.Path, slug: str, name: str) -> None:
+    """Refuse a member's released schema whose imports would have LinkML fetch an address or read a file the member chose.
+
+    Reads the file as plain YAML before the toolkit loads it, and takes
+    `lokf` and `linkml:` imports alone. The `linkml` prefix, in any case,
+    must name LinkML's namespace, since LinkML expands an import through the
+    schema's `prefixes`. `source_file` must be one plain file name, since
+    LinkML resolves `lokf` beside it.
+    """
+    try:
+        doc = yaml.safe_load(schema.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError, RecursionError) as e:
+        raise Failed(f"{slug}: the schema {name} is not YAML ({' '.join(str(e).split())[:200]})") from e
+    if not isinstance(doc, dict):
+        raise Failed(f"{slug}: the schema {name} is not a mapping, which a LinkML schema is")
+    imports = doc.get("imports")
+    imports = [] if imports is None else imports if isinstance(imports, list) else [imports]
+    for imported in imports:
+        if not isinstance(imported, str) or not SCHEMA_IMPORT.fullmatch(imported):
+            raise Failed(f"{slug}: the schema {name} imports {plain(imported)!r}; a member's schema imports `lokf` and `linkml:` names alone, "
+                         "because the toolkit would fetch or read any other import with none of the build's checks")
+    pairs = schema_prefixes(doc.get("prefixes"))
+    if pairs is None:
+        raise Failed(f"{slug}: the schema {name} gives `prefixes` as neither a mapping nor a list of prefixes")
+    for prefix, reference in pairs:
+        if prefix.lower() == "linkml" and reference != LINKML_PREFIX:
+            raise Failed(f"{slug}: the schema {name} declares the prefix {plain(prefix)!r} as {plain(reference)!r}; "
+                         f"it stands for {LINKML_PREFIX} alone, because a `linkml:` import is resolved through it")
+    source = doc.get("source_file")
+    if source is not None and not (isinstance(source, str) and PLAIN_NAME.fullmatch(source)):
+        raise Failed(f"{slug}: the schema {name} sets source_file to {plain(source)!r}; "
+                     "it names one plain file or is left out, because an import is resolved beside it")
+
+
 def member_schema_file(member: Member, cache: pathlib.Path, attest: bool, bundle_dir: pathlib.Path, max_bytes: int = DEFAULT_MAX_BYTES) -> pathlib.Path | None:
     """The schema released with a member's bundle, verified and placed beside the unpacked bundle with the toolkit's lokf.yaml, or None.
 
     A host's schema imports `lokf` by that name and keeps a pinned copy
     beside it (the librarian's domain-vocabulary.md), so the released schema
     is given the same neighbour here and validates as in its repository.
+    The toolkit loads the schema to validate against it, so one whose
+    imports reach past `lokf` and LinkML's own schemas stops the build, as
+    one that fails its checksum does.
     """
     if not member.schema_url:
         return None
     schema = bundle_dir / ".lokf" / member.schema_name
     # A member held at its last good state brings the copy the previous
     # build placed here, checked against the same digest.
-    if not (member.held and schema.is_file() and digest(schema) == member.schema_sha256):
+    if member.held and schema.is_file() and digest(schema) == member.schema_sha256:
+        check_member_schema(schema, member.slug, member.schema_name)
+    else:
         cached = obtain_file(member.schema_url, member.schema_sha256, cache, member.slug, max_bytes)
         if member.github and attest:
             verify_attestation(cached, member.github[0], member.github[1])
+        check_member_schema(cached, member.slug, member.schema_name)
         shutil.copyfile(cached, schema)
     shutil.copyfile(toolkit_schema(), schema.parent / "lokf.yaml")
     return schema
@@ -1465,21 +1543,56 @@ def label_blank_nodes_fast() -> bool:
     return True
 
 
+def leave_out_root_map() -> bool:
+    """Have lokf read no concept from the diataxis.md at a bundle's root.
+
+    KTL Registrar keeps its map there, and the conventions, the report and
+    the pen read it as no concept. The toolkit reserves index.md and log.md
+    alone, so `lokf export` would write the map as a node. Each lokf command
+    looks `lokf.model.load_bundle` up by name when it runs, so wrapping the
+    function here is enough. A diataxis.md in a folder stays a concept.
+    """
+    import lokf.model
+
+    stock = lokf.model.load_bundle
+    if getattr(stock, "leaves_out_root_map", False):
+        return False
+
+    def load_bundle(path):
+        bundle = stock(path)
+        bundle.concepts = [c for c in bundle.concepts if c.concept_id != "diataxis"]
+        return bundle
+
+    load_bundle.leaves_out_root_map = True
+    lokf.model.load_bundle = load_bundle
+    return True
+
+
 def public_url(root: pathlib.Path, given: str | None) -> str:
     """Where the snapshot is served: --public-url, else the website's address + /workspace, else nothing.
 
     The address is `baseURL` in the site.toml of website/, or of ktl-website/
-    where website/ was another site's. A site not yet moved from Astro has
-    it as SITE and BASE in website/site.config.mjs.
+    where website/ was another site's, read as TOML and in any letter case,
+    as Hugo reads it. A site not yet moved from Astro has it as SITE and BASE
+    in website/site.config.mjs.
     """
+    import tomllib
+
     if given is not None:
         return given.rstrip("/")
     for folder in ("website", "ktl-website"):
         cfg = root / folder / "site.toml"
-        if cfg.is_file():
-            address = re.search(r'^baseURL = "([^"]*)"', cfg.read_text(encoding="utf-8"), re.M)
-            if address:
-                return f"{address.group(1).rstrip('/')}/workspace"
+        if not cfg.is_file():
+            continue
+        try:
+            site = tomllib.loads(cfg.read_text(encoding="utf-8"))
+        except (tomllib.TOMLDecodeError, UnicodeDecodeError) as e:
+            raise Failed(f"{folder}/site.toml cannot be read as TOML, so the workspace has no address: {e}") from e
+        address = [value for key, value in site.items() if key.lower() == "baseurl"]
+        if len(address) > 1 or (address and not isinstance(address[0], str)):
+            raise Failed(f"{folder}/site.toml sets baseURL twice, or to a value that is not a string")
+        if address and address[0]:
+            return f"{address[0].rstrip('/')}/workspace"
     cfg = root / "website" / "site.config.mjs"
     if cfg.is_file():
         text = cfg.read_text(encoding="utf-8")
@@ -2139,6 +2252,7 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
     # 2. Register and export each bundle, the domain's among them, in base_iri order.
     if label_blank_nodes_fast():
         say("blank nodes in each export are labelled by pyoxigraph's RDFC-1.0, not by the toolkit's slower rdflib canonicaliser")
+    leave_out_root_map()
     export_root = new / "export"
     export_root.mkdir()
     public = public_url(root, args.public_url)
@@ -2193,7 +2307,10 @@ def _build(args, tmp: pathlib.Path, note_new) -> int:
         else:
             check = run_lokf(["validate", str(kdir)])
             fit.append(f"- `{slug}`: " + ("validates against LOKF core" if check.returncode == 0 else "does not validate against LOKF core alone (a domain vocabulary of its own, or types outside LOKF): " + (check.stderr or check.stdout).strip().splitlines()[-1][:200]))
-        meta = read_frontmatter(kdir / "index.md") if (kdir / "index.md").read_text(encoding="utf-8").startswith("---") else {}
+        try:
+            meta = read_frontmatter(kdir / "index.md") if opens_with_block((kdir / "index.md").read_text(encoding="utf-8")) else {}
+        except (ValueError, yaml.YAMLError):
+            meta = {}
         pub = meta.get("publisher") or {}
         records.append({
             "slug": slug, "base_iri": entry.base_iri, "title": plain(entry.title) or slug, "version": member.version if member else tag,
@@ -2974,12 +3091,14 @@ def served_add(spec: str, knowledge: pathlib.Path, domain_iri: str, cache: pathl
     if (knowledge / where).exists():
         raise Failed(f"{where} exists already; `members` moves an existing member on its own")
     taken[base] = f"members/{slug}"
-    # A site that serves the bundle's index.md beside the file says what the bundle is.
+    # The index.md beside the file says what the bundle is. Its address is
+    # checked as the file's is, before the request and at the connection.
     meta: dict = {}
     try:
-        text = http_get(folder + "/index.md", max_bytes=1_000_000).decode("utf-8")
-        meta = frontmatter_of(text) if text.startswith("---") else {}
-    except (OSError, http.client.HTTPException, Failed, UnicodeDecodeError, ValueError):
+        refuse_private(folder + "/index.md")
+        text = http_get(folder + "/index.md", max_bytes=1_000_000, member=True).decode("utf-8")
+        meta = frontmatter_of(text) if opens_with_block(text) else {}
+    except (OSError, http.client.HTTPException, Failed, UnicodeDecodeError, ValueError, yaml.YAMLError):
         meta = {}
     if meta.get("base_iri") not in (None, base):
         meta = {}
@@ -3488,6 +3607,11 @@ def registry_from(source: Snapshot):
         return load_registry(path)
 
 
+def opens_with_block(text: str) -> bool:
+    """Whether a page opens with a frontmatter block as LOKF section 5 reads one: after at most a byte order mark or blank lines."""
+    return text.lstrip("\ufeff \t\r\n").startswith("---")
+
+
 def frontmatter_of(text: str) -> dict:
     """A document's frontmatter as the toolkit reads a concept file."""
     with tempfile.TemporaryDirectory(prefix="federate-doc-") as tmp:
@@ -3930,7 +4054,10 @@ def mcp_server(args) -> int:
         if got is None:
             return {"error": f"{owner['slug']} has no document at {rel}"}
         text, where = got
-        summary = trust.trust_summary(frontmatter_of(text)) if not rel.endswith("/index.md") and text.startswith("---") else None
+        try:
+            summary = trust.trust_summary(frontmatter_of(text)) if not rel.endswith("/index.md") and opens_with_block(text) else None
+        except (ValueError, yaml.YAMLError):  # a block the toolkit cannot read: the page as it is, with no label
+            summary = None
         return {"iri": iri, "bundle": owner, "path": rel, "source_url": source, "read_from": where, "markdown": text, "trust": summary}
 
     warn(f"lokf-registry over {ws.source.label}: {len(ws.members)} bundles{ws.scope_note()}, "

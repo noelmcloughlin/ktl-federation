@@ -1,5 +1,9 @@
 # Change Log
 
+## 2026-11-18
+
+* **Curation**: 1 confirmed by a person (schema-sidecar Knowledge Bundle at v0.6.0, in its new namespace `https://w3id.org/lmodel/schema-sidecar/knowledge/`), 0 sent back, 0 corrected, 0 retired; review date set to 2027-05-18.
+
 ## 2026-11-15
 
 * **Curation**: 2 confirmed by a person (gist knowledge bundle at v0.7.2, Knowledge Trust Ladder knowledge bundle at v0.65.0), 0 sent back, 0 corrected, 0 retired; review dates set to 2027-05-15.
@@ -122,7 +126,7 @@
 
 * **Prose**: reworded 3 concept bodies in plain English. No fact, link, number or frontmatter changed.
 * **Changed**: the federation policy now names the registry, which refuses a nested `base_iri`, as what keeps members' namespaces apart. The context layer page and the lokf registry say so, and neither credits a publisher's control of its authority with it.
-* **Curation**: human:noelmcloughlin reviewed 3 of 5 concepts: 2 confirmed (the top domain, re-check due 2026-11-16, and member ai-linkmo), 1 marked for later (the federation policy), 0 sent back, 0 corrected, 0 retired.
+* **Curation**: human:noelmcloughlin reviewed 3 of 5 concepts: 2 confirmed (the top domain, re-check due 2026-11-16, and member ai-linkmo), 1 marked for later (the federation policy), 0 sent back, 0 corrected, 0 retired; review date set to 2027-05-18.
 * **Changed**: the bundle's `base_iri` moved from `https://w3id.org/ktl/federation/` to `https://w3id.org/ktl/federation/knowledge/`, the shape of the other KTL bundles' namespaces, so `https://w3id.org/ktl/federation/` is free for the site and the workspace; every id and relation target moved with it, and no concept's text changed.
 * **Added**: the top domain, with `unowned_targets: fail`.
 * **Added**: the federation policy: admission, the gate, and what a confirmation means.

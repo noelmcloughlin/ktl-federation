@@ -1,5 +1,16 @@
 # Change Log
 
+## 2026-11-23
+
+* **Open question**: gist knowledge bundle: lmodel/gist released v0.8.2 after the confirmed v0.7.2; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+* **Open question**: Knowledge Trust Ladder knowledge bundle: noelmcloughlin/knowledge-trust-ladder released v0.70.4 after the confirmed v0.65.0; does this member move to it? A person wrote this concept, so this patch leaves its text and frontmatter as they are.
+* **Changed**: schema-sidecar Knowledge Bundle moved from v0.6.0 to v0.7.0; the release carries `knowledge-v0.7.0-schema-sidecar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: schema-sidecar Knowledge Bundle: lmodel/schema-sidecar released v0.7.0 after the confirmed v0.6.0; does this member move to it?
+* **Changed**: KTL Curator knowledge bundle moved from 1.6.9 to 1.7.7; the release carries `knowledge-1.7.7-obsidian-ktl-curator.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: KTL Curator knowledge bundle: noelmcloughlin/obsidian-ktl-curator released 1.7.7 after the confirmed 1.6.9; does this member move to it?
+* **Changed**: KTL Registrar knowledge bundle moved from 1.7.10 to 1.8.6; the release carries `knowledge-1.8.6-obsidian-ktl-registrar.zip`. Edited since a person confirmed it; the label says so until the curator looks again.
+* **Open question**: KTL Registrar knowledge bundle: noelmcloughlin/obsidian-ktl-registrar released 1.8.6 after the confirmed 1.7.10; does this member move to it?
+
 ## 2026-11-18
 
 * **Curation**: 2 confirmed by a person (schema-sidecar Knowledge Bundle at v0.6.0, in its new namespace `https://w3id.org/lmodel/schema-sidecar/knowledge/`, and AI-LinkMO knowledge bundle at v0.6.0), 0 sent back, 0 corrected, 0 retired; review dates set to 2027-05-18.
